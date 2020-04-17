@@ -1,0 +1,62 @@
+﻿@page
+@model AuthorizationService.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Users[0].Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Users[0].Username)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Users[0].PhoneNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Users[0].Gender)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Users[0].IsEmailConfirmed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Users[0].RegisteredAt)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Users)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Username)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Gender)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsEmailConfirmed)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RegisteredAt)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
