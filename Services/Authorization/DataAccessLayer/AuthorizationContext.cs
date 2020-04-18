@@ -12,6 +12,5 @@ namespace DataAccessLayer
         {
 
         }
-        public DbSet<Imei> Imei { get; set; }
     }
 }

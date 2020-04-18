@@ -12,6 +12,8 @@ namespace Models
         public string NormalizedName { get; set; }
 
         public Gender Gender { get; set; }
+
+        public List<Login> Logins { get; set; }
     }
 
     public enum Gender

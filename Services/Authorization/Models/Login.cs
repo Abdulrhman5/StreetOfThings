@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NetTopologySuite.Geometries;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -18,11 +19,16 @@ namespace Models
 
         public string AdditionalInformation { get; set; }
 
-        public DateTime IssuedAt { get; set; }
+        public DateTime LoggedAt { get; set; }
 
-        public DateTime ExpiresAt { get; set; }
+        public DateTime? LoggedOutAt { get; set; }
+
+        public Point LoginLocation { get; set; }
+
+        public string Imei { get; set; }
 
         public string UserId { get; set; }
+        public AppUser User { get; set; }
 
         public Guid Id { get => LoginId; }
     }

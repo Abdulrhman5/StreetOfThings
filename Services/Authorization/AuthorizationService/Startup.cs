@@ -35,7 +35,7 @@ namespace AuthorizationService
             var configurationsCString = Configuration.GetConnectionString("ConfigurationsConnection");
             var persistedCString = Configuration.GetConnectionString("PersistedConnection");
 
-            services.AddDbContext<AuthorizationContext>(options => options.UseSqlServer(usersCString));
+            services.AddDbContext<AuthorizationContext>(options => options.UseSqlServer(usersCString, x => x.UseNetTopologySuite()));
 
             services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
