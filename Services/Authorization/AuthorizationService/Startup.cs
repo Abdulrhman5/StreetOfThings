@@ -12,6 +12,7 @@ using Models;
 using Unity;
 using AuthorizationService.AppStart;
 using Microsoft.OpenApi.Models;
+using AuthorizationService.Identity;
 
 namespace AuthorizationService
 {
@@ -45,7 +46,9 @@ namespace AuthorizationService
                 .AddInMemoryClients(ClientsConfig.Clients)
                 .AddInMemoryApiResources(ClientsConfig.Apis)
                 .AddDeveloperSigningCredential()
-                .AddAspNetIdentity<AppUser>();
+                .AddAspNetIdentity<AppUser>()
+                .AddResourceOwnerValidator<ResourceOwnerValidator>()
+                .AddProfileService<CustomProfileService>();
 
             services.AddRazorPages();
             services.AddAuthorization();

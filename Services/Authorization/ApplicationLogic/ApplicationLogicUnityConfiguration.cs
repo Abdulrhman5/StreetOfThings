@@ -18,7 +18,7 @@ namespace ApplicationLogic
 
             Container.RegisterType<IRegisterUserValidator, RegisterUserValidator>();
             Container.RegisterType<IUserRegisterer, RegisterUser>();
-
+            Container.RegisterType<UserLoginManager>();
             Container.RegisterType<IUserService, UserGetter>();
 
             new DalUnityConfiguration().ConfigUnity(container);
