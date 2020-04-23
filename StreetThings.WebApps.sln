@@ -23,6 +23,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Services\Authoriz
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthorizationTestClient", "Services\Authorization\tests\AuthorizationTestClient\AuthorizationTestClient.csproj", "{8BC69CA7-2C49-46F9-82A5-A5EEA24E06FE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateways", "Gateways", "{30F5E1AF-76FF-438E-9F20-BBC1B8A0C430}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MobileApiGateway", "Gateways\MobileApiGateway\MobileApiGateway.csproj", "{F6635F93-8977-43F2-BAE0-BB5BE91BD2E7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +61,10 @@ Global
 		{8BC69CA7-2C49-46F9-82A5-A5EEA24E06FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8BC69CA7-2C49-46F9-82A5-A5EEA24E06FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8BC69CA7-2C49-46F9-82A5-A5EEA24E06FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6635F93-8977-43F2-BAE0-BB5BE91BD2E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6635F93-8977-43F2-BAE0-BB5BE91BD2E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6635F93-8977-43F2-BAE0-BB5BE91BD2E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6635F93-8977-43F2-BAE0-BB5BE91BD2E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -71,6 +79,7 @@ Global
 		{2E35C4E4-9517-4F79-9FB8-3C45544A0FEA} = {F59225E8-8543-43A6-9BAB-067F508A1B8E}
 		{3B7CC298-DA86-48B7-B192-F58C9A49EF0D} = {F59225E8-8543-43A6-9BAB-067F508A1B8E}
 		{8BC69CA7-2C49-46F9-82A5-A5EEA24E06FE} = {03793596-348D-421B-A785-6DC8FCAC039C}
+		{F6635F93-8977-43F2-BAE0-BB5BE91BD2E7} = {30F5E1AF-76FF-438E-9F20-BBC1B8A0C430}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {99BE5EE1-5AB0-4039-AC24-5B59F42DCD30}
