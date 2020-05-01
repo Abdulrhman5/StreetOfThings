@@ -3,7 +3,21 @@
     {
       "UpstreamPathTemplate": "/connect/token",
       "UpstreamHttpMethod": [ "Post" ],
+      "SwaggerKey": "Identity",
       "DownstreamPathTemplate": "/connect/token",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 30000
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/api/identity/{everything}",
+      "UpstreamHttpMethod": [],
+      "SwaggerKey": "Identity",
+      "DownstreamPathTemplate": "/api/{everything}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -13,7 +27,19 @@
       ]
     }
   ],
+  "SwaggerEndPoints": [
+    {
+      "Key": "Identity",
+      "Config": [
+        {
+          "Name": "Identity API",
+          "Version": "v1",
+          "Url": "https://localhost:30000/swagger/v1/swagger.json"
+        }
+      ]
+    }
+  ],
   "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:25000"
+    "BaseUrl": "http://localhost"
   }
 }
