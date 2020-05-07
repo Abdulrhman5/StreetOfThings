@@ -1,4 +1,5 @@
 ﻿using IdentityModel;
+using IdentityServer4;
 using IdentityServer4.Models;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace AuthorizationService
         public static IEnumerable<ApiResource> Apis =>
             new List<ApiResource>
             {
-                new ApiResource("testApi","My Api")
+                new ApiResource("MobileBff","Moble API")
             };
 
         public static IEnumerable<Client> Clients =>
@@ -21,17 +22,19 @@ namespace AuthorizationService
             {
                 new Client
                 {
-                    ClientId="testClient",
+                    ClientId="MobileBff",
                     ClientSecrets =
                     {
-                        new Secret("secret".Sha256()),
+                        new Secret("MobileBffSecret".Sha256()),
                     },
 
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
-                    AllowedScopes = 
+                    AllowedScopes =
                     {
-                        "testApi" 
-                    }
+                        "MobileBff" ,
+                    },
+                    AllowOfflineAccess = true,
+                    
                 }
             };
 
