@@ -23,6 +23,10 @@ namespace AuthorizationService.Identity
         {
             var loginInfo = context?.Request?.Raw?["loginInfo"];
 
+            if(loginInfo == null)
+            {
+                return (false, null);
+            }
             var query = HttpUtility.ParseQueryString(loginInfo);
             var lon = query.Get("lon");
             double dLon;
@@ -44,6 +48,14 @@ namespace AuthorizationService.Identity
             }
 
             if (!double.TryParse(lat, out dLat))
+            {
+                return (false, null);
+            }
+
+            // if dLon is not in this range -180 <= dLon <= +180
+            // or of dLat is not in this range -90 <= dLat <= +90
+            // return error
+            if (Math.Abs(dLon) > 180 || Math.Abs(dLat) > 90)
             {
                 return (false, null);
             }

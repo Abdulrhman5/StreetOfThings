@@ -1,7 +1,7 @@
 ﻿@page
 @model AuthorizationService.LoginModel
 @{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = "Get Access Token";
 }
 
     <div class="container">
@@ -44,8 +44,15 @@
                             Value
                         </th>
                     </tr>
+                    <tr>
+                        <td>
+                            Content-Type
+                        </td>
+                        <td>
+                            application/json
+                        </td>
+                    </tr>
                 </table>
-                NONE.
             </div>
             <br />
 
@@ -55,16 +62,32 @@
                 </h3>
                 <pre>
 {
-	"email":"Abdulrhman.Alrifai@outlook.com",   : String
-	"Password":"1234512345",                    : String
-	"PasswordConfirmation":"1234512345",        : String
-	"Username":"Abduluhman",                    : String
-	"PhoneNumber":"+963 930-129-552",           : String
-	"Gender":"Male"                             : String (Male, Female)
+	"username":"Abdulrhman.Alrifai@outlook.com",   : String
+	"password":"1234512345",                    : String
+	"grant_type":"password",                    : String Constant
+    "loginInfo": "Lon=11.11&Lat=11.11&Imei=XXXX": String 
 }
 </pre>
-                <br />
-                <br />
+                <h4>
+                    Notes
+                </h4>
+                <ul>
+                    <li>
+                        The 'LoginInfo' must contain
+                        <ul>
+                            <li>
+                                Lon is the longitude of the user
+                            </li>
+                            <li>
+                                Lat is the Latitude of the user
+                            </li>
+                            <li>
+                                Imei is the device's Imei
+                            </li>
+                        </ul>
+                        
+                    </li>
+                </ul>
             </div>
 
             <div class="container">
@@ -114,7 +137,18 @@
 
                         <pre>
 {
-	"message": "A user has been created successfuly"
+    "access_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IlRiRy1uS0VRc2VzdjBERjJpWlJwYXciLCJ0eXAiOiJhdCtqd3QifQ
+        .eyJuYmYiOjE1ODg4ODA3NzAsImV4cCI6MTU4ODg4NDM3MCwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDoyMDAwMCIsImF1ZCI6Ik1vY
+        mlsZUJmZiIsImNsaWVudF9pZCI6Ik1vYmlsZUJmZiIsInN1YiI6IjhiMzhiNDg3LTJmODYtNDFkZS1iMzAwLTZlOWQ1MDg5MzQyMyIsImF1dGhfdGl
+        tZSI6MTU4ODg4MDc2OSwiaWRwIjoibG9jYWwiLCJ0aWQiOiJiOWZlOWIyMS1jNmM3LTRjMjItOTIyZS1hZDBiOWUxMTI5ZDgiLCJzY29wZSI6WyJNb2JpbGVCZ
+        mYiLCJvZmZsaW5lX2FjY2VzcyJdLCJhbXIiOlsicHdkIl19.Ay_kms4X8pq5imXJJAcSw5P6uv6a4I8zdQwvmtJ4yFZinaIs4_he0qPUDUzD53_NfqmdCmwgRs8ovB-ZTa-eD
+        6QVRNo4daazRWDEIbzP6lsFNExznqsAb3ccxt2ki32qlj6J6bp6tc3rCJk1jhz-gbyzC-liYN9gX3KgvQAIwl7xR8GYyEtradCFILJCMCeJHgnng0Mavrie_JFWPjPV9GdqC9ckp2dg
+        AZ1yuJPvPnXg4duemHaqFzS59W31nhT_NJV4YISg9umyTWwE-Zc2SYHWXUJ4H4Su_GepfyJLVg3EsoeQFPYr_TZZEiNmjjbfJMSbcKh4ml68v1-kAS9qGQ",
+    "expires_in": 3600,
+    "token_type": "Bearer",
+    "refresh_token": "wOwIK500ZbuqV8xM_pQV8TtLfZPwz23rSmEZ7_9zgBE",
+    "scope": "MobileBff offline_access",
+    "tokenId": "b9fe9b21-c6c7-4c22-922e-ad0b9e1129d8"
 }
 					 </pre>
                         <br />
@@ -123,7 +157,7 @@
                 <div>
                     <hr />
                     <h3>
-                        Scenario 2: The email is already exists.
+                        Scenario 2: The email or the password is incorrect.
                     </h3>
                     <br />
                     <div class="container">
@@ -159,8 +193,8 @@
                         </h3>
                         <pre>
 {
-	"errorCode": "DuplicateUserName",
-	"message": "User name 'Abdulrhman.Alrifa1i@outlook.com' is already taken.",
+    "error": "invalid_grant",
+    "error_description": "invalid_username_or_password"
 }
 </pre>
 
@@ -171,8 +205,10 @@
                 <div>
                     <hr />
                     <h3>
-                        Scenario 3: The email is invalid string.
+                        Scenario 3: Login information is empty or has faulty data.
                     </h3>
+                    The latitude should have a value between -90 <= lat <= 90
+                    The Longitude should have a value between -180 <= lon <= 180
                     <br />
                     <div class="container">
                         <h3>
@@ -207,150 +243,8 @@
                         </h3>
                         <pre>
 {
-	"errorCode": "USER.REGILTER.EMAIL.INVALID",
-	"message": "The Email feild does not represent an email",
-}</pre>
-
-                        <br />
-                    </div>
-                </div>
-
-                <div>
-                    <hr />
-                    <h3>
-                        Scenario 4: The username is to long or to short.
-                    </h3>
-                    <br />
-                    <div class="container">
-                        <h3>
-                            Headers parameters
-                        </h3>
-                        The most important headers are:
-                        <table class="table">
-                            <tr>
-
-                                <th>
-                                    Key
-                                </th>
-                                <th>
-                                    Value
-                                </th>
-                            </tr>
-                            <tr>
-                                <td>
-                                    StatusCode
-                                </td>
-                                <td>
-                                    400
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-
-                    <br />
-                    <div class="container">
-                        <h3>
-                            Body
-                        </h3>
-                        <pre>
-{
-	"errorCode": "USER.REGISTER.USERNAME.INVALID",
-	"message": "The user name must be longer than 5 and less than 200",
-}</pre>
-
-                        <br />
-                    </div>
-                </div>
-
-
-                <div>
-                    <hr />
-                    <h3>
-                        Scenario 5: The gender property has invalid value (not Male or Female).
-                    </h3>
-                    <br />
-                    <div class="container">
-                        <h3>
-                            Headers parameters
-                        </h3>
-                        The most important headers are:
-                        <table class="table">
-                            <tr>
-
-                                <th>
-                                    Key
-                                </th>
-                                <th>
-                                    Value
-                                </th>
-                            </tr>
-                            <tr>
-                                <td>
-                                    StatusCode
-                                </td>
-                                <td>
-                                    400
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-
-                    <br />
-                    <div class="container">
-                        <h3>
-                            Body
-                        </h3>
-                        <pre>
-{
-	"errorCode": "USER.REGISTER.GENDER.INVALID",
-	"message": "Please fill the gender with valid data",
-}</pre>
-
-                        <br />
-                    </div>
-                </div>
-
-                <div>
-                    <hr />
-                    <h3>
-                        Scenario 6: Password and confirmation does not match.
-                    </h3>
-                    <br />
-                    <div class="container">
-                        <h3>
-                            Headers parameters
-                        </h3>
-                        The most important headers are:
-                        <table class="table">
-                            <tr>
-
-                                <th>
-                                    Key
-                                </th>
-                                <th>
-                                    Value
-                                </th>
-                            </tr>
-                            <tr>
-                                <td>
-                                    StatusCode
-                                </td>
-                                <td>
-                                    400
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-
-                    <br />
-                    <div class="container">
-                        <h3>
-                            Body
-                        </h3>
-                        <pre>
-{
-	"errorCode": "USER.REGISTER.PASSWORD_CONFIRMATION.INVALID",
-	"message": "The password and confirmation are not the same",
+    "error": "invalid_request",
+    "error_description": "LoginInformation should be formated like this lan=99.99&lat=99.99&Imei=xxxx"
 }</pre>
 
                         <br />

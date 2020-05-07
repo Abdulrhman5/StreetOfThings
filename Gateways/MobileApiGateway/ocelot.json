@@ -1,6 +1,5 @@
 {
   "ReRoutes": [
-
     {
       "UpstreamPathTemplate": "/api/identity/{everything}",
       "UpstreamHttpMethod": [],
@@ -13,8 +12,19 @@
           "Port": 30000
         }
       ]
+    },
+    {
+      "UpstreamPathTemplate": "/identity/{everything}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 30000
+        }
+      ]
     }
-
   ],
   "SwaggerEndPoints": [
     {
