@@ -44,18 +44,6 @@ namespace ApplicationLogic.AppUserCommands
                     StatusCode = System.Net.HttpStatusCode.BadRequest
                 });                
             }
-
-            var roleResult = await _userManager.AddToRoleAsync(validationResult.Result, "Customer");
-            if (!roleResult.Succeeded)
-            {
-                return new CommandResult<Models.AppUser>(new ErrorMessage
-                {
-                    ErrorCode = registrationResult.Errors.FirstOrDefault().Code,
-                    Message = registrationResult.Errors.FirstOrDefault().Description,
-                    StatusCode = System.Net.HttpStatusCode.BadRequest
-                });
-            }
-
             return validationResult;
         }
     }

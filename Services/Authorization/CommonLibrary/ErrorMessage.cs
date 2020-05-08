@@ -38,4 +38,24 @@ namespace CommonLibrary
             _successeded = false;
         }
     }
+
+    public class CommandResult
+    {
+        private bool _successeded { get; set; }
+
+        public bool IsSuccessful => _successeded;
+
+        public ErrorMessage Error { get; }
+
+        public CommandResult()
+        {
+            _successeded = true;
+        }
+
+        public CommandResult(ErrorMessage message)
+        {
+            Error = message ?? throw new ArgumentNullException();
+            _successeded = false;
+        }
+    }
 }
