@@ -10,7 +10,7 @@ namespace AuthorizationService.Controllers
     public class MyControllerBase : ControllerBase
     {
 
-        public IActionResult StatusCode(CommandResult result, object successResult)
+        protected IActionResult StatusCode(CommandResult result, object successResult)
         {
             if (result.IsSuccessful)
             {
