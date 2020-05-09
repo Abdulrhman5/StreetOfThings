@@ -1,5 +1,6 @@
 ﻿using ApplicationLogic.AppUserCommands;
 using ApplicationLogic.AppUserQueries;
+using ApplicationLogic.UserConfirmations;
 using CommonLibrary;
 using DataAccessLayer;
 using System;
@@ -21,6 +22,7 @@ namespace ApplicationLogic
             Container.RegisterType<UserLoginManager>();
             Container.RegisterType<IUserService, UserGetter>();
             Container.RegisterType<IEmailConfirmationManager, EmailConfirmation>();
+            Container.RegisterType<IStringGenerator, StringGenerator>();
 
             new DalUnityConfiguration().ConfigUnity(container);
         }

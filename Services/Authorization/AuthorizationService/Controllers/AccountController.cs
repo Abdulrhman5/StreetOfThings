@@ -1,4 +1,5 @@
 ﻿using ApplicationLogic.AppUserCommands;
+using ApplicationLogic.UserConfirmations;
 using CommonLibrary;
 using DataAccessLayer;
 using Microsoft.AspNetCore.Identity;
@@ -31,7 +32,7 @@ namespace AuthorizationService.Controllers
             var registrationResult = await _userRegisterer.RegisterAsync(user).ConfigureAwait(false);
             if (registrationResult.IsSuccessful)
             {
-                var confirmationCode = _emailConfirmationManager.GenerateConfirmationCodeAsync(registrationResult.Result);
+                var confirmationCode = await _emailConfirmationManager.GenerateConfirmationCodeAsync(registrationResult.Result);
                 return Ok(new
                 {
                     Message = "A user has been created successfuly"
