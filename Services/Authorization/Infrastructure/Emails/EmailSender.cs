@@ -65,12 +65,7 @@ namespace Infrastructure.Emails
             }
             catch (Exception e)
             {
-                _logger.LogError($"There were an error while sending an email to: {email}",
-                    $"The email subject was: {emailToSend.Subject}",
-                    $"The email Html body was: {emailToSend.HtmlBody}",
-                    $"The email Text body was: {emailToSend.TextBody}",
-                    $"The Exception details",
-                    e.ToString());
+                _logger.LogError($"There were an error while sending an email to: {email}, Exception Details {e.ToString()}");
             }
         }
 

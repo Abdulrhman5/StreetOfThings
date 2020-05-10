@@ -15,6 +15,7 @@ namespace Infrastructure
             Container = container;
 
             Container.RegisterType<IEmailSender, EmailSender>();
+            Container.RegisterType<IStringIntoFileInjector, StringIntoFileInjector>();
         }
 
     }

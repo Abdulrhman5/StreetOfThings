@@ -9,7 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Threading.Tasks;
+using System.Threading.Tasks;using Infrastructure;
+using Infrastructure.Emails;
 
 namespace AuthorizationService.Controllers
 {
@@ -19,10 +20,18 @@ namespace AuthorizationService.Controllers
         private IUserRegisterer _userRegisterer;
 
         private IEmailConfirmationManager _emailConfirmationManager;
-        public AccountController(IUserRegisterer userRegisterer, IEmailConfirmationManager emailConfirmationManager)
+
+        private IStringIntoFileInjector _stringInjector;
+
+        private IEmailSender _emailSender;
+        public AccountController(IUserRegisterer userRegisterer,
+            IEmailConfirmationManager emailConfirmationManager,IStringIntoFileInjector stringInjector,
+            IEmailSender emailSender)
         {
             _userRegisterer = userRegisterer;
             _emailConfirmationManager = emailConfirmationManager;
+            _stringInjector = stringInjector;
+            _emailSender = emailSender;
         }
 
         [HttpPost]
@@ -30,14 +39,26 @@ namespace AuthorizationService.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterUserDto user)
         {
             var registrationResult = await _userRegisterer.RegisterAsync(user).ConfigureAwait(false);
-            if (registrationResult.IsSuccessful)
+            if (registrationResult.IsSuccessful) 
             {
+
+                // generate a confirmation code and send it to the user's email;
                 var confirmationCode = await _emailConfirmationManager.GenerateConfirmationCodeAsync(registrationResult.Result);
+                var body = await _stringInjector.GetInjectedHtmlFileAsync("EmailConfirmationTemplete.html", confirmationCode);
+                var email = new Email
+                {
+                    HtmlBody = body,
+                    Subject = "Confirm Your Email",
+                    TextBody = "Please confirm your email by using this code: " + confirmationCode
+                };
+                await _emailSender.SendEmailByEmailAsync(registrationResult.Result.Email, email);
+
                 return Ok(new
                 {
                     Message = "A user has been created successfuly"
                 });
             }
+
 
             return StatusCode((int) registrationResult.Error.StatusCode, registrationResult.Error);
         }
