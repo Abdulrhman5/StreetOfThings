@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Unity;
 using DataAccessLayer;
 using ApplicationLogic;
+using Infrastructure;
 
 namespace AuthorizationService.AppStart
 {
@@ -19,6 +20,7 @@ namespace AuthorizationService.AppStart
             // Register Services
 
             new ApplicationLogicUnityConfiguration().ConfigUnity(container);
+            new InfrastructureUnityConfig().ConfigUnity(container);
         }
     }
 }
