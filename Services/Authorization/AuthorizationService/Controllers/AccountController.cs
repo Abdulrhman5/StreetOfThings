@@ -44,7 +44,7 @@ namespace AuthorizationService.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterUserDto user)
         {
             var registrationResult = await _userRegisterer.RegisterAsync(user).ConfigureAwait(false);
-            if (registrationResult.IsSuccessful) 
+            if (registrationResult.IsSuccessful)
             {
 
                 // generate a confirmation code and send it to the user's email;
@@ -65,12 +65,12 @@ namespace AuthorizationService.Controllers
             }
 
 
-            return StatusCode((int) registrationResult.Error.StatusCode, registrationResult.Error);
+            return StatusCode((int)registrationResult.Error.StatusCode, registrationResult.Error);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("confirm")]
-        public async Task<IActionResult> Confirm(ConfirmEmailDto confirmEmailDto)
+        public async Task<IActionResult> Confirm([FromBody] ConfirmEmailDto confirmEmailDto)
         {
             var confirmationResult =await _emailConfirmationManager.ConfirmEmailAsync(confirmEmailDto);
             return StatusCode(confirmationResult, new
@@ -96,7 +96,7 @@ namespace AuthorizationService.Controllers
             }
 
             var user = await _userManager.FindByEmailAsync(email.Email);
-            if(user is null)
+            if(user is null || user.EmailConfirmed)
             {
                 var response = new ErrorMessage
                 {

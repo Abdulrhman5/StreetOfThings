@@ -44,12 +44,6 @@ namespace MobileApiGateway
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            app.UseSwaggerForOcelotUI(Configuration, opt =>
-            {
-                opt.PathToSwaggerGenerator = "/swagger/docs";
-            });
-
-            //app.UseOcelot().Wait();
 
             app.UseRouting();
 
@@ -59,6 +53,14 @@ namespace MobileApiGateway
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
             });
+
+
+            app.UseSwaggerForOcelotUI(Configuration, opt =>
+            {
+                opt.PathToSwaggerGenerator = "/swagger/docs";
+            });
+
+            app.UseOcelot().Wait();
         }
     }
 }

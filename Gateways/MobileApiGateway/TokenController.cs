@@ -31,10 +31,14 @@ namespace MobileApiGateway
             var dic = new Dictionary<string, string>();
             dic.Add("client_id", clientId);
             dic.Add("client_secret", clientSecret);
-            dic.Add("grant_type", loginDto.grant_type);
-            dic.Add("username", loginDto.username);
-            dic.Add("password", loginDto.password);
-            dic.Add("loginInfo", loginDto.LoginInfo);
+            if (loginDto != null)
+            {
+                dic.Add("grant_type", loginDto.grant_type);
+                dic.Add("username", loginDto.username);
+                dic.Add("password", loginDto.password);
+                dic.Add("loginInfo", loginDto.LoginInfo);
+            }
+
             var request = new HttpRequestMessage(HttpMethod.Post,accessTokenUrl)
             {
                 Content = new FormUrlEncodedContent(dic)
