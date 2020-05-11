@@ -114,12 +114,22 @@ namespace ApplicationLogic.UserConfirmations
                     await _confirmationToken.SaveChangesAsync().ConfigureAwait(false);
 
 
-                    user.EmailConfirmed = true;
+                    var userToConfirm = (from u in _userRepo.Table
+                                        where u.Id == user.Id
+                                        select u).FirstOrDefault();
+                    userToConfirm.EmailConfirmed = true;
                     await _userRepo.SaveChangesAsync();
+                    return new CommandResult();
                 }
                 catch (Exception e)
                 {
                     _logger.LogError("There where an error while trying to delete the confirmations token and update the state of the user", e.Message);
+                    return new CommandResult(new ErrorMessage
+                    {
+                        ErrorCode = "USER.CONFIRMATION.EMAIL.ERROR",
+                        Message = "There were an error processing your request",
+                        StatusCode = System.Net.HttpStatusCode.InternalServerError
+                    });
                 }
             }
             else
@@ -131,7 +141,6 @@ namespace ApplicationLogic.UserConfirmations
                     StatusCode = System.Net.HttpStatusCode.BadRequest
                 });
             }
-            return null;
         }
 
         public async Task<string> GenerateConfirmationCodeAsync(string userId)

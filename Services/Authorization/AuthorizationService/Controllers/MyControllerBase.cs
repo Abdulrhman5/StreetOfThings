@@ -14,10 +14,15 @@ namespace AuthorizationService.Controllers
         {
             if (result.IsSuccessful)
             {
-                return Ok();
+                return Ok(successResult);
             }
 
             return StatusCode((int)result.Error.StatusCode, result.Error);
+        }
+
+        protected IActionResult StatusCode(ErrorMessage error)
+        {
+            return StatusCode((int)error.StatusCode, error);
         }
     }
 }
