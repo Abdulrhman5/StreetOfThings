@@ -70,9 +70,9 @@ namespace AuthorizationService.Controllers
 
         [HttpGet]
         [Route("confirm")]
-        public async Task<IActionResult> Confirm(string email, string code)
+        public async Task<IActionResult> Confirm(ConfirmEmailDto confirmEmailDto)
         {
-            var confirmationResult =await _emailConfirmationManager.ConfirmEmailAsync(email, code);
+            var confirmationResult =await _emailConfirmationManager.ConfirmEmailAsync(confirmEmailDto);
             return StatusCode(confirmationResult, new
             {
                 Message = "The email has been confirmed"
@@ -82,7 +82,7 @@ namespace AuthorizationService.Controllers
 
         [HttpPost]
         [Route("ResendCode")]
-        public async Task<IActionResult> ResendEmailConfirmation([FromBody] ResendEmailDto email)
+        public async Task<IActionResult> ResendEmailConfirmation([FromBody] ResendEmailConfirmationDto email)
         {
             if (email is null || email.Email.IsNullOrEmpty())
             {
@@ -126,8 +126,5 @@ namespace AuthorizationService.Controllers
     }
 
 
-    public class ResendEmailDto
-    {
-        public string Email { get; set; }
-    }
+
 }

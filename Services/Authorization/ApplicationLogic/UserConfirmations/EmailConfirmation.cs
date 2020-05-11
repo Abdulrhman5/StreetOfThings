@@ -13,7 +13,7 @@ namespace ApplicationLogic.UserConfirmations
 {
     public interface IEmailConfirmationManager
     {
-        public Task<CommandResult> ConfirmEmailAsync(string email, string confirmationCode);
+        public Task<CommandResult> ConfirmEmailAsync(ConfirmEmailDto confirmEmailDto);
 
         public Task<string> GenerateConfirmationCodeAsync(string userId);
 
@@ -45,19 +45,19 @@ namespace ApplicationLogic.UserConfirmations
             _confirmationToken = confirmationTokenRepo;
         }
 
-        public async Task<CommandResult> ConfirmEmailAsync(string email, string confirmationCode)
+        public async Task<CommandResult> ConfirmEmailAsync(ConfirmEmailDto confirmationCodeDto)
         {
-            if (email.IsNullOrEmpty())
+            if (confirmationCodeDto.Email.IsNullOrEmpty())
             {
                 return new CommandResult(new ErrorMessage()
                 {
                     ErrorCode = "USER.CONFIRMATION.EMAIL.NULL",
-                    Message = "Please fill the email feild",
+                    Message = "Please fill the email field",
                     StatusCode = System.Net.HttpStatusCode.BadRequest
                 });
             }
 
-            if (confirmationCode.IsNullOrEmpty())
+            if (confirmationCodeDto.ConfirmationCode.IsNullOrEmpty())
             {
                 return new CommandResult(new ErrorMessage()
                 {
@@ -67,30 +67,12 @@ namespace ApplicationLogic.UserConfirmations
                 });
             }
 
-            var user = await _userManager.FindByEmailAsync(email);
-            if (user == null)
-            {
-                return new CommandResult(new ErrorMessage()
-                {
-                    ErrorCode = "USER.CONFIRMATION.EMAIL.INCORRRECT",
-                    Message = "The email you are trying to confirm is not an account",
-                    StatusCode = System.Net.HttpStatusCode.BadRequest
-                });
-            }
+            var user = await _userManager.FindByEmailAsync(confirmationCodeDto.Email);
 
-            if (user.EmailConfirmed)
-            {
-                return new CommandResult(new ErrorMessage()
-                {
-                    ErrorCode = "USER.CONFIRMATION.EMAIL.CONFIRMED",
-                    Message = "The email you are trying to confirm is already confirmed",
-                    StatusCode = System.Net.HttpStatusCode.BadRequest
-                });
-            }
 
 
             var tokensForUser = (from ec in _confirmationToken.Table
-                                 where ec.ConfirmationType == ConfirmationToken.ConfirmationCodeTypeEmail && ec.User.Email.ToLower() == email.ToLower()
+                                 where ec.ConfirmationType == ConfirmationToken.ConfirmationCodeTypeEmail && ec.User.Email.ToLower() == confirmationCodeDto.Email.ToLower()
                                  orderby ec.ExpiresAtUtc
                                  descending
                                  select ec).ToList();
@@ -102,7 +84,7 @@ namespace ApplicationLogic.UserConfirmations
             // if the token is the same
             // and it is not expired
             if (lastTokenSent is object &&
-                lastTokenSent.ConfirmationCode.ToUpper() == confirmationCode.ToUpper() &&
+                lastTokenSent.ConfirmationCode.ToUpper() == confirmationCodeDto.ConfirmationCode.ToUpper() &&
                 lastTokenSent.ExpiresAtUtc >= DateTime.UtcNow)
             {
                 try
