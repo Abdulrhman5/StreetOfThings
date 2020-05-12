@@ -2,10 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>212c48a8-79a9-413b-8f66-9e1399b20620</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
     <PackageReference Include="MMLib.SwaggerForOcelot" Version="1.10.5" />
     <PackageReference Include="Ocelot" Version="15.0.6" />
   </ItemGroup>
