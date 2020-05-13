@@ -1,0 +1,40 @@
+version: '3.4'
+
+services:
+
+    sqldata:
+        environment:
+            - SA_PASSWORD=Pass@word
+            - ACCEPT_EULA=Y
+        ports:
+            - "5433:1433"
+        volumes:
+            - street-sqldata:/var/opt/mssql
+
+    mobilegateservice:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_URLS=http://+:80
+        ports:
+          - "7500:80"
+          - "8500:433"
+        volumes:
+          - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+          - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+    authorizationservice:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_URLS=http://+:80
+            - ConnectionStrings__UsersConnection=Server=sqldata;Database=Authorization.User;User Id=sa;Password=Pass@word
+
+        ports:
+            - "7000:80"
+            - "8000:433"
+        volumes:
+            - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+            - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+volumes:
+    street-sqldata:
+        external: false

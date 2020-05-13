@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MobileApiGateway", "Gateway
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.Test", "Services\Authorization\tests\Infrastructure.Test\Infrastructure.Test.csproj", "{7E7A7C3F-DC8D-4AF0-A0CD-C529A3B2B858}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{61C24DD0-55D6-4C29-A33B-45536F07608E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,10 @@ Global
 		{7E7A7C3F-DC8D-4AF0-A0CD-C529A3B2B858}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E7A7C3F-DC8D-4AF0-A0CD-C529A3B2B858}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E7A7C3F-DC8D-4AF0-A0CD-C529A3B2B858}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61C24DD0-55D6-4C29-A33B-45536F07608E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61C24DD0-55D6-4C29-A33B-45536F07608E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61C24DD0-55D6-4C29-A33B-45536F07608E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61C24DD0-55D6-4C29-A33B-45536F07608E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

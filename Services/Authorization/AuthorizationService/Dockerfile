@@ -1,17 +1,19 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-FROM mcr.microsoft.com/dotnet/core/aspnet:latest AS base
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS base
 
-FROM mcr.microsoft.com/dotnet/core/sdk:latest AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 WORKDIR /src
-COPY ["AuthorizationService/AuthorizationService.csproj", "AuthorizationService/"]
-COPY ["ApplicationLogic/ApplicationLogic.csproj", "ApplicationLogic/"]
-COPY ["Models/Models.csproj", "Models/"]
-COPY ["CommonLibrary/CommonLibrary.csproj", "CommonLibrary/"]
-COPY ["DataAccessLayer/DataAccessLayer.csproj", "DataAccessLayer/"]
-RUN dotnet restore "AuthorizationService/AuthorizationService.csproj"
+COPY ["Services/Authorization/AuthorizationService/AuthorizationService.csproj", "Services/Authorization/AuthorizationService/"]
+COPY ["Services/Authorization/ApplicationLogic/ApplicationLogic.csproj", "Services/Authorization/ApplicationLogic/"]
+COPY ["Services/Authorization/Models/Models.csproj", "Services/Authorization/Models/"]
+COPY ["Services/Authorization/CommonLibrary/CommonLibrary.csproj", "Services/Authorization/CommonLibrary/"]
+COPY ["Services/Authorization/DataAccessLayer/DataAccessLayer.csproj", "Services/Authorization/DataAccessLayer/"]
+COPY ["Services/Authorization/Infrastructure/Infrastructure.csproj", "Services/Authorization/Infrastructure/"]
+
+RUN dotnet restore "Services/Authorization/AuthorizationService/AuthorizationService.csproj"
 COPY . .
-WORKDIR "/src/AuthorizationService"
+WORKDIR "/src/Services/Authorization/AuthorizationService"
 RUN dotnet build "AuthorizationService.csproj" -c Release -o /app/build
 
 FROM build AS publish

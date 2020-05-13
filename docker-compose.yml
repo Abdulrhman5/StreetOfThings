@@ -1,0 +1,24 @@
+version: '3.4'
+
+services:
+
+    sqldata:
+        image: microsoft/mssql-server-linux:latest
+
+    mobilegateservice:
+        image: ${DOCKER_REGISTRY-}mobilegateservice
+        build:
+            context: .
+            dockerfile: Gateways/MobileApiGateway/Dockerfile
+        depends_on:
+            - authorizationservice
+
+    authorizationservice:
+        image: ${DOCKER_REGISTRY-}authorizationservice
+
+        build:
+          context: .
+          dockerfile: Services/Authorization/AuthorizationService/Dockerfile
+
+        depends_on:
+            - sqldata

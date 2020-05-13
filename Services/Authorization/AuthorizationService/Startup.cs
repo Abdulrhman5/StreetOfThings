@@ -13,6 +13,8 @@ using Unity;
 using AuthorizationService.AppStart;
 using Microsoft.OpenApi.Models;
 using AuthorizationService.Identity;
+using System;
+using Serilog;
 
 namespace AuthorizationService
 {
@@ -33,6 +35,7 @@ namespace AuthorizationService
 
             // Get Connection strings 
             var usersCString = Configuration.GetConnectionString("UsersConnection");
+            Log.Information("Connection Used for Users" + usersCString);
             var configurationsCString = Configuration.GetConnectionString("ConfigurationsConnection");
             var persistedCString = Configuration.GetConnectionString("PersistedConnection");
 
