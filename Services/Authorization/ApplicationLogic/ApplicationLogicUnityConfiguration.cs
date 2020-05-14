@@ -20,9 +20,11 @@ namespace ApplicationLogic
             Container.RegisterType<IRegisterUserValidator, RegisterUserValidator>();
             Container.RegisterType<IUserRegisterer, RegisterUser>();
             Container.RegisterType<UserLoginManager>();
+            Container.RegisterType<ILoginChecker, LoginChecker>();
             Container.RegisterType<IUserService, UserGetter>();
             Container.RegisterType<IEmailConfirmationManager, EmailConfirmation>();
             Container.RegisterType<IStringGenerator, StringGenerator>();
+
 
             new DalUnityConfiguration().ConfigUnity(container);
         }

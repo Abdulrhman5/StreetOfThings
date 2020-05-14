@@ -11,6 +11,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;using Infrastructure;
 using Infrastructure.Emails;
+using AuthorizationService.Identity;
 
 namespace AuthorizationService.Controllers
 {
@@ -26,17 +27,22 @@ namespace AuthorizationService.Controllers
         private IEmailSender _emailSender;
 
         private UserManager<AppUser> _userManager;
+
+        private ILoginChecker _loginChecker;
+
         public AccountController(IUserRegisterer userRegisterer,
             IEmailConfirmationManager emailConfirmationManager,
             IStringIntoFileInjector stringInjector,
             IEmailSender emailSender,
-            UserManager<AppUser> userManager)
+            UserManager<AppUser> userManager,
+            ILoginChecker loginChecker)
         {
             _userRegisterer = userRegisterer;
             _emailConfirmationManager = emailConfirmationManager;
             _stringInjector = stringInjector;
             _emailSender = emailSender;
             _userManager = userManager;
+            _loginChecker = loginChecker;
         }
 
         [HttpPost]
@@ -64,8 +70,19 @@ namespace AuthorizationService.Controllers
                 });
             }
 
-
             return StatusCode((int)registrationResult.Error.StatusCode, registrationResult.Error);
+        }
+
+
+        [HttpPost]
+        [Route("check")]
+        public async Task<IActionResult> CheckLogin([FromBody] LoginCheckDto loginDto)
+        {
+            var checkingResult = await _loginChecker.CheckLogin(loginDto);
+            return StatusCode(checkingResult, new
+            {
+                Message = "The Login credentials are correct"
+            });
         }
 
         [HttpPost]
