@@ -81,8 +81,8 @@ namespace ApplicationLogic.AppUserCommands
                     });
                     return new CommandResult(new ErrorMessage
                     {
-                        ErrorCode = "USER.LOGIN.LOCKEDOUT",
-                        Message = "There are too many falling tries to login to your account",
+                        ErrorCode = "USER.CHECK.LOGIN.LOCKEDOUT",
+                        Message = "The account is locked out due to too many incorrect tries",
                         StatusCode = System.Net.HttpStatusCode.BadRequest
                     });
                 }
@@ -94,7 +94,7 @@ namespace ApplicationLogic.AppUserCommands
                     });
                     return new CommandResult(new ErrorMessage
                     {
-                        ErrorCode = "USER.LOGIN.NOTALLOWED",
+                        ErrorCode = "USER.CHECK.LOGIN.NOTALLOWED",
                         Message = "This account is not allowed to be logged in",
                         StatusCode = System.Net.HttpStatusCode.BadRequest
                     });
@@ -107,7 +107,7 @@ namespace ApplicationLogic.AppUserCommands
                     });
                     return new CommandResult(new ErrorMessage
                     {
-                        ErrorCode = "USER.LOGIN.INVALID.CREDENTIALS",
+                        ErrorCode = "USER.CHECK.LOGIN.INVALID.CREDENTIALS",
                         Message = "You provided wrong credentials",
                         StatusCode = System.Net.HttpStatusCode.BadRequest
                     });
