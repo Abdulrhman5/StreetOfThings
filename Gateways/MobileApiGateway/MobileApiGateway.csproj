@@ -12,6 +12,8 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
     <PackageReference Include="MMLib.SwaggerForOcelot" Version="1.10.5" />
     <PackageReference Include="Ocelot" Version="15.0.6" />
+    <PackageReference Include="Serilog" Version="2.9.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
   </ItemGroup>
 
   <ItemGroup>

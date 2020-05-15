@@ -15,6 +15,10 @@ services:
         environment:
             - ASPNETCORE_ENVIRONMENT=Development
             - ASPNETCORE_URLS=http://+:80
+            - ReRoutes__0__DownstreamHostAndPorts__0__Port=80
+            - ReRoutes__0__DownstreamHostAndPorts__0__Host=authorizationservice
+            - SwaggerEndPoints__0__Config__0__Url=http://authorizationservice/swagger/v1/swagger.json
+
         ports:
           - "7500:80"
           - "8500:433"
