@@ -22,7 +22,7 @@ namespace MobileApiGateway
 
         [HttpPost]
         [Route("token")]
-        public async Task<ErrorMessage> Token([FromBody]LoginDto loginDto)
+        public async Task<IActionResult> Token([FromBody]LoginDto loginDto)
         {
             HttpClient client = new HttpClient();
             var clientId = _configuration["IdentityServerConfigs:client_id"];
@@ -39,7 +39,7 @@ namespace MobileApiGateway
                 dic.Add("loginInfo", loginDto.LoginInfo);
             }
 
-            var request = new HttpRequestMessage(HttpMethod.Post,accessTokenUrl)
+            var request = new HttpRequestMessage(HttpMethod.Post, accessTokenUrl)
             {
                 Content = new FormUrlEncodedContent(dic)
             };
@@ -48,7 +48,7 @@ namespace MobileApiGateway
             {
                 var response = await client.SendAsync(request);
                 await CopyProxyHttpResponse(HttpContext, response);
-                return null;
+                return new EmptyResult();
             }
             catch
             {
@@ -57,7 +57,7 @@ namespace MobileApiGateway
                     ErrorCode = "ACCESS.TOKEN.INTERNAL.ERROR",
                     Message = "there were an error while trying to create access token"
                 };
-                return message;
+                return StatusCode(500, message);
             }
         }
 
