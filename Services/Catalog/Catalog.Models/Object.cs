@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CatalogService.Models
+namespace Catalog.Models
 {
     public class Object
     {
@@ -20,10 +20,10 @@ namespace CatalogService.Models
         public bool IsLending { get; set; }
 
         public string OwnerId { get; set; }
-        public Owner Owner { get; set; }
+        public User Owner { get; set; }
 
         public List<ObjectTag> Tags { get; set; }
 
-        public List<User> Users { get; set; }
+        public LendingProperties LendingProperties { get; set; }
     }
 }

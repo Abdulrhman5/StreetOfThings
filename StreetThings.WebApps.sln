@@ -35,6 +35,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Catalog", "Catalog", "{FAB1
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogService", "Services\Catalog\CatalogService\CatalogService.csproj", "{F785F216-C723-4B23-A9A5-0E87F2CFB2F5}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.Models", "Services\Catalog\Catalog.Models\Catalog.Models.csproj", "{B758EAE2-FD6D-49A2-A78D-41BD4FE7246C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -85,6 +87,10 @@ Global
 		{F785F216-C723-4B23-A9A5-0E87F2CFB2F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F785F216-C723-4B23-A9A5-0E87F2CFB2F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F785F216-C723-4B23-A9A5-0E87F2CFB2F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B758EAE2-FD6D-49A2-A78D-41BD4FE7246C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B758EAE2-FD6D-49A2-A78D-41BD4FE7246C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B758EAE2-FD6D-49A2-A78D-41BD4FE7246C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B758EAE2-FD6D-49A2-A78D-41BD4FE7246C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -103,6 +109,7 @@ Global
 		{7E7A7C3F-DC8D-4AF0-A0CD-C529A3B2B858} = {03793596-348D-421B-A785-6DC8FCAC039C}
 		{FAB1E6A4-991A-4C64-9F9B-476E9691D96B} = {F25161F1-9323-4A0F-A148-D07B001A00C5}
 		{F785F216-C723-4B23-A9A5-0E87F2CFB2F5} = {FAB1E6A4-991A-4C64-9F9B-476E9691D96B}
+		{B758EAE2-FD6D-49A2-A78D-41BD4FE7246C} = {FAB1E6A4-991A-4C64-9F9B-476E9691D96B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {99BE5EE1-5AB0-4039-AC24-5B59F42DCD30}
