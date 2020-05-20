@@ -1,11 +1,12 @@
-﻿using System;
+﻿using CommonLibrary;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Catalog.Models
 {
-    public class ObjectLoan
+    public class ObjectLoan :IEntity<Guid>
     {
         public Guid ObjectLoanId { get; set; }
 
@@ -21,5 +22,7 @@ namespace Catalog.Models
 
         // One to many relationship
         public ObjectLoanProperties ObjectLoanProperties { get; set; }
+
+        public Guid Id => ObjectLoanId;
     }
 }

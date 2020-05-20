@@ -1,11 +1,12 @@
-﻿using System;
+﻿using CommonLibrary;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Catalog.Models
 {
-    public class Tag
+    public class Tag :IEntity<int>
     {
         public int TagId { get; set; }
 
@@ -14,5 +15,7 @@ namespace Catalog.Models
         public string Description { get; set; }
 
         public List<ObjectTag> Objects { get; set; }
+
+        public int Id => TagId;
     }
 }

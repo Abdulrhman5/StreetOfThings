@@ -1,4 +1,5 @@
 ﻿using CommonLibrary;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,8 @@ namespace Catalog.DataAccessLayer
         {
             Container = container;
 
-
+            Container.RegisterType<CatalogContext>();
+            Container.RegisterType(typeof(IRepository<,>), typeof(GenericRepository<,>));
         }
     }
 }

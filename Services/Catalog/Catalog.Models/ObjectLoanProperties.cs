@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommonLibrary;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 namespace Catalog.Models
 {
     [Table("ObjectsLoanProperties")]
-    public class ObjectLoanProperties
+    public class ObjectLoanProperties : IEntity<int>
     {
         [Key,ForeignKey(nameof(OfferedObject))]
         public int ObjectId { get; set; }
@@ -18,5 +19,6 @@ namespace Catalog.Models
 
         public List<ObjectLoan> ObjectLoans { get; set; }
 
+        public int Id => ObjectId;
     }
 }

@@ -1,11 +1,12 @@
-﻿using System;
+﻿using CommonLibrary;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Catalog.Models
 {
-    public class User
+    public class User : IEntity<Guid>
     {
         public Guid UserId { get; set; }  
 
@@ -16,5 +17,7 @@ namespace Catalog.Models
         public List<Login> Logins { get; set; }
 
         public List<OfferedObject> OfferedObjects { get; set; }
+
+        public Guid Id => UserId;
     }
 }

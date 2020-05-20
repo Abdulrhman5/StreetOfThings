@@ -1,11 +1,12 @@
-﻿using System;
+﻿using CommonLibrary;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Catalog.Models
 {
-    public class OfferedObject
+    public class OfferedObject : IEntity<int>
     {
         public int OfferedObjectId { get; set; }
 
@@ -25,5 +26,7 @@ namespace Catalog.Models
         public List<ObjectTag> Tags { get; set; }
 
         public ObjectLoanProperties ObjectLoanProperties { get; set; }
+
+        public int Id => OfferedObjectId;
     }
 }
