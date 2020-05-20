@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Catalog.Models
 {
-    public class Object
+    public class OfferedObject
     {
         public int ObjectId { get; set; }
 
@@ -24,6 +24,6 @@ namespace Catalog.Models
 
         public List<ObjectTag> Tags { get; set; }
 
-        public LendingProperties LendingProperties { get; set; }
+        public ObjectLoanProperties ObjectLoanProperties { get; set; }
     }
 }

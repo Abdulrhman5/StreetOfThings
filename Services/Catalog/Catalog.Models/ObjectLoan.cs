@@ -20,6 +20,6 @@ namespace Catalog.Models
         public Login Login { get; set; }
 
         // One to many relationship
-        public LendingProperties LendingProperties { get; set; }
+        public ObjectLoanProperties ObjectLoanProperties { get; set; }
     }
 }
