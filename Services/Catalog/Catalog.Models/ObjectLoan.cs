@@ -9,9 +9,9 @@ namespace Catalog.Models
     {
         public Guid ObjectLoanId { get; set; }
 
-        public DateTime StartDate { get; set; }
+        public DateTime LoanedAt { get; set; }
 
-        public DateTime? EndDate { get; set; }
+        public DateTime? LoanEndAt { get; set; }
 
         public float? Rating { get; set; }
 
