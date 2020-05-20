@@ -39,6 +39,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonLibrary", "Services\C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.DataAccessLayer", "Services\Catalog\Catalog.DataAccessLayer\Catalog.DataAccessLayer.csproj", "{5EC09AD2-00A2-4C1D-BC5C-DC0CAF13222B}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.ApplicationLogic", "Services\Catalog\Catalog.ApplicationLogic\Catalog.ApplicationLogic.csproj", "{44A3F4CD-E57A-44B4-BE09-D698BEB722BC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -97,6 +99,10 @@ Global
 		{5EC09AD2-00A2-4C1D-BC5C-DC0CAF13222B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5EC09AD2-00A2-4C1D-BC5C-DC0CAF13222B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5EC09AD2-00A2-4C1D-BC5C-DC0CAF13222B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44A3F4CD-E57A-44B4-BE09-D698BEB722BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44A3F4CD-E57A-44B4-BE09-D698BEB722BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44A3F4CD-E57A-44B4-BE09-D698BEB722BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44A3F4CD-E57A-44B4-BE09-D698BEB722BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -117,6 +123,7 @@ Global
 		{B758EAE2-FD6D-49A2-A78D-41BD4FE7246C} = {FAB1E6A4-991A-4C64-9F9B-476E9691D96B}
 		{E50FD1FA-8A42-4EE0-B113-11BE6B2E4CC8} = {F25161F1-9323-4A0F-A148-D07B001A00C5}
 		{5EC09AD2-00A2-4C1D-BC5C-DC0CAF13222B} = {FAB1E6A4-991A-4C64-9F9B-476E9691D96B}
+		{44A3F4CD-E57A-44B4-BE09-D698BEB722BC} = {FAB1E6A4-991A-4C64-9F9B-476E9691D96B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {99BE5EE1-5AB0-4039-AC24-5B59F42DCD30}
