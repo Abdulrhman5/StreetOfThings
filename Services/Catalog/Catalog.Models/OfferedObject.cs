@@ -20,7 +20,7 @@ namespace Catalog.Models
 
         public bool IsLending { get; set; }
 
-        public string OwnerId { get; set; }
+        public Guid OwnerId { get; set; }
         public User Owner { get; set; }
 
         public List<ObjectTag> Tags { get; set; }

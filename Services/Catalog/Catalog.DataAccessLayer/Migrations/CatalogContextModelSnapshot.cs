@@ -115,10 +115,7 @@ namespace Catalog.DataAccessLayer.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("OwnerId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("OwnerUserId")
+                    b.Property<Guid>("OwnerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("PublishedAt")
@@ -126,7 +123,7 @@ namespace Catalog.DataAccessLayer.Migrations
 
                     b.HasKey("OfferedObjectId");
 
-                    b.HasIndex("OwnerUserId");
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("Objects");
                 });
@@ -216,7 +213,9 @@ namespace Catalog.DataAccessLayer.Migrations
                 {
                     b.HasOne("Catalog.Models.User", "Owner")
                         .WithMany("OfferedObjects")
-                        .HasForeignKey("OwnerUserId");
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

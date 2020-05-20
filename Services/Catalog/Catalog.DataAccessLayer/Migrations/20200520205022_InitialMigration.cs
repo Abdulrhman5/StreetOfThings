@@ -65,18 +65,17 @@ namespace Catalog.DataAccessLayer.Migrations
                     PublishedAt = table.Column<DateTime>(nullable: false),
                     EndsAt = table.Column<DateTime>(nullable: true),
                     IsLending = table.Column<bool>(nullable: false),
-                    OwnerId = table.Column<string>(nullable: true),
-                    OwnerUserId = table.Column<Guid>(nullable: true)
+                    OwnerId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Objects", x => x.OfferedObjectId);
                     table.ForeignKey(
-                        name: "FK_Objects_Users_OwnerUserId",
-                        column: x => x.OwnerUserId,
+                        name: "FK_Objects_Users_OwnerId",
+                        column: x => x.OwnerId,
                         principalTable: "Users",
                         principalColumn: "UserId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -164,9 +163,9 @@ namespace Catalog.DataAccessLayer.Migrations
                 column: "ObjectLoanPropertiesObjectId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Objects_OwnerUserId",
+                name: "IX_Objects_OwnerId",
                 table: "Objects",
-                column: "OwnerUserId");
+                column: "OwnerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ObjectTags_TagId",
