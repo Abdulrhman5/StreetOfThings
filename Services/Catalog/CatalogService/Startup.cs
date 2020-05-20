@@ -10,6 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Microsoft.OpenApi.Models;
+using Catalog.DataAccessLayer;
+using Microsoft.EntityFrameworkCore;
 
 namespace CatalogService
 {
@@ -28,6 +30,13 @@ namespace CatalogService
         {
             services.AddControllersWithViews();
 
+            var catalogConnection = Configuration.GetConnectionString("CatalogConnection");
+            Log.Information("Connection used for catalog " + catalogConnection);
+
+            services.AddDbContext<CatalogContext>(opt =>
+            {
+                opt.UseSqlServer(catalogConnection);
+            });
 
             services.AddSwaggerGen(c =>
             {

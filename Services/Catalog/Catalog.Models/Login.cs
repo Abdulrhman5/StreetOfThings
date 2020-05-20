@@ -13,7 +13,7 @@ namespace Catalog.Models
 
         public string TokenId { get; set; }
 
-        public string UserId { get; set; }
+        public Guid UserId { get; set; }
         public User User { get; set; }
 
         public List<ObjectLoan> Loans { get; set; }

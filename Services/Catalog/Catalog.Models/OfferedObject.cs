@@ -7,7 +7,7 @@ namespace Catalog.Models
 {
     public class OfferedObject
     {
-        public int ObjectId { get; set; }
+        public int OfferedObjectId { get; set; }
 
         public string Name { get; set; }
 

@@ -28,6 +28,18 @@ namespace Catalog.DataAccessLayer
         {
 
         }
-        
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ObjectLoanProperties>(eb =>
+            {
+                eb.HasKey(op => op.ObjectId);
+                eb.HasOne(op => op.Object)
+                    .WithOne(o => o.ObjectLoanProperties)
+                    .HasForeignKey<ObjectLoanProperties>(op => op.ObjectId);
+            });
+
+            modelBuilder.Entity<ObjectTag>().HasKey(ot => new { ot.ObjectId, ot.TagId });
+        }
     }
 }
