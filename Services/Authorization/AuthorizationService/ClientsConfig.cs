@@ -10,16 +10,23 @@ namespace AuthorizationService
 {
     public class ClientsConfig
     {
+        public static List<IdentityResource> IdentityResources =>
+            new List<IdentityResource>
+            {
+                new IdentityResources.OpenId(),
+                new IdentityResources.Profile()
+            };
 
         public static IEnumerable<ApiResource> Apis =>
             new List<ApiResource>
             {
-                new ApiResource("MobileBff","Moble API")
+                new ApiResource("MobileBff","Moble API"),
+                new ApiResource("Catalog.Api", "Catalog api")
             };
 
         public static IEnumerable<Client> Clients =>
             new List<Client>
-            {
+            { 
                 new Client
                 {
                     ClientId="MobileBff",
@@ -31,13 +38,13 @@ namespace AuthorizationService
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
                     AllowedScopes =
                     {
-                        "MobileBff" ,
+                        "MobileBff",
+                        "Catalog.Api",
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile
                     },
                     AllowOfflineAccess = true,
-                    
-                }
+                },
             };
-
-
     }
 }

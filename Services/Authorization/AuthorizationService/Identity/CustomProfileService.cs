@@ -1,4 +1,5 @@
 ﻿using ApplicationLogic.AppUserCommands;
+using IdentityServer4;
 using IdentityServer4.AspNetIdentity;
 using IdentityServer4.Extensions;
 using IdentityServer4.Models;
@@ -36,11 +37,24 @@ namespace AuthorizationService.Identity
 
         public override async Task GetProfileDataAsync(ProfileDataRequestContext context)
         {
-            await base.GetProfileDataAsync(context);
+            var list = context.RequestedClaimTypes.ToList();
+            list.Add("tid");
+            context.RequestedClaimTypes = list;
 
-            var userId = context.Subject?.GetSubjectId();
-            var tokenId = _loginManager.GetUserLoginId(userId);
-            context.IssuedClaims.Add(new Claim("tid", tokenId.ToString()));
+            if (context.Caller == IdentityServerConstants.ProfileDataCallers.UserInfoEndpoint)
+            {
+                context.AddRequestedClaims(context.Subject.Claims.Where(c => c.Type == "tid"));
+
+                await base.GetProfileDataAsync(context);
+            }
+            else
+            {
+                await base.GetProfileDataAsync(context);
+
+                var userId = context.Subject?.GetSubjectId();
+                var tokenId = _loginManager.GetUserLoginId(userId);
+                context.IssuedClaims.Add(new Claim("tid", tokenId.ToString()));
+            }
         }
     }
 }

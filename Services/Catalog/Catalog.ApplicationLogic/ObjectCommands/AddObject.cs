@@ -87,7 +87,7 @@ namespace Catalog.ApplicationLogic.ObjectCommands
             {
                 TagId = t.TagId
             }).ToList();
-            
+
 
             var @object = new OfferedObject
             {
@@ -95,8 +95,10 @@ namespace Catalog.ApplicationLogic.ObjectCommands
                 Name = objectDto.ObjectName,
                 PublishedAt = DateTime.UtcNow,
                 Tags = objectTags,
-                
-            }
+
+            };
+            return null;
+
         }
     }
 }

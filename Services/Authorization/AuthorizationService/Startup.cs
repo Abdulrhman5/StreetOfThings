@@ -48,6 +48,7 @@ namespace AuthorizationService
             services.AddIdentityServer()
                 .AddInMemoryClients(ClientsConfig.Clients)
                 .AddInMemoryApiResources(ClientsConfig.Apis)
+                .AddInMemoryIdentityResources(ClientsConfig.IdentityResources)
                 .AddDeveloperSigningCredential()
                 .AddAspNetIdentity<AppUser>()
                 .AddResourceOwnerValidator<ResourceOwnerValidator>()
