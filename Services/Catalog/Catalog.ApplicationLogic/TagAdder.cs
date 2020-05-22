@@ -6,6 +6,5 @@ namespace Catalog.ApplicationLogic
 {
     class TagAdder
     {
-        public 
     }
 }

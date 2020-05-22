@@ -16,14 +16,17 @@ namespace AuthorizationService.Identity
 {
     public class CustomProfileService : ProfileService<AppUser>
     {
-
+        public const string TokenIdKey = "tokenId";
+        public const String NormalizedName = "NormalizedName";
         private UserLoginManager _loginManager;
+        private UserManager<AppUser> _userManager;
 
         public CustomProfileService(UserManager<AppUser> userManager,
             IUserClaimsPrincipalFactory<AppUser> claimsFactory,
             UserLoginManager loginManager): base(userManager, claimsFactory)
         {
-            _loginManager = loginManager;   
+            _loginManager = loginManager;
+            _userManager = userManager;
         }
 
         
@@ -38,13 +41,19 @@ namespace AuthorizationService.Identity
         public override async Task GetProfileDataAsync(ProfileDataRequestContext context)
         {
             var list = context.RequestedClaimTypes.ToList();
-            list.Add("tid");
+            list.Add(TokenIdKey);
+            list.Add(NormalizedName);
             context.RequestedClaimTypes = list;
 
             if (context.Caller == IdentityServerConstants.ProfileDataCallers.UserInfoEndpoint)
             {
-                context.AddRequestedClaims(context.Subject.Claims.Where(c => c.Type == "tid"));
+                context.AddRequestedClaims(context.Subject.Claims.Where(c => c.Type == TokenIdKey));
 
+                var userId = context.Subject?.GetSubjectId();  
+                var user = await base.UserManager.FindByIdAsync(userId);
+                var currentName = user.NormalizedName;
+                var normNameClaim = new Claim(NormalizedName, currentName);
+                context.AddRequestedClaims(new []{ normNameClaim });
                 await base.GetProfileDataAsync(context);
             }
             else
@@ -53,7 +62,7 @@ namespace AuthorizationService.Identity
 
                 var userId = context.Subject?.GetSubjectId();
                 var tokenId = _loginManager.GetUserLoginId(userId);
-                context.IssuedClaims.Add(new Claim("tid", tokenId.ToString()));
+                context.IssuedClaims.Add(new Claim(TokenIdKey, tokenId.ToString(),"tokenId"));
             }
         }
     }
