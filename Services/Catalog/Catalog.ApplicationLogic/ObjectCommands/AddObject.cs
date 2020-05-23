@@ -1,4 +1,5 @@
-﻿using Catalog.DataAccessLayer;
+﻿using Catalog.ApplicationLogic.Infrastructure;
+using Catalog.DataAccessLayer;
 using Catalog.Models;
 using CommonLibrary;
 using System;
@@ -12,7 +13,14 @@ namespace Catalog.ApplicationLogic.ObjectCommands
     class ObjectAdder : IObjectAdder
     {
         private IRepository<int, Tag> _tagRepo;
-
+        private UserDataManager _userDataManager;
+       
+        public ObjectAdder(IRepository<int, Tag> tagRepo,
+            UserDataManager userDataManager)
+        {
+            _tagRepo = tagRepo;
+            _userDataManager = userDataManager;
+        }
 
         public async Task<CommandResult<OfferedObject>> AddObject(AddObjectDto objectDto)
         {
@@ -88,17 +96,16 @@ namespace Catalog.ApplicationLogic.ObjectCommands
                 TagId = t.TagId
             }).ToList();
 
-
+            var (login,ownerUser) = await _userDataManager.AddCurrentUserIfNeeded();
             var @object = new OfferedObject
             {
                 Description = objectDto.Description,
                 Name = objectDto.ObjectName,
                 PublishedAt = DateTime.UtcNow,
                 Tags = objectTags,
-
+                OwnerId = ownerUser.Id,
             };
             return null;
-
         }
     }
 }
