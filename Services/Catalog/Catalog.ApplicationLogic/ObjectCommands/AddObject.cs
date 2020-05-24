@@ -14,12 +14,15 @@ namespace Catalog.ApplicationLogic.ObjectCommands
     {
         private IRepository<int, Tag> _tagRepo;
         private UserDataManager _userDataManager;
-       
+        private IRepository<int, OfferedObject> _objectRepo;
+
         public ObjectAdder(IRepository<int, Tag> tagRepo,
+            IRepository<int,OfferedObject> objectRepo,
             UserDataManager userDataManager)
         {
             _tagRepo = tagRepo;
             _userDataManager = userDataManager;
+            _objectRepo = objectRepo;
         }
 
         public async Task<CommandResult<OfferedObject>> AddObject(AddObjectDto objectDto)
@@ -72,7 +75,7 @@ namespace Catalog.ApplicationLogic.ObjectCommands
 
 
             var alreadyExistedTags = (from t in _tagRepo.Table
-                                     where objectDto.Tags.Any(tt => tt.EqualsIC(t.Name))
+                                     where objectDto.Tags.Any(tt => tt== t.Name)
                                      select t).ToList();
 
             var tagsNamesToBeAdded = from t in objectDto.Tags
@@ -105,7 +108,10 @@ namespace Catalog.ApplicationLogic.ObjectCommands
                 Tags = objectTags,
                 OwnerId = ownerUser.Id,
             };
-            return null;
+
+            _objectRepo.Add(@object);
+            _objectRepo.SaveChanges();
+            return new CommandResult<OfferedObject>(@object);
         }
     }
 }

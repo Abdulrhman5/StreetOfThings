@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Text;
 
 namespace Catalog.ApplicationLogic.Infrastructure
@@ -9,6 +10,7 @@ namespace Catalog.ApplicationLogic.Infrastructure
     class CurrentUserCredentialsGetter
     {
         HttpContext _httpContext;
+
         public CurrentUserCredentialsGetter(IHttpContextAccessor accessor)
         {
             _httpContext = accessor.HttpContext;
@@ -20,7 +22,7 @@ namespace Catalog.ApplicationLogic.Infrastructure
             {
                 AccessToken = _httpContext.Request.Headers["Authorization"],
                 TokenId = _httpContext.User.FindFirst("TokenId").Value,
-                UserId = _httpContext.User.FindFirst("sub").Value
+                UserId = _httpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value
             };
         }
     }

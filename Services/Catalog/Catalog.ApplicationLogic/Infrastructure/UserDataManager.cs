@@ -64,7 +64,7 @@ namespace Catalog.ApplicationLogic.Infrastructure
             }
             else
             {
-                usersById.Include(u => u.Logins);
+                usersById = usersById.Include(u => u.Logins);
                 var theUser = usersById.FirstOrDefault();
 
                 // if The user existed but the login does not exist

@@ -1,5 +1,6 @@
 ﻿using Catalog.ApplicationLogic.Infrastructure;
 using Catalog.ApplicationLogic.ObjectCommands;
+using Catalog.DataAccessLayer;
 using CommonLibrary;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,8 @@ namespace Catalog.ApplicationLogic
             Container.RegisterType<UserDataManager>();
             Container.RegisterType<UserDataGetter>();
             Container.RegisterType<IObjectAdder, ObjectAdder>();
+
+            new DalUnityConfig().ConfigUnity(container);
         }
     }
 }

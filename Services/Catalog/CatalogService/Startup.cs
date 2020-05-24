@@ -12,6 +12,7 @@ using Serilog;
 using Microsoft.OpenApi.Models;
 using Catalog.DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
+using Unity;
 
 namespace CatalogService
 {
@@ -29,7 +30,8 @@ namespace CatalogService
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-
+            services.AddControllers().AddNewtonsoftJson();
+            services.AddHttpContextAccessor();
             var catalogConnection = Configuration.GetConnectionString("CatalogConnection");
             Log.Information("Connection used for catalog " + catalogConnection);
 
@@ -75,6 +77,11 @@ namespace CatalogService
                     await context.Response.WriteAsync("Hello World!");
                 });
             });
+        }
+
+        public void ConfigureContainer(IUnityContainer container)
+        {
+            new ServiceUnityConfiguration().ConfigUnity(container);
         }
     }
 }

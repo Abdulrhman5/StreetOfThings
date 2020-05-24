@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,10 +16,12 @@ namespace Catalog.ApplicationLogic.ObjectCommands
 
         public List<string> Tags { get; set; }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public ObjectType Type { get; set; }
 
     }
 
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum ObjectType
     {
         Lending,
