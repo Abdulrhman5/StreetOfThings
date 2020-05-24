@@ -48,7 +48,7 @@ namespace CatalogService
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
-                    options.Authority = "http://localhost:20000";
+                    options.Authority = Configuration["Services:Authorization"];
                     options.RequireHttpsMetadata = false;
                     options.Audience = "Catalog.Api";
                 });
@@ -77,6 +77,8 @@ namespace CatalogService
                     await context.Response.WriteAsync("Hello World!");
                 });
             });
+
+            ConfigDatabases.SeedUsersDatabase(app);
         }
 
         public void ConfigureContainer(IUnityContainer container)
