@@ -16,6 +16,8 @@ namespace Models
         public List<Login> Logins { get; set; }
 
         public List<ConfirmationToken> Confirmations { get; set; }
+
+        public List<ProfilePhoto> Photos { get; set; }
     }
 
     public enum Gender
