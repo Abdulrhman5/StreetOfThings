@@ -1,8 +1,10 @@
 ﻿using ApplicationLogic.AppUserCommands;
 using ApplicationLogic.AppUserQueries;
+using ApplicationLogic.ProfilePhotoCommand;
 using ApplicationLogic.UserConfirmations;
 using CommonLibrary;
 using DataAccessLayer;
+using HostingHelpers;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -25,6 +27,9 @@ namespace ApplicationLogic
             Container.RegisterType<IEmailConfirmationManager, EmailConfirmation>();
             Container.RegisterType<IStringGenerator, StringGenerator>();
 
+            Container.RegisterType<CurrentUserCredentialsGetter>();
+            Container.RegisterType<IImageSaver, ImageSaver>();
+            Container.RegisterType<ProfilePhotoSaver>();
 
             new DalUnityConfiguration().ConfigUnity(container);
         }

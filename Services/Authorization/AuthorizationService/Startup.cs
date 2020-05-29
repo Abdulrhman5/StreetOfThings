@@ -15,6 +15,7 @@ using Microsoft.OpenApi.Models;
 using AuthorizationService.Identity;
 using System;
 using Serilog;
+using System.Text;
 
 namespace AuthorizationService
 {
@@ -56,7 +57,8 @@ namespace AuthorizationService
 
             services.AddRazorPages();
             services.AddAuthorization();
-            services.AddAuthentication();
+
+            services.AddCustomAuthentication();
 
             services.AddSwaggerGen(c =>
             {
