@@ -16,9 +16,11 @@ namespace CatalogService.Controllers
     {
         private IObjectAdder _objectAdder;
 
-        public ObjectController(IObjectAdder objectAdder)
+        private PhotoAdder _photoAdder;
+        public ObjectController(IObjectAdder objectAdder,PhotoAdder photoAdder)
         {
             _objectAdder = objectAdder;
+            _photoAdder = photoAdder;
         }
 
         [Route("create")]
@@ -40,7 +42,11 @@ namespace CatalogService.Controllers
         [Authorize]
         public async Task<IActionResult> UploadPhotoToObject([FromForm] IFormFile file, int objId)
         {
-
+            var result = await _photoAdder.AddPhotoToObject(objId, file);
+            return StatusCode(result, new
+            {
+                Message = "A Photo had been uploaded",
+            });
         }
     }
 }

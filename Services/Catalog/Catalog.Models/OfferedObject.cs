@@ -27,6 +27,8 @@ namespace Catalog.Models
 
         public ObjectLoanProperties ObjectLoanProperties { get; set; }
 
+        public List<ObjectPhoto> Photos { get; set; }
+
         public int Id => OfferedObjectId;
     }
 }
