@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\HostingHelpers\HostingHelpers.csproj" />
     <ProjectReference Include="..\..\CommonLibrary\CommonLibrary.csproj" />
     <ProjectReference Include="..\Catalog.DataAccessLayer\Catalog.DataAccessLayer.csproj" />
     <ProjectReference Include="..\Catalog.Models\Catalog.Models.csproj" />

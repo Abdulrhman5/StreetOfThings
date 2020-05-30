@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Catalog.ApplicationLogic.Infrastructure
 {
-    class CurrentUserCredentialsGetter
+    public class CurrentUserCredentialsGetter
     {
         HttpContext _httpContext;
 

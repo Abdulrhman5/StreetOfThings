@@ -1,6 +1,7 @@
 ﻿using Catalog.ApplicationLogic.ObjectCommands;
 using Catalog.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -26,10 +27,20 @@ namespace CatalogService.Controllers
         public async Task<IActionResult> Create([FromBody] AddObjectDto objectDto)
         {
             var result = await _objectAdder.AddObject(objectDto);
-            return StatusCode(result, new
+            return StatusCode(result, () => new
             {
-                Message = "The object has been added"
+                Message = "The object has been added",
+                ObjectId = result.Result.Id
             });
+        }
+            
+
+        [Route("{objId:int}/uploadPhoto")]
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> UploadPhotoToObject([FromForm] IFormFile file, int objId)
+        {
+
         }
     }
 }

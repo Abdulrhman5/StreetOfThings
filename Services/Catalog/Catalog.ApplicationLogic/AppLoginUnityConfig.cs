@@ -2,6 +2,7 @@
 using Catalog.ApplicationLogic.ObjectCommands;
 using Catalog.DataAccessLayer;
 using CommonLibrary;
+using HostingHelpers;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,6 +23,7 @@ namespace Catalog.ApplicationLogic
             Container.RegisterType<UserDataGetter>();
             Container.RegisterType<IObjectAdder, ObjectAdder>();
 
+            Container.RegisterType<IImageSaver, ImageSaver>();
             new DalUnityConfig().ConfigUnity(container);
         }
     }

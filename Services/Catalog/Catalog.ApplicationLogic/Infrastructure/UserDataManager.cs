@@ -29,6 +29,7 @@ namespace Catalog.ApplicationLogic.Infrastructure
             _userDataGetter = userDataGetter;
             _credentialsGetter = credentialsGetter;
         }
+
         public async Task<(Login, User)> AddUserIfNotExisted(string tokenId, string originUserId, string accessToken)
         {
             var usersById = from u in _userRepo.Table

@@ -24,8 +24,11 @@ namespace AuthorizationService.Controllers
         [Authorize]
         public async Task<IActionResult> UploadPhoto([FromForm]IFormFile file)
         {
-            await _photoSaver.SaveImage(file);
-            return Ok();
+            var result = await _photoSaver.SaveImage(file);
+            return StatusCode(result, new
+            {
+                Message = "The image has been uploaded"
+            });
         }
     }
 }
