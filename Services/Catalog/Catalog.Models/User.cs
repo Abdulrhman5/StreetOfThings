@@ -18,6 +18,8 @@ namespace Catalog.Models
 
         public List<OfferedObject> OfferedObjects { get; set; }
 
+        public List<ObjectFreeProperties> TakenObjects { get; set; }
+
         public Guid Id => UserId;
     }
 }

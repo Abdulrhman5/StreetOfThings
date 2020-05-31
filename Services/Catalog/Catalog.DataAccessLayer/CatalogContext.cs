@@ -39,6 +39,14 @@ namespace Catalog.DataAccessLayer
                     .HasForeignKey<ObjectLoanProperties>(op => op.ObjectId);
             });
 
+            modelBuilder.Entity<ObjectFreeProperties>(eb =>
+            {
+                eb.HasKey(op => op.ObjectId);
+                eb.HasOne(op => op.Object)
+                    .WithOne(o => o.ObjectFreeProperties)
+                    .HasForeignKey<ObjectFreeProperties>(op => op.ObjectId);
+            });
+
             modelBuilder.Entity<ObjectTag>().HasKey(ot => new { ot.ObjectId, ot.TagId });
         }
     }
