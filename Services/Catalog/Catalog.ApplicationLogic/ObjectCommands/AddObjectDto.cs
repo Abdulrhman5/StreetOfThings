@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Catalog.Models;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
@@ -17,14 +18,9 @@ namespace Catalog.ApplicationLogic.ObjectCommands
         public List<string> Tags { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public ObjectType Type { get; set; }
+        public TransactionType Type { get; set; }
 
-    }
 
-    [JsonConverter(typeof(StringEnumConverter))]
-    public enum ObjectType
-    {
-        Lending,
-        Free
+
     }
 }

@@ -18,8 +18,8 @@ namespace Catalog.Models
 
         public DateTime? EndsAt { get; set; }
 
-        public bool IsLending { get; set; }
-
+        public TransactionType CurrentTransactionType { get; set; } 
+            
         public Guid OwnerId { get; set; }
         public User Owner { get; set; }
 
@@ -32,5 +32,11 @@ namespace Catalog.Models
         public List<ObjectPhoto> Photos { get; set; }
 
         public int Id => OfferedObjectId;
+    }
+
+    public enum TransactionType
+    {
+        Lending,
+        Free
     }
 }

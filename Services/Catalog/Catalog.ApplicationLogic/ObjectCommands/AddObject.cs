@@ -109,6 +109,23 @@ namespace Catalog.ApplicationLogic.ObjectCommands
                 OwnerId = ownerUser.Id,
             };
 
+            if (objectDto.Type == TransactionType.Free)
+            {
+                @object.ObjectFreeProperties = new ObjectFreeProperties
+                {
+                    OfferedFreeAtUtc = DateTime.UtcNow,
+                };
+                @object.CurrentTransactionType = TransactionType.Free;
+            }
+            else if (objectDto.Type == TransactionType.Lending)
+            {
+                @object.ObjectLoanProperties = new ObjectLoanProperties
+                {
+
+                };
+                @object.CurrentTransactionType = TransactionType.Lending;
+            }
+
             _objectRepo.Add(@object);
             _objectRepo.SaveChanges();
             return new CommandResult<OfferedObject>(@object);
