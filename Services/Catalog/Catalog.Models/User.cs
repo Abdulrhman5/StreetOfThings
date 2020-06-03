@@ -14,6 +14,8 @@ namespace Catalog.Models
 
         public string OriginalUserId { get; set; }
 
+        public string ProfilePicture { get; set; }
+
         public List<Login> Logins { get; set; }
 
         public List<OfferedObject> OfferedObjects { get; set; }

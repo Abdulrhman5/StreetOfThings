@@ -1,4 +1,6 @@
 ﻿using ApplicationLogic.AppUserCommands;
+using ApplicationLogic.ProfilePhotoCommand;
+using DataAccessLayer;
 using IdentityServer4;
 using IdentityServer4.AspNetIdentity;
 using IdentityServer4.Extensions;
@@ -18,31 +20,27 @@ namespace AuthorizationService.Identity
     {
         public const string TokenIdKey = "tokenId";
         public const String NormalizedName = "NormalizedName";
+        public const string ProfilePhoto = "ProfilePhoto";
         private UserLoginManager _loginManager;
         private UserManager<AppUser> _userManager;
-
+        private ProfilePhotoUrlConstructor _profilePhotoUrl;
         public CustomProfileService(UserManager<AppUser> userManager,
             IUserClaimsPrincipalFactory<AppUser> claimsFactory,
-            UserLoginManager loginManager): base(userManager, claimsFactory)
+            UserLoginManager loginManager,
+            ProfilePhotoUrlConstructor profilePhotoUrl): base(userManager, claimsFactory)
         {
             _loginManager = loginManager;
             _userManager = userManager;
+            _profilePhotoUrl = profilePhotoUrl;
         }
 
         
-        public CustomProfileService(UserManager<AppUser> userManager,
-            IUserClaimsPrincipalFactory<AppUser> claimsFactory, 
-            ILogger<ProfileService<AppUser>> logger,
-            UserLoginManager loginManager) : base(userManager, claimsFactory,logger)
-        {
-            _loginManager = loginManager;
-        }
-
         public override async Task GetProfileDataAsync(ProfileDataRequestContext context)
         {
             var list = context.RequestedClaimTypes.ToList();
             list.Add(TokenIdKey);
             list.Add(NormalizedName);
+            list.Add(ProfilePhoto);
             context.RequestedClaimTypes = list;
 
             if (context.Caller == IdentityServerConstants.ProfileDataCallers.UserInfoEndpoint)
@@ -53,7 +51,10 @@ namespace AuthorizationService.Identity
                 var user = await base.UserManager.FindByIdAsync(userId);
                 var currentName = user.NormalizedName;
                 var normNameClaim = new Claim(NormalizedName, currentName);
-                context.AddRequestedClaims(new []{ normNameClaim });
+
+                var photoUrl = _profilePhotoUrl.ConstructOrDefaultForUser(user);
+                var pictureUrl = new Claim(ProfilePhoto, photoUrl);
+                context.AddRequestedClaims(new []{ normNameClaim, pictureUrl });
                 await base.GetProfileDataAsync(context);
             }
             else

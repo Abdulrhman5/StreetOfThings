@@ -49,6 +49,7 @@ namespace Catalog.ApplicationLogic.Infrastructure
                     OriginalUserId = originUserId,
                     UserId = Guid.NewGuid(),
                     UserName = userDto.UserName,
+                    ProfilePicture = userDto.PictureUrl,
                     Logins = new List<Login>
                     { 
                         new Login

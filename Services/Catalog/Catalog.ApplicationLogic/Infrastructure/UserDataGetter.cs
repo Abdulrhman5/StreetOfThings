@@ -50,5 +50,8 @@ namespace Catalog.ApplicationLogic.Infrastructure
         public string UserName { get; set; }
 
         public string TokenId { get; set; }
+
+        [JsonProperty("ProfilePhoto")]
+        public string PictureUrl { get; set; }
     }
 }
