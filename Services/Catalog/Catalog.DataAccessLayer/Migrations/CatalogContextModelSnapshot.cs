@@ -202,9 +202,6 @@ namespace Catalog.DataAccessLayer.Migrations
                     b.Property<string>("OriginalUserId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ProfilePicture")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
