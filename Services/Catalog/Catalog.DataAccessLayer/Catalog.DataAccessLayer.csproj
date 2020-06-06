@@ -19,4 +19,10 @@
     <ProjectReference Include="..\Catalog.Models\Catalog.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>Catalog.ApplicationLogic.Tests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
 </Project>

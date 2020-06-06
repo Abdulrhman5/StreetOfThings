@@ -13,10 +13,11 @@ namespace Catalog.ApplicationLogic.ObjectQueries
     {
         private IRepository<int, OfferedObject> _objectRepo;
 
-        private ObjectPhotoUrlConstructor _photoConstructor;
-        public ObjectGetter(IRepository<int, OfferedObject> repository)
+        private IObjectPhotoUrlConstructor _photoConstructor;
+        public ObjectGetter(IRepository<int, OfferedObject> repository, IObjectPhotoUrlConstructor photoUrlConstructor)
         {
             _objectRepo = repository;
+            _photoConstructor = photoUrlConstructor;
         }
 
         public List<ObjectDto> GetObjects()

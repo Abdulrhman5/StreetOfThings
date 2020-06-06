@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Catalog.ApplicationLogic.Infrastructure
 {
-    internal class CurrentDomainGetter
+    public class CurrentDomainGetter
     {
         private HttpContext _httpContext;
 

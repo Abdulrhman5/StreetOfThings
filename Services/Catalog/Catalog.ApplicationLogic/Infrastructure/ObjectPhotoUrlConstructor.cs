@@ -7,12 +7,19 @@ using System.Web;
 
 namespace Catalog.ApplicationLogic.Infrastructure
 {
-    public class ObjectPhotoUrlConstructor
+    public interface IObjectPhotoUrlConstructor
+    {
+        Expression<Func<ObjectPhoto, string>> ConstructPhotos { get; }
+
+        string Construct(ObjectPhoto objectPhoto);
+    }
+
+    public class ObjectPhotoUrlConstructor : IObjectPhotoUrlConstructor
     {
 
         private string _currentDomain;
 
-        private ObjectPhotoUrlConstructor(CurrentDomainGetter domainGetter)
+        public ObjectPhotoUrlConstructor(CurrentDomainGetter domainGetter)
         {
             _currentDomain = domainGetter.GetDomain8Schema();
         }
@@ -23,7 +30,7 @@ namespace Catalog.ApplicationLogic.Infrastructure
         }
 
 
-        public Expression<Func<ObjectPhoto, string>> ConstructPhotos => 
+        public Expression<Func<ObjectPhoto, string>> ConstructPhotos =>
             (op) =>
              $"{_currentDomain}/Resources/Photos/Object/{HttpUtility.ParseQueryString(op.AdditionalInformation)["Name"]}";
     }
