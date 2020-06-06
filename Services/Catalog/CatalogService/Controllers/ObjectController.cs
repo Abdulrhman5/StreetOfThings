@@ -1,4 +1,6 @@
-﻿using Catalog.ApplicationLogic.ObjectCommands;
+﻿using Catalog.ApplicationLogic;
+using Catalog.ApplicationLogic.ObjectCommands;
+using Catalog.ApplicationLogic.ObjectQueries;
 using Catalog.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -17,10 +19,13 @@ namespace CatalogService.Controllers
         private IObjectAdder _objectAdder;
 
         private PhotoAdder _photoAdder;
-        public ObjectController(IObjectAdder objectAdder,PhotoAdder photoAdder)
+
+        private ObjectGetter _objectGetter;
+        public ObjectController(IObjectAdder objectAdder,PhotoAdder photoAdder, ObjectGetter objectGetter)
         {
             _objectAdder = objectAdder;
             _photoAdder = photoAdder;
+            _objectGetter = objectGetter;
         }
 
         [Route("create")]
@@ -47,6 +52,15 @@ namespace CatalogService.Controllers
             {
                 Message = "A Photo had been uploaded",
             });
+        }
+
+        [Route("list")]
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetObjects(PagingArguments pagings)
+        {
+            var objects = await _objectGetter.GetObjects(pagings);
+            return StatusCode(200, objects);
         }
     }
 }

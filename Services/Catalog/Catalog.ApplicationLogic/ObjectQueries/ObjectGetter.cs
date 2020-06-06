@@ -20,16 +20,22 @@ namespace Catalog.ApplicationLogic.ObjectQueries
             _photoConstructor = photoUrlConstructor;
         }
 
-        public List<ObjectDto> GetObjects()
+        public async Task<List<ObjectDto>> GetObjects(PagingArguments arguments)
         {
             var objects = from o in _objectRepo.Table
-                          where o.CurrentTransactionType == TransactionType.Free ?
+                          where o.EndsAt.HasValue? o.EndsAt > DateTime.UtcNow : true &&
+                          
+                          o.CurrentTransactionType == TransactionType.Free ?
                           // The object is not taken
                           o.ObjectFreeProperties.TakenAtUtc.HasValue :
                           // The object is not currently loaned
                           o.ObjectLoanProperties.ObjectLoans.All(ol => ol.LoanEndAt < DateTime.UtcNow)
+
+
+                          orderby o.OfferedObjectId
                           select new ObjectDto
                           {
+                              Id = o.OfferedObjectId,
                               CountOfImpressions = 0,
                               CountOfViews = 0,
                               Description = o.Description,
@@ -41,7 +47,7 @@ namespace Catalog.ApplicationLogic.ObjectQueries
                               Type = o.CurrentTransactionType,
                           };
 
-            return objects.ToList();
+            return await objects.SkipTakeAsync(arguments);
                           
         }
     }

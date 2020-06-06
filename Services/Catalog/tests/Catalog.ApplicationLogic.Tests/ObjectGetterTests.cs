@@ -38,7 +38,11 @@ namespace Catalog.ApplicationLogic.Tests
             var photoConstructor = new Mock<Infrastructure.IObjectPhotoUrlConstructor>();
             photoConstructor.Setup(p => p.Construct(It.IsAny<ObjectPhoto>())).Returns("Hello there");
             var objectGetter = new ObjectGetter(repo, photoConstructor.Object);
-            var objects = objectGetter.GetObjects();
+            var objects = objectGetter.GetObjects(new PagingArguments
+            {
+                Size = 10,
+                StartObject = 0
+            });
             Assert.True(true);   
         }
     }

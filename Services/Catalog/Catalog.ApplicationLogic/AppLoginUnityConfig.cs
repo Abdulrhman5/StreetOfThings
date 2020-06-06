@@ -1,5 +1,6 @@
 ﻿using Catalog.ApplicationLogic.Infrastructure;
 using Catalog.ApplicationLogic.ObjectCommands;
+using Catalog.ApplicationLogic.ObjectQueries;
 using Catalog.DataAccessLayer;
 using CommonLibrary;
 using HostingHelpers;
@@ -24,6 +25,9 @@ namespace Catalog.ApplicationLogic
             Container.RegisterType<IObjectAdder, ObjectAdder>();
 
             Container.RegisterType<IImageSaver, ImageSaver>();
+
+            Container.RegisterType<ObjectGetter>();
+            Container.RegisterType<IObjectPhotoUrlConstructor, ObjectPhotoUrlConstructor>();
             new DalUnityConfig().ConfigUnity(container);
         }
     }
