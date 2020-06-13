@@ -13,10 +13,10 @@ namespace AuthorizationService
 {
     public class IndexModel : PageModel
     {
-        private readonly IUserService _userService;
+        private readonly IUserGetter _userService;
 
 
-        public IndexModel(IUserService userService)
+        public IndexModel(IUserGetter userService)
         {
              _userService = userService;
         }

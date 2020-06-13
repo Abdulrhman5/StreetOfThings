@@ -23,7 +23,7 @@ namespace ApplicationLogic
             Container.RegisterType<IUserRegisterer, RegisterUser>();
             Container.RegisterType<UserLoginManager>();
             Container.RegisterType<ILoginChecker, LoginChecker>();
-            Container.RegisterType<IUserService, UserGetter>();
+            Container.RegisterType<IUserGetter, UserGetter>();
             Container.RegisterType<IEmailConfirmationManager, EmailConfirmation>();
             Container.RegisterType<IStringGenerator, StringGenerator>();
 

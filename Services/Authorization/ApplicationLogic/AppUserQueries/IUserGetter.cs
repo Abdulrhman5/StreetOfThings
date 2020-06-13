@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace ApplicationLogic.AppUserQueries
 {
-    public interface IUserService
+    public interface IUserGetter
     {
+        IEnumerable<UserDto> GetUserByIds(List<string> usersId);
         IEnumerable<UserForAdministrationDto> GetUsers();
     }
 }

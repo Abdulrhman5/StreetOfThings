@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Ocelot.Middleware;
 using Ocelot.DependencyInjection;
 using Serilog;
+using MobileApiGateway.Services;
 
 namespace MobileApiGateway
 {
@@ -32,6 +33,10 @@ namespace MobileApiGateway
             services.AddControllers();
             services.AddOcelot(Configuration);
             services.AddSwaggerForOcelot(Configuration);
+            services.AddHttpContextAccessor();
+
+            services.AddTransient<CatalogService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,6 +63,8 @@ namespace MobileApiGateway
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
+
+                
             });
 
 
