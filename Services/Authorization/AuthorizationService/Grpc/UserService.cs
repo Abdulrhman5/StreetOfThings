@@ -19,6 +19,7 @@ namespace AuthorizationService.Grpc
         public UserService (IRepository<string , AppUser> usersRepo)
         {
             _usersRepo = usersRepo;
+
         }
 
         public override async Task<UsersModel> GetUsersData(UsersIds request, ServerCallContext context)

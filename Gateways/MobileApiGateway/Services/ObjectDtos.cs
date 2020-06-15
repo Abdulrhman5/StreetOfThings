@@ -49,7 +49,7 @@ namespace MobileApiGateway.Services
 
         public TransactionType Type { get; set; }
 
-        public UserModel Owner { get; set; }
+        public UserDto Owner { get; set; }
         
     }
     public enum TransactionType

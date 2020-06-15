@@ -1,4 +1,5 @@
 ﻿using CommonLibrary;
+using HostingHelpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MobileApiGateway.Services;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 namespace MobileApiGateway
 {
     [Route("api/catalog")]
-    public class CatalogController : Controller
+    public class CatalogController : MyControllerBase
     {
         private CatalogService _catalogService;
         public CatalogController(CatalogService catalogService)
@@ -24,7 +25,7 @@ namespace MobileApiGateway
         [HttpGet]
         public async Task<IActionResult> GetObjects()
         {
-            return await _catalogService.AggregateObjects();
+            return StatusCode(await _catalogService.AggregateObjects());
         }
     }
 }

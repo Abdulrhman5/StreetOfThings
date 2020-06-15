@@ -31,48 +31,31 @@ namespace MobileApiGateway.Services
             _responseProcessor = new ResponseProcessor();
         }
 
-        public async Task<IActionResult> AggregateObjects()
+        public async Task<CommandResult<List<DownstreamObjectDto>>> AggregateObjects()
         {
-            var channel = new Grpc.Core.Channel("localhost:20000", ChannelCredentials.Insecure);
-            var usersClient = new UserDirectory.UserDirectoryClient(channel);
-            var queryString = _httpContext.Request.QueryString.ToUriComponent();
-            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:20001/api/object/list" + queryString);
-
-            foreach (var requestHeader in _httpContext.Request.Headers)
-            {
-                request.Headers.TryAddWithoutValidation(requestHeader.Key, requestHeader.Value.AsEnumerable());
-            }
-
+            var request = await _responseProcessor.SendAsync(_httpContext, HttpMethod.Get, "http://localhost:20001/api/object/list",true,changeBody:null);
             try
             {
                 var response = await _httpClient.SendAsync(request);
-                if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                var objectResult = await _responseProcessor.Process<List<UpstreamObjectDto>>(response);
+                if (!objectResult.IsSuccessful)
                 {
-                    await _responseMessageConverter.ConvertAndCopyResponse(_httpContext, response);
-                    return new EmptyResult();
+                    return new CommandResult<List<DownstreamObjectDto>>(objectResult.Error);
                 }
 
-                var originalUserIds = GetUserIds(await response.Content.ReadAsStringAsync());
+                var originalUserIds = objectResult.Result.Select(o => o.OwnerId).ToList();
 
-                var userRequest = new HttpRequestMessage(HttpMethod.Post, "http://localhost:20000/api/users/listFromIds");
-                var usersIdsString = JsonConvert.SerializeObject(originalUserIds);
-                userRequest.Content = new StringContent(usersIdsString);
-                userRequest.Content.Headers.ContentType.MediaType = "application/json";
+                var userRequest = await _responseProcessor.SendAsync(_httpContext, HttpMethod.Post, "http://localhost:20000/api/users/listFromIds", true, originalUserIds);
                 var userResponse = await _httpClient.SendAsync(userRequest);
                 var result = await _responseProcessor.Process<List<UserDto>>(userResponse);
+
                 if (!result.IsSuccessful)
                 {
-                    return new JsonResult(result.Error)
-                    {
-                        StatusCode = (int)result.Error.StatusCode
-                    };
+                    new CommandResult<List<DownstreamObjectDto>>(result.Error);
                 }
 
-                var responseString = ReplaceUserIdWithUser(await response.Content.ReadAsStringAsync(), result.Result);
-                return new JsonResult(responseString)
-                {
-                    StatusCode = 200
-                };
+                var responseString = ReplaceUserIdWithUser(objectResult.Result , result.Result);
+                return new CommandResult<List<DownstreamObjectDto>>(responseString);
             }
             catch(Exception e)
             {
@@ -82,44 +65,31 @@ namespace MobileApiGateway.Services
                     Message = "there were an error while trying to execute your request",
                     StatusCode = System.Net.HttpStatusCode.InternalServerError,
                 };
-                return new JsonResult(message)
-                {
-                    StatusCode = 500
-                };
+                return new CommandResult<List<DownstreamObjectDto>>(message);
             }
         }
 
-        private List<string> GetUserIds(string response)
+        private List<DownstreamObjectDto> ReplaceUserIdWithUser(List<UpstreamObjectDto> objects, List<UserDto> users)
         {
-            var objectified = JsonConvert.DeserializeObject<List<Dictionary<string,object>>>(response);
-            var usersIds = new List<string>();
-            foreach(var @object in objectified)
+            var downStreamObjects = new List<DownstreamObjectDto>();
+            foreach(var @object in objects)
             {
-                usersIds.Add(@object["ownerId"] as string);
-            }
-            return usersIds;
-        }
-
-        private object ReplaceUserIdWithUser(string response, List<UserDto> users)
-        {
-            var objectified = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(response);
-            foreach(var @object in objectified)
-            {
-                var user = users.FirstOrDefault(u => u.Id == (@object["ownerId"] as string));
-                @object.Remove("ownerId");
-                if (user == null)
+                downStreamObjects.Add(new DownstreamObjectDto
                 {
-                    @object.Add("owner", null);
-                }
-                else
-                {
-                    @object.Add("owner", user);
-                }
+                    CountOfImpressions = @object.CountOfImpressions,
+                    CountOfViews = @object.CountOfViews,
+                    Description = @object.Description,
+                    Id = @object.Id,
+                    Name = @object.Name,
+                    Owner = users?.FirstOrDefault(u => u.Id == @object.OwnerId),
+                    Photos = @object.Photos,
+                    Rating = @object.Rating,
+                    Tags = @object.Tags,
+                    Type = @object.Type
+                });
             }
 
-            return objectified;
+            return downStreamObjects;
         }
     }
-
-
 }
