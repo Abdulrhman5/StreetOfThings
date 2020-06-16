@@ -53,6 +53,7 @@ namespace MobileApiGateway
             {
                 foreach (var requestHeader in context.Request.Headers)
                 {
+                    if (requestHeader.Key.EqualsIC("Host")) continue;
                     request.Headers.TryAddWithoutValidation(requestHeader.Key, requestHeader.Value.AsEnumerable());
                 }
             }
@@ -89,6 +90,7 @@ namespace MobileApiGateway
             {
                 foreach (var requestHeader in context.Request.Headers)
                 {
+                    if (requestHeader.Key.EqualsIC("Host")) continue;
                     request.Headers.TryAddWithoutValidation(requestHeader.Key, requestHeader.Value.AsEnumerable());
                 }
             }

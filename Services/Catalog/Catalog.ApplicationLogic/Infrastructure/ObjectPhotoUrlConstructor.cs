@@ -26,12 +26,12 @@ namespace Catalog.ApplicationLogic.Infrastructure
 
         public string Construct(ObjectPhoto objectPhoto)
         {
-            return $"{_currentDomain}/Resources/Photos/Object/{HttpUtility.ParseQueryString(objectPhoto.AdditionalInformation)["Name"]}";
+            return $"{_currentDomain}/Resources/Photo/Object/{HttpUtility.ParseQueryString(objectPhoto.AdditionalInformation)["Name"]}";
         }
 
 
         public Expression<Func<ObjectPhoto, string>> ConstructPhotos =>
             (op) =>
-             $"{_currentDomain}/Resources/Photos/Object/{HttpUtility.ParseQueryString(op.AdditionalInformation)["Name"]}";
+             $"{_currentDomain}/Resources/Photo/Object/{HttpUtility.ParseQueryString(op.AdditionalInformation)["Name"]}";
     }
 }
