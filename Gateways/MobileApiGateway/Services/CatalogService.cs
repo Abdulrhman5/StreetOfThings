@@ -10,6 +10,8 @@ using Newtonsoft.Json;
 using System.Threading.Channels;
 using Grpc.Core;
 using AuthorizationService;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace MobileApiGateway.Services
 {
@@ -17,23 +19,29 @@ namespace MobileApiGateway.Services
     {
         private HttpClient _httpClient;
 
-        private HttpResponseMessageConverter _responseMessageConverter;
-
         private HttpContext _httpContext;
 
-        private ResponseProcessor _responseProcessor;
+        private HttpClientHelpers _responseProcessor;
+
+        private IConfiguration _configs;
+
+        private ILogger<CatalogService> _logger;
         public CatalogService(
-            IHttpContextAccessor contextAccessor)
+            IHttpContextAccessor contextAccessor,
+            IConfiguration configs,
+            HttpClientHelpers clientHelper,
+            ILogger<CatalogService> logger)
         {
             _httpClient = new HttpClient();
-            _responseMessageConverter = new HttpResponseMessageConverter();
             _httpContext = contextAccessor.HttpContext;
-            _responseProcessor = new ResponseProcessor();
+            _configs = configs;
+            _logger = logger;
+            _responseProcessor = clientHelper;
         }
 
         public async Task<CommandResult<List<DownstreamObjectDto>>> AggregateObjects()
         {
-            var request = await _responseProcessor.SendAsync(_httpContext, HttpMethod.Get, "http://localhost:20001/api/object/list",true,changeBody:null);
+            var request = await _responseProcessor.CreateAsync(_httpContext, HttpMethod.Get, $"{_configs["Servers:Catalog"]}/api/object/list", true, changeBody: null);
             try
             {
                 var response = await _httpClient.SendAsync(request);
@@ -45,7 +53,7 @@ namespace MobileApiGateway.Services
 
                 var originalUserIds = objectResult.Result.Select(o => o.OwnerId).ToList();
 
-                var userRequest = await _responseProcessor.SendAsync(_httpContext, HttpMethod.Post, "http://localhost:20000/api/users/listFromIds", true, originalUserIds);
+                var userRequest = await _responseProcessor.CreateAsync(_httpContext, HttpMethod.Post, $"{_configs["Servers:Identity"]}/api/users/listFromIds", true, originalUserIds);
                 var userResponse = await _httpClient.SendAsync(userRequest);
                 var result = await _responseProcessor.Process<List<UserDto>>(userResponse);
 
@@ -59,6 +67,7 @@ namespace MobileApiGateway.Services
             }
             catch(Exception e)
             {
+                _logger.LogError(e, "Error When getting list of objects");
                 var message = new ErrorMessage
                 {
                     ErrorCode = "CATALOG.OBJECT.LIST.ERROR",

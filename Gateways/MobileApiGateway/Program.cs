@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
+using Unity.Microsoft.DependencyInjection;
 
 namespace MobileApiGateway
 {
@@ -52,7 +53,8 @@ namespace MobileApiGateway
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-            .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseUnityServiceProvider()
+                .UseContentRoot(Directory.GetCurrentDirectory())
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
                     config

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MobileApiGateway
 {
-    public class ResponseProcessor
+    public class HttpClientHelpers
     {
         public async Task<CommandResult<T>> Process<T>(HttpResponseMessage responseMessage)
         {
@@ -39,7 +39,7 @@ namespace MobileApiGateway
             }
         }
 
-        public async Task<HttpRequestMessage> SendAsync(
+        public async Task<HttpRequestMessage> CreateAsync(
             HttpContext context,
             HttpMethod method,
             string url,
@@ -75,7 +75,7 @@ namespace MobileApiGateway
             return request;
         }
 
-        public async Task<HttpRequestMessage> SendAsync(
+        public async Task<HttpRequestMessage> CreateAsync(
             HttpContext context,
             HttpMethod method,
             string url,
@@ -100,7 +100,7 @@ namespace MobileApiGateway
         }
 
 
-        public async Task<HttpRequestMessage> SendAsync(
+        public async Task<HttpRequestMessage> CreateAsync(
             HttpContext context,
             HttpMethod method,
             string url,
@@ -110,9 +110,7 @@ namespace MobileApiGateway
             )
         {
             var jsonString = JsonConvert.SerializeObject(@object);
-            return await SendAsync(context, method, url, forwardHeaders, jsonString, "application/json");
+            return await CreateAsync(context, method, url, forwardHeaders, jsonString, "application/json");
         }
-
-
     }
 }

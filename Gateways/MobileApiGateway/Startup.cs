@@ -13,6 +13,7 @@ using Ocelot.Middleware;
 using Ocelot.DependencyInjection;
 using Serilog;
 using MobileApiGateway.Services;
+using Unity;
 
 namespace MobileApiGateway
 {
@@ -74,6 +75,11 @@ namespace MobileApiGateway
             });
 
             app.UseOcelot().Wait();
+        }
+
+        public void ConfigureContainer(IUnityContainer container)
+        {
+            new UnityConfig().ConfigUnity(container);
         }
     }
 }
