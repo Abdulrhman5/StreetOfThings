@@ -27,6 +27,7 @@ namespace ApplicationLogic.AppUserQueries
             var x = from u in _usersRepo.Table
                     select new UserForAdministrationDto
                     {
+                        Id= Guid.Parse(u.Id),
                         Email = u.Email,
                         Gender = u.Gender.ToString(),
                         IsEmailConfirmed = u.EmailConfirmed,

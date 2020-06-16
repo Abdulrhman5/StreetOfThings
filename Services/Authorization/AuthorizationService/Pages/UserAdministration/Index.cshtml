@@ -32,6 +32,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Users[0].RegisteredAt)
             </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -55,6 +56,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.RegisteredAt)
+                </td>
+                <td>
+                    <a asp-page="/UserAdministration/Delete" asp-route-id="@item.Id.ToString()">Delete</a>
                 </td>
             </tr>
         }

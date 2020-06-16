@@ -1,0 +1,54 @@
+﻿@page "{id}"
+@model AuthorizationService.DeleteModel
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete user confirmation</h1>
+<div>
+    <h5 >User information:
+    </h5>
+    <dl>
+        <dt>
+            Username
+        </dt>
+        <dd>
+            @Model.MyUser.UserName
+        </dd>
+
+        <dt>
+            email
+        </dt>
+        <dd>
+            @Model.MyUser.Email
+        </dd>
+
+
+        <dt>
+            Name
+        </dt>
+        <dd>
+            @Model.MyUser.NormalizedName
+        </dd>
+    </dl>
+
+    @if (Model.CommandResult?.IsSuccessful == false)
+    {
+        <div>
+            <h5>There were an error while deleting this user, Error:</h5>
+            @Model.CommandResult.Error.Message
+            <br />
+            @Model.CommandResult.Error.ErrorCode
+        </div>
+    }
+    <div></div>
+    <div class="alert alert-danger">
+        <h5> Are you sure you want to delete this user</h5>
+        <form method="post">
+            <button type ="submit" class="btn btn-danger">Yes</button>
+            <a class="btn btn-primary" asp-page="./Index">No</a>
+        </form>
+    </div>
+</div>
+
+
