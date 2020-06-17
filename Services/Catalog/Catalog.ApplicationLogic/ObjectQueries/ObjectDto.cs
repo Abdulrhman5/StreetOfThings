@@ -1,4 +1,6 @@
 ﻿using Catalog.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -25,6 +27,7 @@ namespace Catalog.ApplicationLogic.ObjectQueries
 
         public List<string> Tags { get; set; }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public TransactionType Type { get; set; }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using AuthorizationService;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +28,7 @@ namespace MobileApiGateway.Services
 
         public List<string> Tags { get; set; }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public TransactionType Type { get; set; }
     }
 
@@ -47,6 +50,7 @@ namespace MobileApiGateway.Services
 
         public List<string> Tags { get; set; }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public TransactionType Type { get; set; }
 
         public UserDto Owner { get; set; }

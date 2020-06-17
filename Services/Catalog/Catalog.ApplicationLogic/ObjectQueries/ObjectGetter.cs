@@ -23,11 +23,12 @@ namespace Catalog.ApplicationLogic.ObjectQueries
         public async Task<List<ObjectDto>> GetObjects(PagingArguments arguments)
         {
             var objects = from o in _objectRepo.Table
-                          where o.EndsAt.HasValue? o.EndsAt > DateTime.UtcNow : true &&
+                          // If EndsAt has value and it is valid or EndsAt has not value
+                          where ((o.EndsAt.HasValue && o.EndsAt > DateTime.UtcNow ) || (!o.EndsAt.HasValue)) &&
                           
                           o.CurrentTransactionType == TransactionType.Free ?
                           // The object is not taken
-                          o.ObjectFreeProperties.TakenAtUtc.HasValue :
+                          !o.ObjectFreeProperties.TakenAtUtc.HasValue :
                           // The object is not currently loaned
                           o.ObjectLoanProperties.ObjectLoans.All(ol => ol.LoanEndAt < DateTime.UtcNow)
 
