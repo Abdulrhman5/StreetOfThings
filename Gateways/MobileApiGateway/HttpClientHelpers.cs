@@ -43,12 +43,16 @@ namespace MobileApiGateway
             HttpContext context,
             HttpMethod method,
             string url,
+            bool forwardUrlPars,
             bool forwardHeaders,
             // add new headers,
             Func<string, (string Content, string ContentType)> changeBody = null
             )
         {
-            var request = new HttpRequestMessage(method, url);
+            string finalUrl = forwardUrlPars ? url + context.Request.QueryString.ToUriComponent() : url;
+
+            var request = new HttpRequestMessage(method, finalUrl);
+            context.Request.QueryString.ToUriComponent();
             if (forwardHeaders)
             {
                 foreach (var requestHeader in context.Request.Headers)
@@ -80,12 +84,15 @@ namespace MobileApiGateway
             HttpContext context,
             HttpMethod method,
             string url,
+            bool forwardUrlPars,
             bool forwardHeaders,
             // add new headers,
             string content, string contentType
             )
         {
-            var request = new HttpRequestMessage(method, url);
+            string finalUrl = forwardUrlPars ? url + context.Request.QueryString.ToUriComponent() : url;
+
+            var request = new HttpRequestMessage(method, finalUrl);
             if (forwardHeaders)
             {
                 foreach (var requestHeader in context.Request.Headers)
@@ -106,13 +113,14 @@ namespace MobileApiGateway
             HttpContext context,
             HttpMethod method,
             string url,
+            bool forwardUrlPars,
             bool forwardHeaders,
             // add new headers,
             object @object
             )
         {
             var jsonString = JsonConvert.SerializeObject(@object);
-            return await CreateAsync(context, method, url, forwardHeaders, jsonString, "application/json");
+            return await CreateAsync(context, method, url, forwardUrlPars, forwardHeaders, jsonString, "application/json");
         }
     }
 }

@@ -33,7 +33,7 @@ namespace CatalogService.Controllers
         [Authorize]
         public async Task<IActionResult> Create([FromBody] AddObjectDto objectDto)
         {
-            var result = await _objectAdder.AddObject(objectDto);
+            var result = await _objectAdder.AddObject(objectDto); 
             return StatusCode(result, () => new
             {
                 Message = "The object has been added",

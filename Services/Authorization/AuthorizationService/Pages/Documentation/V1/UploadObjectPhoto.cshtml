@@ -1,12 +1,13 @@
-﻿@page ""
-@model AuthorizationService.UploadProfilePhotoModel
+﻿@page
+@model AuthorizationService.UploadObjectPhotoModel
 @{
-    ViewData["Title"] = "Upload profile photo";
+    ViewData["Title"] = "Upload Object Photo";
 }
+
 
 <div class="container">
     <h1>
-        Can be accessed at POST <b>http://HostName:Port/api/identity/profile/uploadPhoto</b>
+        Can be accessed at POST <b>http://HostName:Port/api/catalog/object/{object id}/uploadphoto</b>
     </h1>
     <hr />
     <div class="container">
@@ -45,7 +46,7 @@
                 </tr>
                 <tr>
                     <th>
-                        Authorization 
+                        Authorization
                     </th>
                     <th>
                         Bearer eyJhbGciOiJSUqd3QifQ.eyJuZmZsaW5lX2FcHdkIl19.BjtCUu2w0g
@@ -60,7 +61,7 @@
                 Body as Form-Data, The Key: "file", The Value The image file.
             </h3>
             <pre>
-curl --location --request POST '' \
+curl --location --request POST 'http://HostName:Port/api/catalog/object/{object id}/uploadphoto' \
 --header 'Authorization: Bearer eyJhbGciOiJSUqd3QifQ.eyJuZmZsaW5lX2FcHdkIl19.BjtCUu2w0g \
 --form 'file=@@/G:/My Phone/Camera1/20170128_183358.jpg'
 </pre>
@@ -115,7 +116,7 @@ curl --location --request POST '' \
 
                     <pre>
 {
-    "message": "The image has been uploaded"
+    "message": "A Photo had been uploaded"
 }
 					 </pre>
                     <br />

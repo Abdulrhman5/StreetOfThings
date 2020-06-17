@@ -41,7 +41,7 @@ namespace MobileApiGateway.Services
 
         public async Task<CommandResult<List<DownstreamObjectDto>>> AggregateObjects()
         {
-            var request = await _responseProcessor.CreateAsync(_httpContext, HttpMethod.Get, $"{_configs["Servers:Catalog"]}/api/object/list", true, changeBody: null);
+            var request = await _responseProcessor.CreateAsync(_httpContext, HttpMethod.Get, $"{_configs["Servers:Catalog"]}/api/object/list",true, true, changeBody: null);
             try
             {
                 var response = await _httpClient.SendAsync(request);
@@ -53,7 +53,7 @@ namespace MobileApiGateway.Services
 
                 var originalUserIds = objectResult.Result.Select(o => o.OwnerId).ToList();
 
-                var userRequest = await _responseProcessor.CreateAsync(_httpContext, HttpMethod.Post, $"{_configs["Servers:Identity"]}/api/users/listFromIds", true, originalUserIds);
+                var userRequest = await _responseProcessor.CreateAsync(_httpContext, HttpMethod.Post, $"{_configs["Servers:Identity"]}/api/users/listFromIds",true, true, originalUserIds);
                 var userResponse = await _httpClient.SendAsync(userRequest);
                 var result = await _responseProcessor.Process<List<UserDto>>(userResponse);
 
