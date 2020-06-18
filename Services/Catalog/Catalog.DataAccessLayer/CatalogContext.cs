@@ -24,6 +24,7 @@ namespace Catalog.DataAccessLayer
 
         public DbSet<User> Users { get; set; }
 
+        public DbSet<ObjectImpression> ObjectImpressions { get; set; }
         public CatalogContext(DbContextOptions options): base(options)
         {
 
@@ -48,6 +49,10 @@ namespace Catalog.DataAccessLayer
             });
 
             modelBuilder.Entity<ObjectTag>().HasKey(ot => new { ot.ObjectId, ot.TagId });
+
+            modelBuilder.Entity<ObjectImpression>().HasKey(op => new { op.ObjectId, op.LoginId, op.ViewedAtUtc });
+
+            modelBuilder.Entity<User>().HasMany(u => u.OfferedObjects).WithOne(ob => ob.Owner).OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

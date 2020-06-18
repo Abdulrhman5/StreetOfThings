@@ -70,5 +70,10 @@ namespace Catalog.DataAccessLayer
             _context.Entry(entity).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             return entity;
         }
+
+        public void AddRange(List<TEntity> entities)
+        {
+            _context.AddRange(entities);
+        }
     }
 }

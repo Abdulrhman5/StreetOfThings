@@ -14,10 +14,13 @@ namespace Catalog.ApplicationLogic.ObjectQueries
         private IRepository<int, OfferedObject> _objectRepo;
 
         private IObjectPhotoUrlConstructor _photoConstructor;
-        public ObjectGetter(IRepository<int, OfferedObject> repository, IObjectPhotoUrlConstructor photoUrlConstructor)
+
+        private IObjectImpressionsManager _impressionManager;
+        public ObjectGetter(IRepository<int, OfferedObject> repository, IObjectPhotoUrlConstructor photoUrlConstructor, IObjectImpressionsManager impressionsManager)
         {
             _objectRepo = repository;
             _photoConstructor = photoUrlConstructor;
+            _impressionManager = impressionsManager;
         }
 
         public async Task<List<ObjectDto>> GetObjects(PagingArguments arguments)
@@ -37,7 +40,7 @@ namespace Catalog.ApplicationLogic.ObjectQueries
                           select new ObjectDto
                           {
                               Id = o.OfferedObjectId,
-                              CountOfImpressions = 0,
+                              CountOfImpressions = o.Impressions.Count,
                               CountOfViews = 0,
                               Description = o.Description,
                               Name = o.Name,
@@ -48,7 +51,9 @@ namespace Catalog.ApplicationLogic.ObjectQueries
                               Type = o.CurrentTransactionType,
                           };
 
-            return await objects.SkipTakeAsync(arguments);
+            var objectsList = await objects.SkipTakeAsync(arguments);
+            await _impressionManager.AddImpressions(objectsList);
+            return objectsList;
                           
         }
     }

@@ -12,6 +12,19 @@
           "Port": 20000
         }
       ]
+    },
+    {
+      "UpstreamPathTemplate": "/api/catalog/{everything}",
+      "UpstreamHttpMethod": [],
+      "SwaggerKey": "catalog",
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 20001
+        }
+      ]
     }
   ],
   "SwaggerEndPoints": [
@@ -22,6 +35,11 @@
           "Name": "Identity API",
           "Version": "v1",
           "Url": "http://localhost:20000/swagger/v1/swagger.json"
+        },
+        {
+          "Name": "Catalog API",
+          "Version": "v1",
+          "Url": "http://localhost:20001/swagger/v1/swagger.json"
         }
       ]
     }

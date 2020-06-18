@@ -28,6 +28,8 @@ namespace Catalog.ApplicationLogic
 
             Container.RegisterType<ObjectGetter>();
             Container.RegisterType<IObjectPhotoUrlConstructor, ObjectPhotoUrlConstructor>();
+
+            Container.RegisterType<IObjectImpressionsManager, ObjectImpressionsManager>();
             new DalUnityConfig().ConfigUnity(container);
         }
     }

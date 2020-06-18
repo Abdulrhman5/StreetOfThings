@@ -17,6 +17,8 @@ namespace Catalog.DataAccessLayer
 
         public TEntity Add(TEntity entity);
 
+        public void AddRange(List<TEntity> entities);
+
         public void Delete(TEntity entity);
 
         public void Delete(TKey id);

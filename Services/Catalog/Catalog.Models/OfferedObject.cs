@@ -31,6 +31,8 @@ namespace Catalog.Models
 
         public List<ObjectPhoto> Photos { get; set; }
 
+        public List<ObjectImpression> Impressions { get; set; }
+
         public int Id => OfferedObjectId;
     }
 
