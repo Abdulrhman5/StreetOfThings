@@ -33,6 +33,7 @@ namespace Catalog.Models
 
         public List<ObjectImpression> Impressions { get; set; }
 
+        public List<ObjectComment> Comments { get; set; }
         public int Id => OfferedObjectId;
     }
 

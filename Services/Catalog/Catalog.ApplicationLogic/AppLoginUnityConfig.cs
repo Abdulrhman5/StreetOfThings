@@ -1,4 +1,5 @@
-﻿using Catalog.ApplicationLogic.Infrastructure;
+﻿using Catalog.ApplicationLogic.CommentsCommands;
+using Catalog.ApplicationLogic.Infrastructure;
 using Catalog.ApplicationLogic.ObjectCommands;
 using Catalog.ApplicationLogic.ObjectQueries;
 using Catalog.DataAccessLayer;
@@ -30,6 +31,8 @@ namespace Catalog.ApplicationLogic
             Container.RegisterType<IObjectPhotoUrlConstructor, ObjectPhotoUrlConstructor>();
 
             Container.RegisterType<IObjectImpressionsManager, ObjectImpressionsManager>();
+            Container.RegisterType<IObjectCommentAdder, ObjectCommentAdder>();
+
             new DalUnityConfig().ConfigUnity(container);
         }
     }
