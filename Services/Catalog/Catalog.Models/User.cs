@@ -14,6 +14,8 @@ namespace Catalog.Models
 
         public string OriginalUserId { get; set; }
 
+        public UserStatus Status { get; set; }
+
         public List<Login> Logins { get; set; }
 
         public List<OfferedObject> OfferedObjects { get; set; }
@@ -21,5 +23,11 @@ namespace Catalog.Models
         public List<ObjectFreeProperties> TakenObjects { get; set; }
 
         public Guid Id => UserId;
+    }
+
+    public enum UserStatus
+    {
+        Available,
+        Deleted,
     }
 }

@@ -21,8 +21,12 @@ namespace Catalog.ApplicationLogic.ObjectQueries
             o.ObjectLoanProperties.ObjectLoans.All(ol => ol.LoanEndAt < DateTime.UtcNow));
 
 
-        public Expression<Func<OfferedObject, bool>> IsValidObject => (o) => o.ObjectStatus == ObjectStatus.Available &&
+        public Expression<Func<OfferedObject, bool>> IsValidObject => (o) =>
+        o.ObjectStatus == ObjectStatus.Available &&
         // if object has endDate and it is after now Or has not endDate
-        (o.EndsAt > DateTime.UtcNow || !o.EndsAt.HasValue);
+        (o.EndsAt > DateTime.UtcNow || !o.EndsAt.HasValue) &&
+        // The owner is available
+        o.Owner.Status == UserStatus.Available;
+
     }
 }
