@@ -33,6 +33,8 @@ namespace Catalog.ApplicationLogic
             Container.RegisterType<IObjectImpressionsManager, ObjectImpressionsManager>();
             Container.RegisterType<IObjectCommentAdder, ObjectCommentAdder>();
 
+            Container.RegisterType<ObjectQueryHelper>();
+
             new DalUnityConfig().ConfigUnity(container);
         }
     }

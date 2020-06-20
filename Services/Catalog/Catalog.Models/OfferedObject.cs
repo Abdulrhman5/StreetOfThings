@@ -19,6 +19,8 @@ namespace Catalog.Models
         public DateTime? EndsAt { get; set; }
 
         public TransactionType CurrentTransactionType { get; set; } 
+
+        public ObjectStatus ObjectStatus { get; set; }
             
         public Guid OwnerId { get; set; }
         public User Owner { get; set; }
@@ -41,5 +43,11 @@ namespace Catalog.Models
     {
         Lending,
         Free
+    }
+
+    public enum ObjectStatus
+    {
+        Available,
+        Deleted,
     }
 }

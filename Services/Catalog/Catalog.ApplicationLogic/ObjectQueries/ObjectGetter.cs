@@ -16,26 +16,24 @@ namespace Catalog.ApplicationLogic.ObjectQueries
         private IObjectPhotoUrlConstructor _photoConstructor;
 
         private IObjectImpressionsManager _impressionManager;
-        public ObjectGetter(IRepository<int, OfferedObject> repository, IObjectPhotoUrlConstructor photoUrlConstructor, IObjectImpressionsManager impressionsManager)
+
+        private ObjectQueryHelper _queryHelper;
+        public ObjectGetter(IRepository<int, OfferedObject> repository,
+            IObjectPhotoUrlConstructor photoUrlConstructor,
+            IObjectImpressionsManager impressionsManager, ObjectQueryHelper queryHelper)
         {
             _objectRepo = repository;
             _photoConstructor = photoUrlConstructor;
             _impressionManager = impressionsManager;
+            _queryHelper = queryHelper;
         }
 
         public async Task<List<ObjectDto>> GetObjects(PagingArguments arguments)
         {
-            var objects = from o in _objectRepo.Table
-                          // If EndsAt has value and it is valid or EndsAt has not value
-                          where ((o.EndsAt.HasValue && o.EndsAt > DateTime.UtcNow ) || (!o.EndsAt.HasValue)) &&
-                          
-                          o.CurrentTransactionType == TransactionType.Free ?
-                          // The object is not taken
-                          !o.ObjectFreeProperties.TakenAtUtc.HasValue :
-                          // The object is not currently loaned
-                          o.ObjectLoanProperties.ObjectLoans.All(ol => ol.LoanEndAt < DateTime.UtcNow)
+            var filteredObjects = _objectRepo.Table.Where(_queryHelper.IsValidObject)
+                .Where(_queryHelper.ValidForFreeAndLendibg);
 
-
+            var objects = from o in filteredObjects
                           orderby o.OfferedObjectId
                           select new ObjectDto
                           {
@@ -47,14 +45,13 @@ namespace Catalog.ApplicationLogic.ObjectQueries
                               Rating = null,
                               OwnerId = o.Owner.OriginalUserId,
                               Photos = o.Photos.Select(op => _photoConstructor.Construct(op)).ToList(),
-                              Tags = o.Tags.Select( ot => ot.Tag.Name).ToList(),
+                              Tags = o.Tags.Select(ot => ot.Tag.Name).ToList(),
                               Type = o.CurrentTransactionType,
                           };
 
             var objectsList = await objects.SkipTakeAsync(arguments);
             await _impressionManager.AddImpressions(objectsList);
             return objectsList;
-                          
         }
     }
 }
