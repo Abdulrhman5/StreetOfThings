@@ -24,6 +24,7 @@ namespace Catalog.ApplicationLogic
             Container.RegisterType<UserDataManager>();
             Container.RegisterType<UserDataGetter>();
             Container.RegisterType<IObjectAdder, ObjectAdder>();
+            Container.RegisterType<IObjectDeleter, ObjectDeleter>();
 
             Container.RegisterType<IImageSaver, ImageSaver>();
 

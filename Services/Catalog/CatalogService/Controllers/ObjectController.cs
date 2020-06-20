@@ -21,11 +21,17 @@ namespace CatalogService.Controllers
         private PhotoAdder _photoAdder;
 
         private ObjectGetter _objectGetter;
-        public ObjectController(IObjectAdder objectAdder,PhotoAdder photoAdder, ObjectGetter objectGetter)
+
+        private IObjectDeleter _objectDeleter;
+        public ObjectController(IObjectAdder objectAdder,
+            PhotoAdder photoAdder,
+            ObjectGetter objectGetter,
+            IObjectDeleter objectDeleter)
         {
             _objectAdder = objectAdder;
             _photoAdder = photoAdder;
             _objectGetter = objectGetter;
+            _objectDeleter = objectDeleter;
         }
 
         [Route("create")]
@@ -33,14 +39,14 @@ namespace CatalogService.Controllers
         [Authorize]
         public async Task<IActionResult> Create([FromBody] AddObjectDto objectDto)
         {
-            var result = await _objectAdder.AddObject(objectDto); 
+            var result = await _objectAdder.AddObject(objectDto);
             return StatusCode(result, () => new
             {
                 Message = "The object has been added",
                 ObjectId = result.Result.Id
             });
         }
-            
+
 
         [Route("{objId:int}/uploadPhoto")]
         [HttpPost]
@@ -61,6 +67,19 @@ namespace CatalogService.Controllers
         {
             var objects = await _objectGetter.GetObjects(pagings);
             return StatusCode(200, objects);
+        }
+
+
+        [Route("delete")]
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> DeleteObject([FromBody]DeleteObjectDto objectDto)
+        {
+            var result = await _objectDeleter.DeleteObject(objectDto);
+            return StatusCode(result, new
+            {
+                Message = "The object has been deleted."
+            });
         }
     }
 }
