@@ -74,6 +74,16 @@ namespace Catalog.ApplicationLogic.CommentsCommands
                 });
             }
 
+            if (@object is null || @object.ObjectStatus != ObjectStatus.Available)
+            {
+                return new CommandResult<ObjectComment>(new ErrorMessage
+                {
+                    ErrorCode = "OBJECT.DOES.NOT.EXISTS",
+                    Message = "You are not authorized to add a photo to this object",
+                    StatusCode = System.Net.HttpStatusCode.Unauthorized
+                });
+            }
+
             var commentModel = new ObjectComment
             {
                 ObjectCommentId = Guid.NewGuid(),

@@ -52,6 +52,18 @@ namespace Catalog.ApplicationLogic.ObjectCommands
                 });
             }
 
+
+            var @object = _objectsRepo.Get(objectId);
+            if(@object is null || @object.ObjectStatus != ObjectStatus.Available)
+            {
+                return new CommandResult(new ErrorMessage
+                {
+                    ErrorCode = "OBJECT.DOES.NOT.EXISTS",
+                    Message = "You are not authorized to add a photo to this object",
+                    StatusCode = System.Net.HttpStatusCode.Unauthorized
+                });
+            }
+
             var savingResult = await _imageSaver.SaveImage(image);
             if (!savingResult.IsSuccessful)
             {
