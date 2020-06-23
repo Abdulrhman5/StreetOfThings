@@ -52,7 +52,7 @@ namespace Catalog.DataAccessLayer
 
             modelBuilder.Entity<ObjectImpression>().HasKey(op => new { op.ObjectId, op.LoginId, op.ViewedAtUtc });
 
-            modelBuilder.Entity<User>().HasMany(u => u.OfferedObjects).WithOne(ob => ob.Owner).OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<Login>().HasMany(u => u.OwnedObjects).WithOne(ob => ob.OwnerLogin).OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

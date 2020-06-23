@@ -43,7 +43,7 @@ namespace Catalog.ApplicationLogic.ObjectQueries
                               Description = o.Description,
                               Name = o.Name,
                               Rating = null,
-                              OwnerId = o.Owner.OriginalUserId,
+                              OwnerId = o.OwnerLogin.User.OriginalUserId,
                               Photos = o.Photos.Select(op => _photoConstructor.Construct(op)).ToList(),
                               Tags = o.Tags.Select(ot => ot.Tag.Name).ToList(),
                               Type = o.CurrentTransactionType,

@@ -26,7 +26,7 @@ namespace Catalog.ApplicationLogic.ObjectQueries
         // if object has endDate and it is after now Or has not endDate
         (o.EndsAt > DateTime.UtcNow || !o.EndsAt.HasValue) &&
         // The owner is available
-        o.Owner.Status == UserStatus.Available;
+        o.OwnerLogin.User.Status == UserStatus.Available;
 
     }
 }

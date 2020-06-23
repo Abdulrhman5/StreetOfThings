@@ -39,7 +39,7 @@ namespace Catalog.ApplicationLogic.ObjectCommands
             var currentUser = _credentialsGetter.GetCuurentUser();
 
             var objectBelongToCurrentUser = (from o in _objectsRepo.Table
-                      where o.OfferedObjectId == objectId && o.Owner.OriginalUserId == currentUser.UserId
+                      where o.OfferedObjectId == objectId && o.OwnerLogin.User.OriginalUserId == currentUser.UserId
                       select o).Any();
 
             if (!objectBelongToCurrentUser)

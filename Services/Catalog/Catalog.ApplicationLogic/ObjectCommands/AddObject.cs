@@ -106,7 +106,7 @@ namespace Catalog.ApplicationLogic.ObjectCommands
                 Name = objectDto.ObjectName,
                 PublishedAt = DateTime.UtcNow,
                 Tags = objectTags,
-                OwnerId = ownerUser.Id,
+                OwnerLoginId = login.LoginId,
             };
 
             if (objectDto.Type == TransactionType.Free)

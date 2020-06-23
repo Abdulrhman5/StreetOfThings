@@ -40,7 +40,7 @@ namespace Catalog.ApplicationLogic.ObjectCommands
             }
             var objectOwner = from o in _objectRepository.Table
                               where o.OfferedObjectId == objectDto.ObjectId
-                              select o.Owner;
+                              select o.OwnerLogin.User;
 
             var currentUser = _credentialsGetter.GetCuurentUser();
             if (currentUser is null || currentUser.UserId != objectOwner.FirstOrDefault()?.OriginalUserId)

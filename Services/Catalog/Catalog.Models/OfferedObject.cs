@@ -22,8 +22,8 @@ namespace Catalog.Models
 
         public ObjectStatus ObjectStatus { get; set; }
             
-        public Guid OwnerId { get; set; }
-        public User Owner { get; set; }
+        public Guid OwnerLoginId { get; set; }
+        public Login OwnerLogin { get; set; }
 
         public List<ObjectTag> Tags { get; set; }
 
