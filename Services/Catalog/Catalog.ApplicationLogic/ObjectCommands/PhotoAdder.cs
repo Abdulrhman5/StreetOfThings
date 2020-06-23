@@ -22,27 +22,26 @@ namespace Catalog.ApplicationLogic.ObjectCommands
 
         private IRepository<int, ObjectPhoto> _photoRepo;
 
-        public PhotoAdder(IImageSaver imageSaver, 
+        private OwnershipAuthorization<int, OfferedObject> _authorizer;
+        public PhotoAdder(IImageSaver imageSaver,
             CurrentUserCredentialsGetter credentialsGetter,
             IRepository<int, OfferedObject> objectsRepo,
-            IRepository<int, ObjectPhoto> photoRepo)
+            IRepository<int, ObjectPhoto> photoRepo,
+            OwnershipAuthorization<int, OfferedObject> authorizer)
         {
             _imageSaver = imageSaver;
             _credentialsGetter = credentialsGetter;
             _objectsRepo = objectsRepo;
             _photoRepo = photoRepo;
+            _authorizer = authorizer;
         }
 
 
         public async Task<CommandResult> AddPhotoToObject(int objectId, IFormFile image)
         {
-            var currentUser = _credentialsGetter.GetCuurentUser();
+            var authorizationResult = _authorizer.IsAuthorized(o => o.OfferedObjectId == objectId, (o) => o.OwnerLogin.User);
 
-            var objectBelongToCurrentUser = (from o in _objectsRepo.Table
-                      where o.OfferedObjectId == objectId && o.OwnerLogin.User.OriginalUserId == currentUser.UserId
-                      select o).Any();
-
-            if (!objectBelongToCurrentUser)
+            if (!authorizationResult)
             {
                 return new CommandResult(new ErrorMessage
                 {
@@ -54,7 +53,7 @@ namespace Catalog.ApplicationLogic.ObjectCommands
 
 
             var @object = _objectsRepo.Get(objectId);
-            if(@object is null || @object.ObjectStatus != ObjectStatus.Available)
+            if (@object is null || @object.ObjectStatus != ObjectStatus.Available)
             {
                 return new CommandResult(new ErrorMessage
                 {

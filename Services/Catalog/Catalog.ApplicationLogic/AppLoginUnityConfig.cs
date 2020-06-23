@@ -35,7 +35,7 @@ namespace Catalog.ApplicationLogic
             Container.RegisterType<IObjectCommentAdder, ObjectCommentAdder>();
 
             Container.RegisterType<ObjectQueryHelper>();
-
+            Container.RegisterType(typeof(OwnershipAuthorization<,>));
             new DalUnityConfig().ConfigUnity(container);
         }
     }
