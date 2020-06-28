@@ -28,7 +28,7 @@ namespace EventBus
         {
             var eventName = GetEventKey<T>();
 
-            DoAddSubscription(typeof(TH), eventName, isDynamic: false);
+            DoAddSubscription(typeof(TH), eventName);
 
             if (!_eventTypes.Contains(typeof(T)))
             {
@@ -36,7 +36,7 @@ namespace EventBus
             }
         }
 
-        private void DoAddSubscription(Type handlerType, string eventName, bool isDynamic)
+        private void DoAddSubscription(Type handlerType, string eventName)
         {
             if (!HasSubscriptionsForEvent(eventName))
             {
@@ -49,14 +49,7 @@ namespace EventBus
                     $"Handler Type {handlerType.Name} already registered for '{eventName}'", nameof(handlerType));
             }
 
-            if (isDynamic)
-            {
-                _handlers[eventName].Add(SubscriptionInfo.Dynamic(handlerType));
-            }
-            else
-            {
-                _handlers[eventName].Add(SubscriptionInfo.Typed(handlerType));
-            }
+            _handlers[eventName].Add(SubscriptionInfo.Typed(handlerType));
         }
 
 

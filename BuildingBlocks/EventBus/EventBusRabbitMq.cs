@@ -17,12 +17,11 @@ namespace EventBus
 {
     public class EventBusRabbitMQ : IEventBus, IDisposable
     {
-        const string BROKER_NAME = "eshop_event_bus";
+        const string BROKER_NAME = "BrokerName";
 
         private readonly IRabbitMQPersistentConnection _persistentConnection;
         private readonly ILogger<EventBusRabbitMQ> _logger;
         private readonly IEventBusSubscriptionsManager _subsManager;
-        private readonly string AUTOFAC_SCOPE_NAME = "eshop_event_bus";
         private readonly int _retryCount;
 
         private IModel _consumerChannel;
@@ -31,7 +30,7 @@ namespace EventBus
         private IUnityContainer _container;
 
         public EventBusRabbitMQ(IRabbitMQPersistentConnection persistentConnection, ILogger<EventBusRabbitMQ> logger,
-            IEventBusSubscriptionsManager subsManager, string queueName = null, int retryCount = 5)
+            IEventBusSubscriptionsManager subsManager, IUnityContainer container, string queueName = null, int retryCount = 5)
         {
             _persistentConnection = persistentConnection ?? throw new ArgumentNullException(nameof(persistentConnection));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -40,6 +39,7 @@ namespace EventBus
             _consumerChannel = CreateConsumerChannel();
             _retryCount = retryCount;
             _subsManager.OnEventRemoved += SubsManager_OnEventRemoved;
+            _container = container;
         }
 
         private void SubsManager_OnEventRemoved(object sender, string eventName)
