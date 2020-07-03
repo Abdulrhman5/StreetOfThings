@@ -51,6 +51,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.ApplicationLogic.Te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBus", "BuildingBlocks\EventBus\EventBus.csproj", "{84B9991D-6B67-4EC4-8156-F1D55FA53188}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Transaction", "Transaction", "{CA2874AD-E03D-4CC7-A17F-F1977EA8CBAA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transaction.Models", "Services\Transaction\Transaction.Models\Transaction.Models.csproj", "{278905CD-3C70-4452-AFA3-50373CC2BC8B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -125,6 +129,10 @@ Global
 		{84B9991D-6B67-4EC4-8156-F1D55FA53188}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84B9991D-6B67-4EC4-8156-F1D55FA53188}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84B9991D-6B67-4EC4-8156-F1D55FA53188}.Release|Any CPU.Build.0 = Release|Any CPU
+		{278905CD-3C70-4452-AFA3-50373CC2BC8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{278905CD-3C70-4452-AFA3-50373CC2BC8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{278905CD-3C70-4452-AFA3-50373CC2BC8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{278905CD-3C70-4452-AFA3-50373CC2BC8B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -150,6 +158,8 @@ Global
 		{EE2F4668-CEF2-4C7F-AF9C-F3D23C664445} = {FAB1E6A4-991A-4C64-9F9B-476E9691D96B}
 		{93EB6FF0-93B6-4D1F-8104-6831846069AA} = {EE2F4668-CEF2-4C7F-AF9C-F3D23C664445}
 		{84B9991D-6B67-4EC4-8156-F1D55FA53188} = {B7944D37-A2DF-4533-AC7E-9A1FE11CE4D7}
+		{CA2874AD-E03D-4CC7-A17F-F1977EA8CBAA} = {F25161F1-9323-4A0F-A148-D07B001A00C5}
+		{278905CD-3C70-4452-AFA3-50373CC2BC8B} = {CA2874AD-E03D-4CC7-A17F-F1977EA8CBAA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {99BE5EE1-5AB0-4039-AC24-5B59F42DCD30}
