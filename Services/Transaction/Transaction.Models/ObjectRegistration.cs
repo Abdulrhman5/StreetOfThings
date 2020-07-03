@@ -1,10 +1,11 @@
-﻿using System;
+﻿using CommonLibrary;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Transaction.Models
 {
-    public class ObjectRegistration
+    public class ObjectRegistration : IEntity<ulong>
     {
         public ulong ObjectRegistrationId { get; set; }
 
@@ -20,6 +21,8 @@ namespace Transaction.Models
         public Login RecipientLogin { get; set; }
 
         public ObjectReceiving ObjectReceiving { get; set; }
+
+        public ulong Id => ObjectRegistrationId;
     }
 
     public enum ObjectRegistrationStatus

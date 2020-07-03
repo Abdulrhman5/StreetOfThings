@@ -1,10 +1,11 @@
-﻿using System;
+﻿using CommonLibrary;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Transaction.Models
 {
-    public class ObjectReceiving
+    public class ObjectReceiving : IEntity<ulong>
     { 
         public ulong ObjectReceivingId { get; set; }
 
@@ -12,5 +13,7 @@ namespace Transaction.Models
         public ObjectRegistration ObjectRegistration { get; set; }
 
         public DateTime ReceivedAtUtc { get; set; }
+
+        public ulong Id => ObjectReceivingId;
     }
 }
