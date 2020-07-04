@@ -30,6 +30,8 @@ namespace Transaction.Service
         {
             var transactionConnection = Configuration.GetConnectionString("TransactionConnection");
             services.AddDbContext<TransactionContext>(options => options.UseSqlServer(transactionConnection));
+            services.AddHttpContextAccessor();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

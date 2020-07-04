@@ -3,8 +3,8 @@
     "windowsAuthentication": false, 
     "anonymousAuthentication": true, 
     "iisExpress": {
-      "applicationUrl": "http://localhost:65092",
-      "sslPort": 44382
+      "applicationUrl": "http://localhost:20002",
+      "sslPort": 30002
     }
   },
   "profiles": {
@@ -18,7 +18,7 @@
     "Transaction.Service": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:5001;http://localhost:5000",
+      "applicationUrl": "https://localhost:30002;http://localhost:20002",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
