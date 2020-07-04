@@ -17,6 +17,15 @@ namespace Transaction.Models
         public Guid UserId { get; set; }
         public User User { get; set; }
 
+        public List<ObjectRegistration> RegistrationRecepiants { get; set; }
+
+        public List<ObjectReceiving> ObjectReceivingRecepiants { get; set; }
+
+        public List<ObjectReceiving> ObjectReceivingGivers { get; set; }
+
+        public List<ObjectReturning> ObjectReturningLoaners { get; set; }
+
+        public List<ObjectReturning> ObjectReturningLoanees { get; set; }
         public Guid Id => LoginId;
     }
 }

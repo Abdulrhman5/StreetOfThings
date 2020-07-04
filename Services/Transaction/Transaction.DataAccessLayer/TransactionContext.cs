@@ -26,7 +26,40 @@ namespace Transaction.DataAccessLayer
             modelBuilder.Entity<ObjectRegistration>()
                 .HasOne(registration => registration.ObjectReceiving)
                 .WithOne(receiving => receiving.ObjectRegistration)
-                .HasForeignKey<ObjectReceiving>(receiving => receiving.ObjectRegistrationId);
+                .HasForeignKey<ObjectReceiving>(receiving => receiving.ObjectRegistrationId);  
+            
+            modelBuilder.Entity<ObjectReceiving>()
+                .HasOne(receiving => receiving.ObjectReturning)
+                .WithOne(returning => returning.ObjectReceiving)
+                .HasForeignKey<ObjectReturning>(returning => returning.ObjectReceivingId);
+
+            modelBuilder.Entity<Login>()
+                .HasMany(login => login.RegistrationRecepiants)
+                .WithOne(registration => registration.RecipientLogin)
+                .OnDelete(DeleteBehavior.NoAction);
+
+
+            modelBuilder.Entity<Login>()
+                .HasMany(login => login.ObjectReceivingRecepiants)
+                .WithOne(registration => registration.RecipientLogin)
+                .OnDelete(DeleteBehavior.NoAction);
+
+
+            modelBuilder.Entity<Login>()
+                .HasMany(login => login.ObjectReceivingGivers)
+                .WithOne(registration => registration.GiverLogin)
+                .OnDelete(DeleteBehavior.NoAction);
+
+
+            modelBuilder.Entity<Login>()
+                .HasMany(login => login.ObjectReturningLoaners)
+                .WithOne(returning => returning.LoanerLogin)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Login>()
+                .HasMany(login => login.ObjectReturningLoanees)
+                .WithOne(returning => returning.LoaneeLogin)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

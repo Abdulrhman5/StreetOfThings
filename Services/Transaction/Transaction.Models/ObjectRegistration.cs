@@ -23,6 +23,9 @@ namespace Transaction.Models
         public ulong? ObjectReceivingId { get; set; }
         public ObjectReceiving ObjectReceiving { get; set; }
 
+        public int ObjectId { get; set; }
+        public OfferedObject Object { get; set; }
+
         public ulong Id => ObjectRegistrationId;
     }
 
