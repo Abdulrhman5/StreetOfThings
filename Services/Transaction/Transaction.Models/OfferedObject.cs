@@ -1,10 +1,11 @@
-﻿using System;
+﻿using CommonLibrary;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Transaction.Models
 {
-    public class OfferedObject
+    public class OfferedObject : IEntity<ulong>
     {
         public ulong OfferedObjectId { get; set; }
 
@@ -14,5 +15,6 @@ namespace Transaction.Models
 
         public float? HourlyCharge { get; set; }
 
+        public ulong Id => OfferedObjectId;
     }
 }
