@@ -9,7 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Transaction.BusinessLogic;
 using Transaction.DataAccessLayer;
+using Unity;
 
 namespace Transaction.Service
 {
@@ -48,5 +50,11 @@ namespace Transaction.Service
                 });
             });
         }
+
+        public void ConfigureContainer(IUnityContainer container)
+        {
+            new BusinessUnityConfig().ConfigUnity(container);
+        }
+
     }
 }

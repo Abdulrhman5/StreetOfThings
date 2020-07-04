@@ -16,9 +16,13 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Serilog" Version="2.9.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
+    <PackageReference Include="Unity" Version="5.11.7" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Transaction.BusinessLogic\Transaction.BusinessLogic.csproj" />
     <ProjectReference Include="..\Transaction.DataAccessLayer\Transaction.DataAccessLayer.csproj" />
   </ItemGroup>
 </Project>
