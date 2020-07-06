@@ -8,13 +8,12 @@ namespace Transaction.BusinessLogic.RegistrationCommands
 {
     public class ObjectRegistrationDto
     {
-        public int RegistrationId { get; set; }
+        public ulong RegistrationId { get; set; }
 
         public DateTime CreatedAtUtc { get; set; }
 
-        public DateTime ExpiresAtUtc { get; set; }
-
         public int ObjectId { get; set; }
 
+        public TimeSpan? ShouldBeReturnedAfterReceving { get; set; }
     }
 }

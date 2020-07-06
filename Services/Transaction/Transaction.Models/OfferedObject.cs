@@ -14,6 +14,10 @@ namespace Transaction.Models
         public bool ShouldReturn { get; set; }
 
         public float? HourlyCharge { get; set; }
+            
+        public User OwnerUser { get; set; }
+
+        public Guid OwnerUserId { get; set; }
 
         public ulong Id => OfferedObjectId;
     }

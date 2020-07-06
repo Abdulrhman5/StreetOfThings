@@ -19,7 +19,7 @@ namespace Transaction.BusinessLogic.Infrastructure
 
         }
 
-        private async Task<OfferedObject?> GetObjectAsync(ulong objectId)
+        public async Task<OfferedObject?> GetObjectAsync(ulong objectId)
         {
             var existingObject = _objectsRepo.Get(objectId);
             if(existingObject is object)

@@ -92,7 +92,7 @@ namespace Transaction.BusinessLogic.Infrastructure
         }
 
 
-        public async Task<(Login,User)> AddCurrentUserIfNeeded()
+        public async Task<(Login Login,User User)> AddCurrentUserIfNeeded()
         {
             var credentials = _credentialsGetter.GetCuurentUser();
             if(credentials is null)

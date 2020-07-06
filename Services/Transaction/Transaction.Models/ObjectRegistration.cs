@@ -13,7 +13,7 @@ namespace Transaction.Models
 
         public DateTime ExpiresAtUtc { get; set; }
 
-        public TimeSpan ShouldReturnItAfter { get; set; }
+        public TimeSpan? ShouldReturnItAfter { get; set; }
 
         public ObjectRegistrationStatus Status { get; set; }
 
@@ -23,7 +23,7 @@ namespace Transaction.Models
         public ulong? ObjectReceivingId { get; set; }
         public ObjectReceiving ObjectReceiving { get; set; }
 
-        public int ObjectId { get; set; }
+        public ulong ObjectId { get; set; }
         public OfferedObject Object { get; set; }
 
         public ulong Id => ObjectRegistrationId;
