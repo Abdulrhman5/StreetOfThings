@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\HostingHelpers\HostingHelpers.csproj" />
     <ProjectReference Include="..\Transaction.BusinessLogic\Transaction.BusinessLogic.csproj" />
     <ProjectReference Include="..\Transaction.DataAccessLayer\Transaction.DataAccessLayer.csproj" />
   </ItemGroup>

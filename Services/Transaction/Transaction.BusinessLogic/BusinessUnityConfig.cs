@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Transaction.BusinessLogic.Infrastructure;
+using Transaction.BusinessLogic.RegistrationCommands;
 using Unity;
 
 namespace Transaction.BusinessLogic
@@ -12,6 +14,12 @@ namespace Transaction.BusinessLogic
         public void ConfigUnity(IUnityContainer container)
         {
             Container = container;
+
+            Container.RegisterType<IRemotlyObjectGetter, RemoteObjectGetter>();
+            Container.RegisterType<INewRegistrationAdder, NewRegistrationAdder>();
+            Container.RegisterType<CurrentUserCredentialsGetter>();
+            Container.RegisterType<UserDataGetter>();
+            Container.RegisterType<UserDataManager>();
                     
         }
     }

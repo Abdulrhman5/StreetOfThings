@@ -69,6 +69,13 @@ namespace CatalogService.Controllers
             return StatusCode(200, objects);
         }
 
+        [Route("byId/{objectId:int}")]
+        [HttpGet]
+        public async Task<IActionResult> GetObjects(int objectId)
+        {
+            var objects = await _objectGetter.GetObjectById(objectId);
+            return StatusCode(200, objects);
+        }
 
         [Route("delete")]
         [HttpPost]
