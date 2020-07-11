@@ -8,20 +8,6 @@ namespace Transaction.DataAccessLayer.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "OfferedObject",
-                columns: table => new
-                {
-                    OfferedObjectId = table.Column<decimal>(nullable: false),
-                    OriginalObjectId = table.Column<int>(nullable: false),
-                    ShouldReturn = table.Column<bool>(nullable: false),
-                    HourlyCharge = table.Column<float>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OfferedObject", x => x.OfferedObjectId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -56,28 +42,49 @@ namespace Transaction.DataAccessLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "OfferedObject",
+                columns: table => new
+                {
+                    OfferedObjectId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OriginalObjectId = table.Column<int>(nullable: false),
+                    ShouldReturn = table.Column<bool>(nullable: false),
+                    HourlyCharge = table.Column<float>(nullable: true),
+                    OwnerUserId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OfferedObject", x => x.OfferedObjectId);
+                    table.ForeignKey(
+                        name: "FK_OfferedObject_Users_OwnerUserId",
+                        column: x => x.OwnerUserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ObjectRegistrations",
                 columns: table => new
                 {
-                    ObjectRegistrationId = table.Column<decimal>(nullable: false),
+                    ObjectRegistrationId = table.Column<Guid>(nullable: false),
                     RegisteredAtUtc = table.Column<DateTime>(nullable: false),
                     ExpiresAtUtc = table.Column<DateTime>(nullable: false),
-                    ShouldReturnItAfter = table.Column<TimeSpan>(nullable: false),
+                    ShouldReturnItAfter = table.Column<TimeSpan>(nullable: true),
                     Status = table.Column<int>(nullable: false),
                     RecipientLoginId = table.Column<Guid>(nullable: false),
-                    ObjectReceivingId = table.Column<decimal>(nullable: true),
-                    ObjectId = table.Column<int>(nullable: false),
-                    ObjectOfferedObjectId = table.Column<decimal>(nullable: true)
+                    ObjectReceivingId = table.Column<Guid>(nullable: true),
+                    ObjectId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ObjectRegistrations", x => x.ObjectRegistrationId);
                     table.ForeignKey(
-                        name: "FK_ObjectRegistrations_OfferedObject_ObjectOfferedObjectId",
-                        column: x => x.ObjectOfferedObjectId,
+                        name: "FK_ObjectRegistrations_OfferedObject_ObjectId",
+                        column: x => x.ObjectId,
                         principalTable: "OfferedObject",
                         principalColumn: "OfferedObjectId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ObjectRegistrations_Logins_RecipientLoginId",
                         column: x => x.RecipientLoginId,
@@ -89,11 +96,11 @@ namespace Transaction.DataAccessLayer.Migrations
                 name: "ObjectReceivings",
                 columns: table => new
                 {
-                    ObjectReceivingId = table.Column<decimal>(nullable: false),
-                    ObjectRegistrationId = table.Column<decimal>(nullable: false),
+                    ObjectReceivingId = table.Column<Guid>(nullable: false),
+                    ObjectRegistrationId = table.Column<Guid>(nullable: false),
                     RecipientLoginId = table.Column<Guid>(nullable: false),
                     GiverLoginId = table.Column<Guid>(nullable: false),
-                    ObjectReturningId = table.Column<decimal>(nullable: true),
+                    ObjectReturningId = table.Column<Guid>(nullable: true),
                     ReceivedAtUtc = table.Column<DateTime>(nullable: false),
                     HourlyCharge = table.Column<float>(nullable: true)
                 },
@@ -122,11 +129,11 @@ namespace Transaction.DataAccessLayer.Migrations
                 name: "ObjectReturnings",
                 columns: table => new
                 {
-                    ObjectReturningId = table.Column<decimal>(nullable: false),
+                    ObjectReturningId = table.Column<Guid>(nullable: false),
                     ReturnedAtUtc = table.Column<DateTime>(nullable: false),
                     LoaneeLoginId = table.Column<Guid>(nullable: false),
                     LoanerLoginId = table.Column<Guid>(nullable: false),
-                    ObjectReceivingId = table.Column<decimal>(nullable: false)
+                    ObjectReceivingId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -171,9 +178,9 @@ namespace Transaction.DataAccessLayer.Migrations
                 column: "RecipientLoginId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ObjectRegistrations_ObjectOfferedObjectId",
+                name: "IX_ObjectRegistrations_ObjectId",
                 table: "ObjectRegistrations",
-                column: "ObjectOfferedObjectId");
+                column: "ObjectId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ObjectRegistrations_RecipientLoginId",
@@ -195,6 +202,11 @@ namespace Transaction.DataAccessLayer.Migrations
                 table: "ObjectReturnings",
                 column: "ObjectReceivingId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OfferedObject_OwnerUserId",
+                table: "OfferedObject",
+                column: "OwnerUserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -8,6 +8,6 @@ namespace Transaction.BusinessLogic.Infrastructure
 {
     public interface IRemotlyObjectGetter 
     {
-        Task<OfferedObject?> GetObject(ulong objectId);
+        Task<OfferedObject?> GetObject(int objectId);
     }
 }

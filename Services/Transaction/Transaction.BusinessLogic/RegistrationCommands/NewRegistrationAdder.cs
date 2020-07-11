@@ -14,17 +14,17 @@ namespace Transaction.BusinessLogic.RegistrationCommands
     {
         private readonly UserDataManager _userDataManager;
 
-        private readonly IRepository<ulong, ObjectRegistration> _registrationsRepo;
+        private readonly IRepository<Guid, ObjectRegistration> _registrationsRepo;
 
         private readonly ObjectDataManager _objectDataManager;
 
-        private readonly IRepository<ulong, ObjectReceiving> _objectReceiving;
+        private readonly IRepository<Guid, ObjectReceiving> _objectReceiving;
 
 
-        public NewRegistrationAdder(UserDataManager userDataManager, 
+        public NewRegistrationAdder(UserDataManager userDataManager,
             ObjectDataManager objectDataManager,
-            IRepository<ulong, ObjectRegistration> registrationsRepo,
-            IRepository<ulong, ObjectReceiving> receivingsRepo)
+            IRepository<Guid, ObjectRegistration> registrationsRepo,
+            IRepository<Guid, ObjectReceiving> receivingsRepo)
         {
             _userDataManager = userDataManager;
 
@@ -40,12 +40,12 @@ namespace Transaction.BusinessLogic.RegistrationCommands
             Message = "This object is not available",
             StatusCode = System.Net.HttpStatusCode.BadRequest
         };
-        
+
 
         public async Task<CommandResult<ObjectRegistrationDto>> AddNewRegistrationAsync(AddNewRegistrationDto newRegistrationDto)
         {
             var user = await _userDataManager.AddCurrentUserIfNeeded();
-            if(user.Login == null)
+            if (user.Login == null)
             {
                 return new ErrorMessage()
                 {
@@ -55,7 +55,7 @@ namespace Transaction.BusinessLogic.RegistrationCommands
                 }.ToCommand<ObjectRegistrationDto>();
             }
 
-            if(newRegistrationDto is null || !ulong.TryParse(newRegistrationDto.ObjectId.ToString(), out ulong objectId))
+            if (newRegistrationDto is null)
             {
                 return new ErrorMessage()
                 {
@@ -65,26 +65,26 @@ namespace Transaction.BusinessLogic.RegistrationCommands
                 }.ToCommand<ObjectRegistrationDto>();
             }
 
-            var @object = await _objectDataManager.GetObjectAsync(objectId);
-            if(@object is null)
+            var @object = await _objectDataManager.GetObjectAsync(newRegistrationDto.ObjectId);
+            if (@object is null)
             {
                 return new ErrorMessage()
                 {
-                    ErrorCode = "TRANSACTION.OBJECT.RESERVE.NULL",
-                    Message = "Please send a valid information",
+                    ErrorCode = "TRANSACTION.OBJECT.RESERVE.NOT.EXISTS",
+                    Message = "The object specified does not exists",
                     StatusCode = System.Net.HttpStatusCode.BadRequest
                 }.ToCommand<ObjectRegistrationDto>();
             }
 
             // Should Not Return and is not taken right now
-            if(!@object.ShouldReturn)
+            if (!@object.ShouldReturn)
             {
                 var receivings = from receiving in _objectReceiving.Table
                                  where receiving.ObjectRegistration.ObjectId == @object.OfferedObjectId
                                  select receiving;
-                    
-                // If The object has been given but not returned
-                if(!receivings.Any(rec => rec.ObjectReturning == null))
+
+                // If The object has receiving and all of them has returnings 
+                if (receivings.Any(r => r.ObjectReturning == null))
                 {
                     return ObjectNotAvailable.ToCommand<ObjectRegistrationDto>();
                 }
@@ -93,11 +93,11 @@ namespace Transaction.BusinessLogic.RegistrationCommands
             // See Previous registrations
 
             var existingRegistrations = from registration in _registrationsRepo.Table
-                                        where registration.RecipientLogin.User.Id == user.User.UserId
+                                        where registration.RecipientLogin.UserId == user.User.UserId
                                         select registration;
-                
+
             // If The user taken and has this object OR If the user has another registeration pending receiving
-            if(existingRegistrations.Any(reg => reg.ObjectReceiving == null || reg.ObjectReceiving.ObjectReturning == null))
+            if (existingRegistrations.Any(reg => reg.ObjectReceiving == null || reg.ObjectReceiving.ObjectReturning == null))
             {
                 return ObjectNotAvailable.ToCommand<ObjectRegistrationDto>();
             }
@@ -118,12 +118,12 @@ namespace Transaction.BusinessLogic.RegistrationCommands
 
                 if (@object.HourlyCharge.HasValue)
                 {
-                    shouldReturnItAfter = new TimeSpan(newRegistrationDto.ShouldReturnAfter.Value,0,0);
+                    shouldReturnItAfter = new TimeSpan(newRegistrationDto.ShouldReturnAfter.Value, 0, 0);
                 }
                 else
                 {
                     if (newRegistrationDto.ShouldReturnAfter > 6)
-                        shouldReturnItAfter = new TimeSpan(6,0,0);      
+                        shouldReturnItAfter = new TimeSpan(6, 0, 0);
                     else
                         shouldReturnItAfter = new TimeSpan(newRegistrationDto.ShouldReturnAfter.Value, 0, 0);
                 }
@@ -135,7 +135,8 @@ namespace Transaction.BusinessLogic.RegistrationCommands
 
 
             var registrationModel = new ObjectRegistration
-            {
+            {   
+                ObjectRegistrationId = Guid.NewGuid(),
                 RegisteredAtUtc = DateTime.UtcNow,
                 ExpiresAtUtc = DateTime.UtcNow.AddHours(6),
                 ObjectId = @object.OfferedObjectId,

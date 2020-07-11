@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Transaction.Models
 {
-    public class OfferedObject : IEntity<ulong>
+    public class OfferedObject : IEntity<int>
     {
-        public ulong OfferedObjectId { get; set; }
+        public int OfferedObjectId { get; set; }
 
         public int OriginalObjectId { get; set; }
 
@@ -19,6 +19,6 @@ namespace Transaction.Models
 
         public Guid OwnerUserId { get; set; }
 
-        public ulong Id => OfferedObjectId;
+        public int Id => OfferedObjectId;
     }
 }

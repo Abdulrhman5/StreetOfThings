@@ -8,7 +8,7 @@ namespace Transaction.BusinessLogic.RegistrationCommands
 {
     public class ObjectRegistrationDto
     {
-        public ulong RegistrationId { get; set; }
+        public Guid RegistrationId { get; set; }
 
         public DateTime CreatedAtUtc { get; set; }
 

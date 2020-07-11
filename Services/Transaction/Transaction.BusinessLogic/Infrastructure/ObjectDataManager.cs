@@ -11,17 +11,17 @@ namespace Transaction.BusinessLogic.Infrastructure
     public class ObjectDataManager
     {
 
-        private readonly IRepository<ulong, OfferedObject> _objectsRepo;
+        private readonly IRepository<int, OfferedObject> _objectsRepo;
         private readonly IRemotlyObjectGetter _objectGetter;
 
-        public ObjectDataManager(IRepository<ulong, OfferedObject> objectsRepo,
+        public ObjectDataManager(IRepository<int, OfferedObject> objectsRepo,
             IRemotlyObjectGetter objectGetter)
         {
             _objectsRepo = objectsRepo;
             _objectGetter = objectGetter;
         }
 
-        public async Task<OfferedObject?> GetObjectAsync(ulong objectId)
+        public async Task<OfferedObject?> GetObjectAsync(int objectId)
         {
             var existingObject = _objectsRepo.Get(objectId);
             if(existingObject is object)
@@ -29,7 +29,7 @@ namespace Transaction.BusinessLogic.Infrastructure
                 return existingObject;
             }
 
-            var remoteObject = await _objectGetter.GetObject(objectId);
+            var remoteObject = await _objectGetter.GetObject(objectId).ConfigureAwait(false);
             if(remoteObject is null)
             {
                 return null;

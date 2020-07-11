@@ -43,9 +43,9 @@ namespace Transaction.DataAccessLayer.Migrations
 
             modelBuilder.Entity("Transaction.Models.ObjectReceiving", b =>
                 {
-                    b.Property<decimal>("ObjectReceivingId")
+                    b.Property<Guid>("ObjectReceivingId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("decimal(20,0)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("GiverLoginId")
                         .HasColumnType("uniqueidentifier");
@@ -53,11 +53,11 @@ namespace Transaction.DataAccessLayer.Migrations
                     b.Property<float?>("HourlyCharge")
                         .HasColumnType("real");
 
-                    b.Property<decimal>("ObjectRegistrationId")
-                        .HasColumnType("decimal(20,0)");
+                    b.Property<Guid>("ObjectRegistrationId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal?>("ObjectReturningId")
-                        .HasColumnType("decimal(20,0)");
+                    b.Property<Guid?>("ObjectReturningId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("ReceivedAtUtc")
                         .HasColumnType("datetime2");
@@ -79,18 +79,18 @@ namespace Transaction.DataAccessLayer.Migrations
 
             modelBuilder.Entity("Transaction.Models.ObjectRegistration", b =>
                 {
-                    b.Property<decimal>("ObjectRegistrationId")
+                    b.Property<Guid>("ObjectRegistrationId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("decimal(20,0)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("ExpiresAtUtc")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("ObjectId")
-                        .HasColumnType("decimal(20,0)");
+                    b.Property<int>("ObjectId")
+                        .HasColumnType("int");
 
-                    b.Property<decimal?>("ObjectReceivingId")
-                        .HasColumnType("decimal(20,0)");
+                    b.Property<Guid?>("ObjectReceivingId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("RecipientLoginId")
                         .HasColumnType("uniqueidentifier");
@@ -115,9 +115,9 @@ namespace Transaction.DataAccessLayer.Migrations
 
             modelBuilder.Entity("Transaction.Models.ObjectReturning", b =>
                 {
-                    b.Property<decimal>("ObjectReturningId")
+                    b.Property<Guid>("ObjectReturningId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("decimal(20,0)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("LoaneeLoginId")
                         .HasColumnType("uniqueidentifier");
@@ -125,8 +125,8 @@ namespace Transaction.DataAccessLayer.Migrations
                     b.Property<Guid>("LoanerLoginId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("ObjectReceivingId")
-                        .HasColumnType("decimal(20,0)");
+                    b.Property<Guid>("ObjectReceivingId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("ReturnedAtUtc")
                         .HasColumnType("datetime2");
@@ -145,9 +145,10 @@ namespace Transaction.DataAccessLayer.Migrations
 
             modelBuilder.Entity("Transaction.Models.OfferedObject", b =>
                 {
-                    b.Property<decimal>("OfferedObjectId")
+                    b.Property<int>("OfferedObjectId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("decimal(20,0)");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<float?>("HourlyCharge")
                         .HasColumnType("real");

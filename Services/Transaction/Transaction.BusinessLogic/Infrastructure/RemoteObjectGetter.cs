@@ -29,9 +29,9 @@ namespace Transaction.BusinessLogic.Infrastructure
             _userDataManager = userDataManager;
         }
 
-        public async Task<OfferedObject> GetObject(ulong objectId)
+        public async Task<OfferedObject> GetObject(int objectId)
         {
-            var request = new RestRequest("object/byId"+objectId);
+            var request = new RestRequest("api/object/byId/"+objectId,Method.GET);
             request.AddParameter("Authorization", _credentialsGetter.GetCuurentUser().AccessToken, ParameterType.HttpHeader);
 
             var response = await _restClient.ExecuteAsync(request);

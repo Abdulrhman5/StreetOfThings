@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Transaction.Models
 {
-    public class ObjectRegistration : IEntity<ulong>
+    public class ObjectRegistration : IEntity<Guid>
     {
-        public ulong ObjectRegistrationId { get; set; }
+        public Guid ObjectRegistrationId { get; set; }
 
         public DateTime RegisteredAtUtc { get; set; }
 
@@ -20,13 +20,13 @@ namespace Transaction.Models
         public Guid RecipientLoginId { get; set; }
         public Login RecipientLogin { get; set; }
 
-        public ulong? ObjectReceivingId { get; set; }
+        public Guid? ObjectReceivingId { get; set; }
         public ObjectReceiving ObjectReceiving { get; set; }
 
-        public ulong ObjectId { get; set; }
+        public int ObjectId { get; set; }
         public OfferedObject Object { get; set; }
 
-        public ulong Id => ObjectRegistrationId;
+        public Guid Id => ObjectRegistrationId;
     }
 
     public enum ObjectRegistrationStatus
