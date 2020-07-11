@@ -22,7 +22,8 @@ namespace AuthorizationService
             {
                 new ApiResource("MobileBff","Moble API"),
                 new ApiResource("Catalog.Api", "Catalog api"),
-                new ApiResource("ProfileManagement", "Profile management")
+                new ApiResource("ProfileManagement", "Profile management"),
+                new ApiResource("Transaction.Api", "Transaction Api")
             };
 
         public static IEnumerable<Client> Clients =>
@@ -42,6 +43,7 @@ namespace AuthorizationService
                         "MobileBff",
                         "Catalog.Api",
                         "ProfileManagement",
+                        "Transaction.Api",
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile
                     },

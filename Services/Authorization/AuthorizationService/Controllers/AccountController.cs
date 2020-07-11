@@ -12,6 +12,7 @@ using System.Net.Http;
 using System.Threading.Tasks;using Infrastructure;
 using Infrastructure.Emails;
 using AuthorizationService.Identity;
+using ApplicationLogic.AppUserQueries;
 
 namespace AuthorizationService.Controllers
 {
@@ -141,7 +142,4 @@ namespace AuthorizationService.Controllers
             });
         }
     }
-
-
-
 }

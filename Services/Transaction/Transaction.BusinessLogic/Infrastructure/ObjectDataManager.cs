@@ -14,9 +14,11 @@ namespace Transaction.BusinessLogic.Infrastructure
         private readonly IRepository<ulong, OfferedObject> _objectsRepo;
         private readonly IRemotlyObjectGetter _objectGetter;
 
-        public ObjectDataManager()
+        public ObjectDataManager(IRepository<ulong, OfferedObject> objectsRepo,
+            IRemotlyObjectGetter objectGetter)
         {
-
+            _objectsRepo = objectsRepo;
+            _objectGetter = objectGetter;
         }
 
         public async Task<OfferedObject?> GetObjectAsync(ulong objectId)

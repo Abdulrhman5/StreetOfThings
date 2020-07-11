@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using Transaction.BusinessLogic.Infrastructure;
 using Transaction.BusinessLogic.RegistrationCommands;
+using Transaction.DataAccessLayer;
 using Unity;
 
 namespace Transaction.BusinessLogic
@@ -20,6 +21,9 @@ namespace Transaction.BusinessLogic
             Container.RegisterType<CurrentUserCredentialsGetter>();
             Container.RegisterType<UserDataGetter>();
             Container.RegisterType<UserDataManager>();
+            Container.RegisterType<ObjectDataManager>();
+
+            new DalUnityConfig().ConfigUnity(Container);
                     
         }
     }

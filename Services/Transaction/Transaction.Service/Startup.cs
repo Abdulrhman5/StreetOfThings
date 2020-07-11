@@ -28,10 +28,20 @@ namespace Transaction.Service
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllersWithViews();
+            services.AddControllers().AddNewtonsoftJson();
+
             var transactionConnection = Configuration.GetConnectionString("TransactionConnection");
             services.AddDbContext<TransactionContext>(options => options.UseSqlServer(transactionConnection));
             services.AddHttpContextAccessor();
 
+            services.AddAuthentication("Bearer")
+                .AddJwtBearer("Bearer", options =>
+                {
+                    options.Authority = Configuration["Services:Authorization"];
+                    options.RequireHttpsMetadata = false;
+                    options.Audience = "Transaction.Api";
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,12 +54,22 @@ namespace Transaction.Service
 
             app.UseRouting();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGet("/", async context =>
                 {
                     await context.Response.WriteAsync("Hello World!");
                 });
+
+                endpoints.MapControllers();
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
+
             });
         }
 

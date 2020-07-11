@@ -40,9 +40,9 @@ namespace Transaction.BusinessLogic.Infrastructure
             {
                 var userDto = await _userDataGetter.GetUserDataByToken(accessToken);
 
-                if(userDto == null)
+                if (userDto == null)
                 {
-                    return (null,null);
+                    return (null, null);
                 }
                 var userToAdd = new User
                 {
@@ -50,18 +50,18 @@ namespace Transaction.BusinessLogic.Infrastructure
                     UserId = Guid.NewGuid(),
                     UserName = userDto.UserName,
                     Logins = new List<Login>
-                    { 
+                    {
                         new Login
                         {
                             TokenId = userDto.TokenId,
                             LoginId = Guid.NewGuid()
-                        } 
+                        }
                     }
                 };
 
                 _userRepo.Add(userToAdd);
                 await _userRepo.SaveChangesAsync();
-                return (userToAdd.Logins.FirstOrDefault(),userToAdd);
+                return (userToAdd.Logins.FirstOrDefault(), userToAdd);
             }
             else
             {
@@ -69,7 +69,7 @@ namespace Transaction.BusinessLogic.Infrastructure
                 var theUser = usersById.FirstOrDefault();
 
                 // if The user existed but the login does not exist
-                if(!theUser.Logins.Any(t => t.TokenId == tokenId))
+                if (!theUser.Logins.Any(t => t.TokenId == tokenId))
                 {
                     // add the login 
                     var login = new Login
@@ -80,29 +80,69 @@ namespace Transaction.BusinessLogic.Infrastructure
                     };
                     _loginRepo.Add(login);
                     await _loginRepo.SaveChangesAsync();
-                    return (login,theUser);
+                    return (login, theUser);
                 }
                 else
                 {
                     // the user and the login does exists 
-                    return (theUser.Logins.FirstOrDefault(),theUser);
+                    return (theUser.Logins.FirstOrDefault(), theUser);
                 }
             }
-            
         }
 
 
-        public async Task<(Login Login,User User)> AddCurrentUserIfNeeded()
+        public async Task<User> AddUserIfNotExisted(string originUserId)
+        {
+            var usersById = from u in _userRepo.Table
+                            where u.OriginalUserId == originUserId
+                            select u;
+
+            if (!usersById.Any())
+            {
+                var userDto = await _userDataGetter.GetUserDataById(originUserId);
+
+                if (userDto == null)
+                {
+                    return (null);
+                }
+                var userToAdd = new User
+                {
+                    OriginalUserId = originUserId,
+                    UserId = Guid.NewGuid(),
+                    UserName = userDto.UserName,
+                    Logins = new List<Login>
+                    {
+                        new Login
+                        {
+                            TokenId = userDto.TokenId,
+                            LoginId = Guid.NewGuid()
+                        }
+                    }
+                };
+
+                _userRepo.Add(userToAdd);
+                await _userRepo.SaveChangesAsync();
+                return (userToAdd);
+            }
+            else
+            {
+                var theUser = usersById.FirstOrDefault();
+                return theUser;
+            }
+        }
+
+        public async Task<(Login Login, User User)> AddCurrentUserIfNeeded()
         {
             var credentials = _credentialsGetter.GetCuurentUser();
-            if(credentials is null)
+            if (credentials is null)
             {
-                return (null,null);
+                return (null, null);
             }
             else
             {
                 return await AddUserIfNotExisted(credentials.TokenId, credentials.UserId, credentials.AccessToken);
             }
         }
+
     }
 }

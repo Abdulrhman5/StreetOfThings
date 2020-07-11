@@ -18,11 +18,15 @@ namespace Transaction.BusinessLogic.Infrastructure
         private IConfiguration _configurations;
 
         private CurrentUserCredentialsGetter _credentialsGetter;
-        private RemoteObjectGetter(IConfiguration configurations)
+
+        private UserDataManager _userDataManager;
+        public RemoteObjectGetter(IConfiguration configurations, CurrentUserCredentialsGetter userCredentialsGetter, UserDataManager userDataManager)
         {
             _configurations = configurations;
             var catalog = _configurations["Services:Catalog"];
             _restClient = new RestClient(catalog);
+            _credentialsGetter = userCredentialsGetter;
+            _userDataManager = userDataManager;
         }
 
         public async Task<OfferedObject> GetObject(ulong objectId)
@@ -34,11 +38,13 @@ namespace Transaction.BusinessLogic.Infrastructure
             if (response.IsSuccessful && response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 var deserialized = JsonConvert.DeserializeObject<ObjectDto>(response.Content);
+                var user = await _userDataManager.AddUserIfNotExisted(deserialized.OwnerId);
+
                 return new OfferedObject
                 {
                     HourlyCharge = null,
                     OriginalObjectId = deserialized.Id,
-                    OwnerUserId = Guid.Parse(deserialized.OwnerId),
+                    OwnerUserId = user.UserId,
                     ShouldReturn = deserialized.Type == TransactionType.Free
                 };
             }
@@ -47,7 +53,6 @@ namespace Transaction.BusinessLogic.Infrastructure
                 Log.Error($"There were a problem while trying to get offered object The response is {response.Content}");
                 return null;
             }
-
         }
     }
 

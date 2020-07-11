@@ -38,6 +38,24 @@ namespace Transaction.BusinessLogic.Infrastructure
                 return null;
             }
         }
+
+        public async Task<UserDataDto?> GetUserDataById(string userId)
+        {
+            var request = new RestRequest("api/profile/userInfo",Method.GET);
+            request.AddParameter("userId", userId, ParameterType.QueryStringWithoutEncode);
+
+            var response = await _restClient.ExecuteAsync(request);
+            if (response.IsSuccessful && response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                var deserialized = JsonConvert.DeserializeObject<UserDataDto>(response.Content);
+                return deserialized;
+            }
+            else
+            {
+                Log.Error($"Couldn't connect or an error occurred while trying to get the user information, UserId: {userId}, response: {response}");
+                return null;
+            }
+        }
     }
 
     public class UserDataDto

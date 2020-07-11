@@ -18,11 +18,16 @@ namespace Transaction.BusinessLogic.Infrastructure
 
         public LoginData GetCuurentUser()
         {
+            if(_httpContext.User is null)
+            {
+                return null;
+            }
+
             return new LoginData
             {
                 AccessToken = _httpContext.Request.Headers["Authorization"],
-                TokenId = _httpContext.User.FindFirst("TokenId").Value,
-                UserId = _httpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value
+                TokenId = _httpContext.User.FindFirst("TokenId")?.Value,
+                UserId = _httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
             };
         }
     }

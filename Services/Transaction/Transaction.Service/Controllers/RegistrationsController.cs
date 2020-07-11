@@ -9,7 +9,7 @@ using Transaction.BusinessLogic.RegistrationCommands;
 
 namespace Transaction.Service.Controllers
 {
-    [Route("api/Transaction/registration")]
+    [Route("api/[controller]")]
     public class RegistrationsController : MyControllerBase
     {
         private INewRegistrationAdder _registrationAdder;

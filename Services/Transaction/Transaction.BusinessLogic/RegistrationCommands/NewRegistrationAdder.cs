@@ -10,9 +10,9 @@ using Transaction.Models;
 
 namespace Transaction.BusinessLogic.RegistrationCommands
 {
-    public class NewRegistrationAdder : INewRegistrationAdder
+    class NewRegistrationAdder : INewRegistrationAdder
     {
-        UserDataManager _userDataManager;
+        private readonly UserDataManager _userDataManager;
 
         private readonly IRepository<ulong, ObjectRegistration> _registrationsRepo;
 
@@ -20,7 +20,19 @@ namespace Transaction.BusinessLogic.RegistrationCommands
 
         private readonly IRepository<ulong, ObjectReceiving> _objectReceiving;
 
-        private readonly IRepository<ulong, ObjectReturning> _objectReturning;
+
+        public NewRegistrationAdder(UserDataManager userDataManager, 
+            ObjectDataManager objectDataManager,
+            IRepository<ulong, ObjectRegistration> registrationsRepo,
+            IRepository<ulong, ObjectReceiving> receivingsRepo)
+        {
+            _userDataManager = userDataManager;
+
+            _registrationsRepo = registrationsRepo;
+            _objectReceiving = receivingsRepo;
+
+            _objectDataManager = objectDataManager;
+        }
 
         private ErrorMessage ObjectNotAvailable = new ErrorMessage
         {
@@ -43,7 +55,7 @@ namespace Transaction.BusinessLogic.RegistrationCommands
                 }.ToCommand<ObjectRegistrationDto>();
             }
 
-            if(newRegistrationDto is null || ulong.TryParse(newRegistrationDto.ObjectId.ToString(), out ulong objectId))
+            if(newRegistrationDto is null || !ulong.TryParse(newRegistrationDto.ObjectId.ToString(), out ulong objectId))
             {
                 return new ErrorMessage()
                 {
