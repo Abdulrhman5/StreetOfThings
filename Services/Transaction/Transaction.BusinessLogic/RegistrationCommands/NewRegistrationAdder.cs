@@ -1,9 +1,11 @@
 ﻿using CommonLibrary;
+using EventBus;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Transaction.BusinessLogic.Events;
 using Transaction.BusinessLogic.Infrastructure;
 using Transaction.DataAccessLayer;
 using Transaction.Models;
@@ -20,11 +22,11 @@ namespace Transaction.BusinessLogic.RegistrationCommands
 
         private readonly IRepository<Guid, ObjectReceiving> _objectReceiving;
 
-
+        private IEventBus _eventBus;
         public NewRegistrationAdder(UserDataManager userDataManager,
             ObjectDataManager objectDataManager,
             IRepository<Guid, ObjectRegistration> registrationsRepo,
-            IRepository<Guid, ObjectReceiving> receivingsRepo)
+            IRepository<Guid, ObjectReceiving> receivingsRepo, IEventBus eventBus)
         {
             _userDataManager = userDataManager;
 
@@ -32,6 +34,8 @@ namespace Transaction.BusinessLogic.RegistrationCommands
             _objectReceiving = receivingsRepo;
 
             _objectDataManager = objectDataManager;
+
+            _eventBus = eventBus;
         }
 
         private ErrorMessage ObjectNotAvailable = new ErrorMessage
@@ -41,7 +45,7 @@ namespace Transaction.BusinessLogic.RegistrationCommands
             StatusCode = System.Net.HttpStatusCode.BadRequest
         };
 
-
+         
         public async Task<CommandResult<ObjectRegistrationDto>> AddNewRegistrationAsync(AddNewRegistrationDto newRegistrationDto)
         {
             var user = await _userDataManager.AddCurrentUserIfNeeded();
@@ -148,6 +152,16 @@ namespace Transaction.BusinessLogic.RegistrationCommands
             _registrationsRepo.Add(registrationModel);
             await _registrationsRepo.SaveChangesAsync();
 
+            var integrationEvent = new NewRegistrationIntegrationEvent()
+            {
+                Id = Guid.NewGuid(),
+                OccuredAt = registrationModel.RegisteredAtUtc,
+                ObjectId = @object.OriginalObjectId,
+                RecipiantId = user.User.OriginalUserId,
+                ShouldReturn = @object.ShouldReturn
+            };
+
+            _eventBus.Publish(integrationEvent);
             // Broadcast an event;
 
             var dto = new ObjectRegistrationDto

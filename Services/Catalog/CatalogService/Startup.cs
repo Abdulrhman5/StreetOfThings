@@ -13,6 +13,9 @@ using Microsoft.OpenApi.Models;
 using Catalog.DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
 using Unity;
+using EventBus;
+using Catalog.ApplicationLogic.Events;
+using Catalog.ApplicationLogic.Events.EventHandlers;
 
 namespace CatalogService
 {
@@ -52,6 +55,13 @@ namespace CatalogService
                     options.RequireHttpsMetadata = false;
                     options.Audience = "Catalog.Api";
                 });
+
+            services.AddIntegrationEventService(new IntegrationEventOptions
+            {
+                HostName = "localhost",
+                RetryCount = 5,
+                SubscriptionClientName = "Catalog",
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -79,6 +89,8 @@ namespace CatalogService
             });
 
             ConfigDatabases.SeedUsersDatabase(app);
+
+            app.ApplicationServices.AddIntegrationEvent<NewRegistrationIntegrationEvent, NewRegistrationIntegrationEventHandler>();
         }
 
         public void ConfigureContainer(IUnityContainer container)

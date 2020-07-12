@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EventBus;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -42,6 +43,13 @@ namespace Transaction.Service
                     options.RequireHttpsMetadata = false;
                     options.Audience = "Transaction.Api";
                 });
+
+            services.AddIntegrationEventService(new IntegrationEventOptions
+            {
+                HostName = "localhost",
+                RetryCount = 5,
+                SubscriptionClientName = "Transaction",
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
