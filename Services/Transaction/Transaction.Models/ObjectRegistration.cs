@@ -26,6 +26,8 @@ namespace Transaction.Models
         public int ObjectId { get; set; }
         public OfferedObject Object { get; set; }
 
+        public List<TransactionToken> Tokens { get; set; }
+
         public Guid Id => ObjectRegistrationId;
     }
 

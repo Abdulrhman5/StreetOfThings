@@ -61,6 +61,7 @@ namespace Catalog.ApplicationLogic.ObjectQueries
                 .Where(_queryHelper.ValidForFreeAndLendibg);
 
             var objects = from o in filteredObjects
+                          where o.OfferedObjectId == objectId
                           orderby o.OfferedObjectId
                           select new ObjectDto
                           {

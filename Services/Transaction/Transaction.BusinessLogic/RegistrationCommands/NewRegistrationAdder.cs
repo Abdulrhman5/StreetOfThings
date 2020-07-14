@@ -23,10 +23,12 @@ namespace Transaction.BusinessLogic.RegistrationCommands
         private readonly IRepository<Guid, ObjectReceiving> _objectReceiving;
 
         private IEventBus _eventBus;
+
+        private readonly ITransactionTokenManager _tokenManager;
         public NewRegistrationAdder(UserDataManager userDataManager,
             ObjectDataManager objectDataManager,
             IRepository<Guid, ObjectRegistration> registrationsRepo,
-            IRepository<Guid, ObjectReceiving> receivingsRepo, IEventBus eventBus)
+            IRepository<Guid, ObjectReceiving> receivingsRepo, IEventBus eventBus, ITransactionTokenManager tokenManager)
         {
             _userDataManager = userDataManager;
 
@@ -36,6 +38,7 @@ namespace Transaction.BusinessLogic.RegistrationCommands
             _objectDataManager = objectDataManager;
 
             _eventBus = eventBus;
+            _tokenManager = tokenManager;
         }
 
         private ErrorMessage ObjectNotAvailable = new ErrorMessage
@@ -97,7 +100,7 @@ namespace Transaction.BusinessLogic.RegistrationCommands
             // See Previous registrations
 
             var existingRegistrations = from registration in _registrationsRepo.Table
-                                        where registration.RecipientLogin.UserId == user.User.UserId
+                                        where registration.RecipientLogin.UserId == user.User.UserId && registration.ObjectId == @object.OfferedObjectId
                                         select registration;
 
             // If The user taken and has this object OR If the user has another registeration pending receiving
@@ -161,8 +164,11 @@ namespace Transaction.BusinessLogic.RegistrationCommands
                 ShouldReturn = @object.ShouldReturn
             };
 
-            _eventBus.Publish(integrationEvent);
             // Broadcast an event;
+            _eventBus.Publish(integrationEvent);
+
+
+            var token = await _tokenManager.GenerateToken(registrationModel.ObjectRegistrationId, TokenType.Receiving);
 
             var dto = new ObjectRegistrationDto
             {
@@ -170,6 +176,8 @@ namespace Transaction.BusinessLogic.RegistrationCommands
                 ObjectId = registrationModel.Object.OriginalObjectId,
                 RegistrationId = registrationModel.ObjectRegistrationId,
                 ShouldBeReturnedAfterReceving = registrationModel.ShouldReturnItAfter,
+                RegistrationToken = token.Token,
+                UseBeforeUtc = token.UseBeforeUtc,
             };
 
             return new CommandResult<ObjectRegistrationDto>(dto);

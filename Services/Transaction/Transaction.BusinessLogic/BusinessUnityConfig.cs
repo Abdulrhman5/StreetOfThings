@@ -23,6 +23,9 @@ namespace Transaction.BusinessLogic
             Container.RegisterType<UserDataManager>();
             Container.RegisterType<ObjectDataManager>();
 
+            Container.RegisterType<IAlphaNumericStringGenerator, RngAlphaNumericStringGenerator>();
+            Container.RegisterType<ITransactionTokenManager, TransactionTokenManager>();
+
             new DalUnityConfig().ConfigUnity(Container);
                     
         }

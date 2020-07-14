@@ -26,6 +26,8 @@ namespace Transaction.Models
 
         public float? HourlyCharge { get; set; }
 
+        public List<TransactionToken> Tokens { get; set; }
+
         public Guid Id => ObjectReceivingId;
     }
 }

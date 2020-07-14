@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Transaction.DataAccessLayer;
@@ -23,7 +24,7 @@ namespace Transaction.BusinessLogic.Infrastructure
 
         public async Task<OfferedObject?> GetObjectAsync(int objectId)
         {
-            var existingObject = _objectsRepo.Get(objectId);
+            var existingObject = _objectsRepo.Table.Where(o => o.OriginalObjectId == objectId).FirstOrDefault();
             if(existingObject is object)
             {
                 return existingObject;

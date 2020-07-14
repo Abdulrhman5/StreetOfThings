@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Transaction.DataAccessLayer;
 
 namespace Transaction.DataAccessLayer.Migrations
 {
     [DbContext(typeof(TransactionContext))]
-    partial class TransactionContextModelSnapshot : ModelSnapshot
+    [Migration("20200714145908_AddTransactionToken")]
+    partial class AddTransactionToken
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

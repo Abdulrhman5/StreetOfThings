@@ -40,6 +40,10 @@ namespace Transaction.BusinessLogic.Infrastructure
                 var deserialized = JsonConvert.DeserializeObject<ObjectDto>(response.Content);
                 var user = await _userDataManager.AddUserIfNotExisted(deserialized.OwnerId);
 
+                if(user == null)
+                {
+                    return null;
+                }
                 return new OfferedObject
                 {
                     HourlyCharge = null,
