@@ -1,4 +1,5 @@
 ﻿using Catalog.ApplicationLogic.CommentsCommands;
+using HostingHelpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;

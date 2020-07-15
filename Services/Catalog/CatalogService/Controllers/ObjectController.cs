@@ -2,6 +2,7 @@
 using Catalog.ApplicationLogic.ObjectCommands;
 using Catalog.ApplicationLogic.ObjectQueries;
 using Catalog.Models;
+using HostingHelpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
