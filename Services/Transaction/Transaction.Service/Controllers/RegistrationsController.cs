@@ -14,9 +14,13 @@ namespace Transaction.Service.Controllers
     {
         private INewRegistrationAdder _registrationAdder;
 
-        public RegistrationsController(INewRegistrationAdder registrationAdder)
+        private RegistrationTokenRefresher _tokenRefresher;
+
+        public RegistrationsController(INewRegistrationAdder registrationAdder,
+            RegistrationTokenRefresher tokenRefresher)
         {
             _registrationAdder = registrationAdder;
+            _tokenRefresher = tokenRefresher;
         }
 
         [Route("create")]
@@ -25,6 +29,15 @@ namespace Transaction.Service.Controllers
         public async Task<IActionResult> Create([FromBody] AddNewRegistrationDto addnewRegistrationDto)
         {
             var result = await _registrationAdder.AddNewRegistrationAsync(addnewRegistrationDto);
+            return StatusCode(result);
+        }
+
+        [Route("refresh")]
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshRegistrationTokenDto tokenRefresh)
+        {
+            var result = await _tokenRefresher.RefreshToken(tokenRefresh.ObjectId);
             return StatusCode(result);
         }
     }
