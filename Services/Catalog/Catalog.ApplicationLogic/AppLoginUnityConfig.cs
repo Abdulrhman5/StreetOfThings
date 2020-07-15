@@ -2,6 +2,7 @@
 using Catalog.ApplicationLogic.Infrastructure;
 using Catalog.ApplicationLogic.ObjectCommands;
 using Catalog.ApplicationLogic.ObjectQueries;
+using Catalog.ApplicationLogic.TypeQueries;
 using Catalog.DataAccessLayer;
 using CommonLibrary;
 using HostingHelpers;
@@ -33,6 +34,7 @@ namespace Catalog.ApplicationLogic
 
             Container.RegisterType<IObjectImpressionsManager, ObjectImpressionsManager>();
             Container.RegisterType<IObjectCommentAdder, ObjectCommentAdder>();
+            Container.RegisterType<TagsGetter>();
 
             Container.RegisterType<ObjectQueryHelper>();
             Container.RegisterType(typeof(OwnershipAuthorization<,>));
