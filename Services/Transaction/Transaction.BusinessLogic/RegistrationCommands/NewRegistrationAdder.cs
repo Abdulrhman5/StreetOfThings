@@ -1,5 +1,6 @@
 ﻿using CommonLibrary;
 using EventBus;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,10 +26,19 @@ namespace Transaction.BusinessLogic.RegistrationCommands
         private IEventBus _eventBus;
 
         private readonly ITransactionTokenManager _tokenManager;
+
+        private IConfiguration _configurations;
+
+        private int maximumHoursForFreeLending = 6;
+
+        private int maximumHoursForReservationExpiration = 24;
         public NewRegistrationAdder(UserDataManager userDataManager,
             ObjectDataManager objectDataManager,
             IRepository<Guid, ObjectRegistration> registrationsRepo,
-            IRepository<Guid, ObjectReceiving> receivingsRepo, IEventBus eventBus, ITransactionTokenManager tokenManager)
+            IRepository<Guid, ObjectReceiving> receivingsRepo, 
+            IEventBus eventBus, 
+            ITransactionTokenManager tokenManager,
+            IConfiguration configuration)
         {
             _userDataManager = userDataManager;
 
@@ -39,6 +49,10 @@ namespace Transaction.BusinessLogic.RegistrationCommands
 
             _eventBus = eventBus;
             _tokenManager = tokenManager;
+            _configurations = configuration;
+
+            maximumHoursForFreeLending = _configurations.GetValue<int>("Registration:MaximumHoursForFreeLending");
+            maximumHoursForReservationExpiration = _configurations.GetValue<int>("Registration:MaximumHoursForRegistrationExpiration");
         }
 
         private ErrorMessage ObjectNotAvailable = new ErrorMessage
@@ -129,8 +143,8 @@ namespace Transaction.BusinessLogic.RegistrationCommands
                 }
                 else
                 {
-                    if (newRegistrationDto.ShouldReturnAfter > 6)
-                        shouldReturnItAfter = new TimeSpan(6, 0, 0);
+                    if (newRegistrationDto.ShouldReturnAfter > maximumHoursForFreeLending)
+                        shouldReturnItAfter = new TimeSpan(maximumHoursForFreeLending, 0, 0);
                     else
                         shouldReturnItAfter = new TimeSpan(newRegistrationDto.ShouldReturnAfter.Value, 0, 0);
                 }
@@ -145,7 +159,7 @@ namespace Transaction.BusinessLogic.RegistrationCommands
             {   
                 ObjectRegistrationId = Guid.NewGuid(),
                 RegisteredAtUtc = DateTime.UtcNow,
-                ExpiresAtUtc = DateTime.UtcNow.AddHours(6),
+                ExpiresAtUtc = DateTime.UtcNow.AddHours(maximumHoursForReservationExpiration),
                 ObjectId = @object.OfferedObjectId,
                 Status = ObjectRegistrationStatus.OK,
                 RecipientLoginId = user.Login.LoginId,
@@ -172,12 +186,16 @@ namespace Transaction.BusinessLogic.RegistrationCommands
 
             var dto = new ObjectRegistrationDto
             {
-                CreatedAtUtc = registrationModel.RegisteredAtUtc,
                 ObjectId = registrationModel.Object.OriginalObjectId,
                 RegistrationId = registrationModel.ObjectRegistrationId,
                 ShouldBeReturnedAfterReceving = registrationModel.ShouldReturnItAfter,
-                RegistrationToken = token.Token,
-                UseBeforeUtc = token.UseBeforeUtc,
+                RegistrationExpiresAtUtc = registrationModel.ExpiresAtUtc,
+                RegistrationToken = new RegistrationTokenResultDto
+                {
+                    RegistrationToken = token.Token,
+                    CreatedAtUtc = token.IssuedAtUtc,
+                    UseBeforeUtc = token.UseBeforeUtc
+                }
             };
 
             return new CommandResult<ObjectRegistrationDto>(dto);

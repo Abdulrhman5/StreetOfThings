@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Transaction.BusinessLogic.RegistrationCommands
 {
-    public class RefreshRegistrationTokenResultDto
+    public class RegistrationTokenResultDto
     {
         public string RegistrationToken { get; set; }
 

@@ -31,7 +31,7 @@ namespace Transaction.BusinessLogic.RegistrationCommands
             _registrationsRepo = registrationsRepo;
         }
 
-        public async Task<CommandResult<RefreshRegistrationTokenResultDto>> RefreshToken(int objectId)
+        public async Task<CommandResult<RegistrationTokenResultDto>> RefreshToken(int objectId)
         {
             var user = _credentialsGetter.GetCuurentUser();
             if (user == null)
@@ -41,7 +41,7 @@ namespace Transaction.BusinessLogic.RegistrationCommands
                     ErrorCode = "TRANSACTION.REGISTRATION.REFRESH.USER.UNKOWN",
                     Message = "Please login",
                     StatusCode = System.Net.HttpStatusCode.Unauthorized
-                }.ToCommand<RefreshRegistrationTokenResultDto>();
+                }.ToCommand<RegistrationTokenResultDto>();
             }
             var registrations = from r in _registrationsRepo.Table
                                 where r.Object.OriginalObjectId == objectId && r.RecipientLogin.User.OriginalUserId == user.UserId &&
@@ -55,12 +55,12 @@ namespace Transaction.BusinessLogic.RegistrationCommands
                     ErrorCode = "TRANSACTION.REGISTRATION.REFRESH.NOT.VALID",
                     Message = "You have no valid registration",
                     StatusCode = System.Net.HttpStatusCode.Unauthorized
-                }.ToCommand<RefreshRegistrationTokenResultDto>();
+                }.ToCommand<RegistrationTokenResultDto>();
             }
 
             var token = await _tokenManager.GenerateToken(registrations.FirstOrDefault().ObjectRegistrationId, TokenType.Receiving);
 
-            return new CommandResult<RefreshRegistrationTokenResultDto>(new RefreshRegistrationTokenResultDto
+            return new CommandResult<RegistrationTokenResultDto>(new RegistrationTokenResultDto
             {
                 CreatedAtUtc = token.IssuedAtUtc,
                 RegistrationToken = token.Token,

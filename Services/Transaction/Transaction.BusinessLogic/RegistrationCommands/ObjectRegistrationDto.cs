@@ -13,11 +13,9 @@ namespace Transaction.BusinessLogic.RegistrationCommands
         public int ObjectId { get; set; }
 
         public TimeSpan? ShouldBeReturnedAfterReceving { get; set; }
+        
+        public DateTime RegistrationExpiresAtUtc { get; set; }
 
-        public string RegistrationToken { get; set; }
-
-        public DateTime CreatedAtUtc { get; set; }
-
-        public DateTime UseBeforeUtc { get; set; }
+        public RegistrationTokenResultDto RegistrationToken { get; set; }
     }
 }
