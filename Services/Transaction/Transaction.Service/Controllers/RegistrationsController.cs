@@ -16,11 +16,15 @@ namespace Transaction.Service.Controllers
 
         private RegistrationTokenRefresher _tokenRefresher;
 
+        private ObjectRegistrationCanceller _registrationCanceler;
+
         public RegistrationsController(INewRegistrationAdder registrationAdder,
-            RegistrationTokenRefresher tokenRefresher)
+            RegistrationTokenRefresher tokenRefresher,
+            ObjectRegistrationCanceller registrationCanceler)
         {
             _registrationAdder = registrationAdder;
             _tokenRefresher = tokenRefresher;
+            _registrationCanceler = registrationCanceler;
         }
 
         [Route("create")]
@@ -39,6 +43,18 @@ namespace Transaction.Service.Controllers
         {
             var result = await _tokenRefresher.RefreshToken(tokenRefresh.ObjectId);
             return StatusCode(result);
+        }
+
+        [Route("cancel")]
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> CancelRegistration([FromBody] CancelRegistrationTokenDto cancelTokenDto)
+        {
+            var result = await _registrationCanceler.CancelRegistration(cancelTokenDto);
+            return StatusCode(result, new
+            {
+                Message = "A registration has been canceled"
+            });
         }
     }
 }
