@@ -31,6 +31,7 @@ namespace ApplicationLogic
             Container.RegisterType<IImageSaver, ImageSaver>();
             Container.RegisterType<ProfilePhotoSaver>();
             Container.RegisterType<ProfilePhotoUrlConstructor>();
+            Container.RegisterType<UserProfileGetter>();
 
             new DalUnityConfiguration().ConfigUnity(container);
         }

@@ -13,6 +13,7 @@ using System.Threading.Tasks;using Infrastructure;
 using Infrastructure.Emails;
 using AuthorizationService.Identity;
 using ApplicationLogic.AppUserQueries;
+using HostingHelpers;
 
 namespace AuthorizationService.Controllers
 {

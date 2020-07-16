@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ApplicationLogic.AppUserQueries;
 using ApplicationLogic.ProfilePhotoCommand;
+using HostingHelpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,10 +18,13 @@ namespace AuthorizationService.Controllers
 
         private IUserGetter _userGetter;
 
-        public ProfileController(ProfilePhotoSaver photoSaver, IUserGetter userGetter)
+        private UserProfileGetter _profileGetter;
+        public ProfileController(ProfilePhotoSaver photoSaver, IUserGetter userGetter,
+            UserProfileGetter profileGetter)
         {
             _photoSaver = photoSaver;
             _userGetter = userGetter;
+            _profileGetter = profileGetter;
         }
 
         [HttpPost]
@@ -49,6 +53,15 @@ namespace AuthorizationService.Controllers
             {
                 return Ok(users.FirstOrDefault());
             }
+        }
+
+        [HttpGet]
+        [Route("whoami")]
+        [Authorize]
+        public async Task<IActionResult> ProfileInformation()
+        {
+            var result = _profileGetter.GetUserByIds();
+            return StatusCode(result);
         }
     }
 }
