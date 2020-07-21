@@ -59,7 +59,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Transaction.DataAccessLayer
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Transaction.BusinessLogic", "Services\Transaction\Transaction.BusinessLogic\Transaction.BusinessLogic.csproj", "{4EE3BDA0-FB86-4495-A173-153231BED3E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transaction.Service", "Services\Transaction\Transaction.Service\Transaction.Service.csproj", "{D6A0E7D9-9F4B-4C75-9615-B49E8ECA4C0C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Transaction.Service", "Services\Transaction\Transaction.Service\Transaction.Service.csproj", "{D6A0E7D9-9F4B-4C75-9615-B49E8ECA4C0C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

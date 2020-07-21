@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Transaction.Models;
 
 namespace Transaction.DataAccessLayer
@@ -60,6 +62,17 @@ namespace Transaction.DataAccessLayer
                 .HasMany(login => login.ObjectReturningLoanees)
                 .WithOne(returning => returning.LoaneeLogin)
                 .OnDelete(DeleteBehavior.NoAction);
+        }
+
+
+        public virtual IDbContextTransactionWrapper BeginTransaction()
+        {
+            return new DbContextTransactionWrapper(Database.BeginTransaction());
+        }
+
+        public virtual async Task<IDbContextTransactionWrapper> BeginTransactionAsync(CancellationToken cancellationToken = default)
+        {
+            return new DbContextTransactionWrapper(await Database.BeginTransactionAsync());
         }
     }
 }

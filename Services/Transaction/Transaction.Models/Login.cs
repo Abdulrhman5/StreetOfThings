@@ -26,6 +26,9 @@ namespace Transaction.Models
         public List<ObjectReturning> ObjectReturningLoaners { get; set; }
 
         public List<ObjectReturning> ObjectReturningLoanees { get; set; }
+
+        public List<TransactionToken> IssuedTokens { get; set; }
+
         public Guid Id => LoginId;
     }
 }

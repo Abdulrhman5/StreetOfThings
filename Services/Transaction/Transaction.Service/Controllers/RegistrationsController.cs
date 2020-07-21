@@ -56,5 +56,6 @@ namespace Transaction.Service.Controllers
                 Message = "A registration has been canceled"
             });
         }
+
     }
 }

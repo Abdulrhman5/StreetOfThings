@@ -21,6 +21,8 @@ namespace Transaction.Models
 
         public string Token { get; set; }
 
+        public Guid IssuerLoginId { get; set; }
+        public Login IssuerLogin { get; set; }
 
         public Guid? ReceivingId { get; set; }
         public ObjectReceiving Receiving { get; set; }
@@ -41,6 +43,7 @@ namespace Transaction.Models
     public enum TokenStatus
     {
         Ok, 
-        Resolved
+        Resolved,
+        Used
     }
 }
