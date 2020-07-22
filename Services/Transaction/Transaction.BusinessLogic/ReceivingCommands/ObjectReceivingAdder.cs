@@ -8,16 +8,18 @@ using Transaction.Models;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using System.Security.Cryptography;
 
 namespace Transaction.BusinessLogic.ReceivingCommands
 {
-    class ObjectReceivingAdder
+    class ObjectReceivingAdder : IObjectReceivingAdder
     {
         private IRepository<Guid, ObjectReceiving> _receivingsRepo;
 
-        private IRepository<Guid, ObjectRegistration> _registrationsRepo; 
-        
+        private IRepository<Guid, ObjectRegistration> _registrationsRepo;
+
         private IRepository<Guid, TransactionToken> _tokensRepo;
+
 
         private OwnershipAuthorization<Guid, TransactionToken> _ownershipAuthorization;
 
@@ -25,7 +27,7 @@ namespace Transaction.BusinessLogic.ReceivingCommands
 
         private UserDataManager userDataManager;
 
-        public ObjectReceivingAdder(IRepository<Guid, ObjectReceiving> receivingsRepo, 
+        public ObjectReceivingAdder(IRepository<Guid, ObjectReceiving> receivingsRepo,
             IRepository<Guid, ObjectRegistration> registrationsRepo,
             IRepository<Guid, TransactionToken> tokensRepo,
             OwnershipAuthorization<Guid, TransactionToken> ownershipAuthorization,
@@ -53,7 +55,7 @@ namespace Transaction.BusinessLogic.ReceivingCommands
             }
 
             var (login, user) = await userDataManager.AddCurrentUserIfNeeded();
-            if(login is null)
+            if (login is null)
             {
                 return new CommandResult(new ErrorMessage
                 {
@@ -65,7 +67,7 @@ namespace Transaction.BusinessLogic.ReceivingCommands
 
             var authResult = _ownershipAuthorization.IsAuthorized(tt => tt.Type == TokenType.Receiving && tt.Token == addReceivingDto.RegistrationToken,
                 tt => tt.Registration.Object.OwnerUser);
-            if(!authResult)
+            if (!authResult)
             {
                 return new CommandResult(new ErrorMessage
                 {
@@ -79,7 +81,7 @@ namespace Transaction.BusinessLogic.ReceivingCommands
                             where t.Token == addReceivingDto.RegistrationToken && t.Type == TokenType.Receiving
                             select t).FirstOrDefault();
 
-            if(theToken == null)
+            if (theToken == null)
             {
                 return new ErrorMessage
                 {
@@ -89,7 +91,7 @@ namespace Transaction.BusinessLogic.ReceivingCommands
                 }.ToCommand();
             }
 
-            if(!(theToken.UseAfterUtc < DateTime.UtcNow && theToken.UseBeforeUtc > DateTime.UtcNow))
+            if (!(theToken.UseAfterUtc < DateTime.UtcNow && theToken.UseBeforeUtc > DateTime.UtcNow))
             {
                 return new ErrorMessage
                 {
@@ -99,7 +101,7 @@ namespace Transaction.BusinessLogic.ReceivingCommands
                 }.ToCommand();
             }
 
-            if(!(theToken.Status != TokenStatus.Ok))
+            if (theToken.Status != TokenStatus.Ok)
             {
                 return new ErrorMessage
                 {
@@ -110,10 +112,10 @@ namespace Transaction.BusinessLogic.ReceivingCommands
             }
 
             var theRegistration = (from rg in _registrationsRepo.Table
-                                  where rg.Tokens.Any(rt => rt.Token == addReceivingDto.RegistrationToken)
-                                  select rg).FirstOrDefault();
+                                   where rg.Tokens.Any(rt => rt.Token == addReceivingDto.RegistrationToken)
+                                   select rg).FirstOrDefault();
 
-            if(theRegistration is null)
+            if (theRegistration is null)
             {
                 return new ErrorMessage
                 {
@@ -124,7 +126,7 @@ namespace Transaction.BusinessLogic.ReceivingCommands
             }
 
 
-            if(theRegistration.ObjectReceiving is object)
+            if (theRegistration.ObjectReceiving is object)
             {
                 return new ErrorMessage
                 {
@@ -139,7 +141,9 @@ namespace Transaction.BusinessLogic.ReceivingCommands
                                       select rg;
 
             objectRegistrations = objectRegistrations.Include(or => or.ObjectReceiving).ThenInclude(rc => rc.ObjectReturning);
-            if(objectRegistrations.Any(or => or.ObjectReceiving == null || or.ObjectReceiving.ObjectReturning != null))
+
+            // if not all of them returned or not received
+            if (!objectRegistrations.All(or => or.ObjectReceiving == null || or.ObjectReceiving.ObjectReturning != null))
             {
                 return new ErrorMessage
                 {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Transaction.BusinessLogic.Infrastructure;
 using Transaction.DataAccessLayer;
 using Transaction.Models;
 
@@ -16,20 +17,24 @@ namespace Transaction.BusinessLogic
 
         Task InvalidateToken(string token);
     }
-    public class TransactionTokenManager : ITransactionTokenManager
+    class TransactionTokenManager : ITransactionTokenManager
     {
         private IRepository<Guid, TransactionToken> _tokensRepo;
 
         private IAlphaNumericStringGenerator _stringGenerator;
 
-        public TransactionTokenManager (IRepository<Guid, TransactionToken> tokensRepo,IAlphaNumericStringGenerator stringGenerator)
+        private UserDataManager _userDataManager;
+        public TransactionTokenManager(IRepository<Guid, TransactionToken> tokensRepo, IAlphaNumericStringGenerator stringGenerator, UserDataManager userDataManager)
         {
             _tokensRepo = tokensRepo;
             _stringGenerator = stringGenerator;
+            _userDataManager = userDataManager;
         }
 
         public async Task<TransactionToken> GenerateToken(Guid transactionId, TokenType type)
         {
+            var(login, user)= await _userDataManager.AddCurrentUserIfNeeded();
+
             var tokenString = _stringGenerator.GenerateIdentifier(100, CharsInToken.CapitalSmallNumeric_);
             var token = new TransactionToken
             {
@@ -40,6 +45,7 @@ namespace Transaction.BusinessLogic
                 Status = TokenStatus.Ok,
                 Token = tokenString,
                 Type = type,
+                IssuerLoginId = login.LoginId
             };
 
             if (type == TokenType.Receiving)

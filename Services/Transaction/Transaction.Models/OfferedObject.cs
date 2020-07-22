@@ -19,6 +19,8 @@ namespace Transaction.Models
 
         public Guid OwnerUserId { get; set; }
 
+        public List<ObjectRegistration> Registrations { get; set; }
+
         public int Id => OfferedObjectId;
     }
 }

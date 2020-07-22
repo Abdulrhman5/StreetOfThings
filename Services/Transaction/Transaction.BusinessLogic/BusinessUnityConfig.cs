@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Transaction.BusinessLogic.Infrastructure;
+using Transaction.BusinessLogic.ReceivingCommands;
 using Transaction.BusinessLogic.RegistrationCommands;
 using Transaction.DataAccessLayer;
 using Unity;
@@ -25,7 +26,9 @@ namespace Transaction.BusinessLogic
 
             Container.RegisterType<IAlphaNumericStringGenerator, RngAlphaNumericStringGenerator>();
             Container.RegisterType<ITransactionTokenManager, TransactionTokenManager>();
+            Container.RegisterType<IObjectReceivingAdder, ObjectReceivingAdder>();
 
+            Container.RegisterType(typeof(OwnershipAuthorization<,>));
             new DalUnityConfig().ConfigUnity(Container);
                     
         }
