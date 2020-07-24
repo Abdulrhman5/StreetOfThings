@@ -20,6 +20,7 @@ namespace Transaction.BusinessLogic.ReceivingCommands
 
         private IRepository<Guid, TransactionToken> _tokensRepo;
 
+        private IRepository<int, OfferedObject> _objectRepo;
 
         private OwnershipAuthorization<Guid, TransactionToken> _ownershipAuthorization;
 
@@ -32,7 +33,8 @@ namespace Transaction.BusinessLogic.ReceivingCommands
             IRepository<Guid, TransactionToken> tokensRepo,
             OwnershipAuthorization<Guid, TransactionToken> ownershipAuthorization,
             TransactionContext transactionContext,
-            UserDataManager userDataManager)
+            UserDataManager userDataManager, 
+            IRepository<int, OfferedObject> objectRepo)
         {
             _receivingsRepo = receivingsRepo;
             _registrationsRepo = registrationsRepo;
@@ -40,13 +42,14 @@ namespace Transaction.BusinessLogic.ReceivingCommands
             _ownershipAuthorization = ownershipAuthorization;
             _transactionContext = transactionContext;
             this.userDataManager = userDataManager;
+            _objectRepo = objectRepo;
         }
 
-        public async Task<CommandResult> AddReceiving(AddReceivingDto addReceivingDto)
+        public async Task<CommandResult<ObjectReceivingResultDto>> AddReceiving(AddReceivingDto addReceivingDto)
         {
             if (addReceivingDto == null || addReceivingDto.RegistrationToken.IsNullOrEmpty())
             {
-                return new CommandResult(new ErrorMessage
+                return new CommandResult<ObjectReceivingResultDto>(new ErrorMessage
                 {
                     ErrorCode = "TRANSACTION.RECEIVING.ADD.NULL",
                     Message = "Please send valid data",
@@ -57,7 +60,7 @@ namespace Transaction.BusinessLogic.ReceivingCommands
             var (login, user) = await userDataManager.AddCurrentUserIfNeeded();
             if (login is null)
             {
-                return new CommandResult(new ErrorMessage
+                return new CommandResult<ObjectReceivingResultDto>(new ErrorMessage
                 {
                     ErrorCode = "TRANSACTION.RECEIVING.ADD.UNAUTHOROIZED",
                     Message = "You are not authorized to make this request",
@@ -69,7 +72,7 @@ namespace Transaction.BusinessLogic.ReceivingCommands
                 tt => tt.Registration.Object.OwnerUser);
             if (!authResult)
             {
-                return new CommandResult(new ErrorMessage
+                return new CommandResult<ObjectReceivingResultDto>(new ErrorMessage
                 {
                     ErrorCode = "TRANSACTION.RECEIVING.ADD.UNAUTHOROIZED",
                     Message = "You are not authorized to make this request",
@@ -88,7 +91,7 @@ namespace Transaction.BusinessLogic.ReceivingCommands
                     ErrorCode = "TRANSACTION.RECEIVING.ADD.NOT.EXISTS",
                     Message = "The QR code provided is faulty",
                     StatusCode = System.Net.HttpStatusCode.BadRequest
-                }.ToCommand();
+                }.ToCommand<ObjectReceivingResultDto>();
             }
 
             if (!(theToken.UseAfterUtc < DateTime.UtcNow && theToken.UseBeforeUtc > DateTime.UtcNow))
@@ -98,7 +101,7 @@ namespace Transaction.BusinessLogic.ReceivingCommands
                     ErrorCode = "TRANSACTION.RECEIVING.ADD.TOKEN.EXPIRED",
                     Message = "The QR code provided is too old",
                     StatusCode = System.Net.HttpStatusCode.BadRequest
-                }.ToCommand();
+                }.ToCommand<ObjectReceivingResultDto>();
             }
 
             if (theToken.Status != TokenStatus.Ok)
@@ -108,7 +111,7 @@ namespace Transaction.BusinessLogic.ReceivingCommands
                     ErrorCode = "TRANSACTION.RECEIVING.ADD.TOKEN.INVALID",
                     Message = "The QR code provided is too old",
                     StatusCode = System.Net.HttpStatusCode.BadRequest
-                }.ToCommand();
+                }.ToCommand<ObjectReceivingResultDto>();
             }
 
             var theRegistration = (from rg in _registrationsRepo.Table
@@ -122,7 +125,7 @@ namespace Transaction.BusinessLogic.ReceivingCommands
                     ErrorCode = "TRANSACTION.RECEIVING.ADD.NOT.EXISTS",
                     Message = "The QR code provided is faulty",
                     StatusCode = System.Net.HttpStatusCode.BadRequest
-                }.ToCommand();
+                }.ToCommand<ObjectReceivingResultDto>();
             }
 
 
@@ -133,14 +136,12 @@ namespace Transaction.BusinessLogic.ReceivingCommands
                     ErrorCode = "TRANSACTION.RECEIVING.ADD.TOKEN.USED",
                     Message = "The QR code provided is already used",
                     StatusCode = System.Net.HttpStatusCode.BadRequest
-                }.ToCommand();
+                }.ToCommand<ObjectReceivingResultDto>();
             }
 
             var objectRegistrations = from rg in _registrationsRepo.Table
                                       where rg.ObjectId == theRegistration.ObjectId
                                       select rg;
-
-            objectRegistrations = objectRegistrations.Include(or => or.ObjectReceiving).ThenInclude(rc => rc.ObjectReturning);
 
             // if not all of them returned or not received
             if (!objectRegistrations.All(or => or.ObjectReceiving == null || or.ObjectReceiving.ObjectReturning != null))
@@ -150,7 +151,7 @@ namespace Transaction.BusinessLogic.ReceivingCommands
                     ErrorCode = "TRANSACTION.RECEIVING.ADD.OBJECT.TAKEN",
                     Message = "Do you even have the object?",
                     StatusCode = System.Net.HttpStatusCode.BadRequest
-                }.ToCommand();
+                }.ToCommand<ObjectReceivingResultDto>();
             }
 
             theToken.Status = TokenStatus.Used;
@@ -171,7 +172,13 @@ namespace Transaction.BusinessLogic.ReceivingCommands
             await _receivingsRepo.SaveChangesAsync();
 
             // Publish the event
-            return new CommandResult();
+            return new CommandResult<ObjectReceivingResultDto>(new ObjectReceivingResultDto
+            {
+                ObjectId = _objectRepo.Get(theRegistration.ObjectId).OfferedObjectId,
+                ReceivedAtUtc = receiving.ReceivedAtUtc,
+                RegistrationId = theRegistration.ObjectRegistrationId,
+                ShouldBeReturnedAfterReceving = theRegistration.ShouldReturnItAfter,
+            });
         }
     }
 }

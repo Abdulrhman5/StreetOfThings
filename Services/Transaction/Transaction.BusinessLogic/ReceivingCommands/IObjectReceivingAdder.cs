@@ -5,6 +5,6 @@ namespace Transaction.BusinessLogic.ReceivingCommands
 {
     public interface IObjectReceivingAdder
     {
-        Task<CommandResult> AddReceiving(AddReceivingDto addReceivingDto);
+        Task<CommandResult<ObjectReceivingResultDto>> AddReceiving(AddReceivingDto addReceivingDto);
     }
 }

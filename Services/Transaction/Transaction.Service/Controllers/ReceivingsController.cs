@@ -26,10 +26,7 @@ namespace Transaction.Service.Controllers
         public async Task<IActionResult> Create([FromBody] AddReceivingDto receivingDto)
         {
             var result = await _receivingAdder.AddReceiving(receivingDto);
-            return StatusCode(result, new
-            {
-                Message = "The receiving has been added now you can hand over the thing.",
-            });
+            return StatusCode(result);
         }
     }
 }
