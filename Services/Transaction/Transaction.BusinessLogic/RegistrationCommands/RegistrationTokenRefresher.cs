@@ -54,7 +54,7 @@ namespace Transaction.BusinessLogic.RegistrationCommands
                 {
                     ErrorCode = "TRANSACTION.REGISTRATION.REFRESH.NOT.VALID",
                     Message = "You have no valid registration",
-                    StatusCode = System.Net.HttpStatusCode.Unauthorized
+                    StatusCode = System.Net.HttpStatusCode.BadRequest
                 }.ToCommand<RegistrationTokenResultDto>();
             }
 
