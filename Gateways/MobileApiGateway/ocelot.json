@@ -25,6 +25,19 @@
           "Port": 20001
         }
       ]
+    },
+    {
+      "UpstreamPathTemplate": "/api/transaction/{everything}",
+      "UpstreamHttpMethod": [],
+      "SwaggerKey": "transaction",
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 20002
+        }
+      ]
     }
   ],
   "SwaggerEndPoints": [
