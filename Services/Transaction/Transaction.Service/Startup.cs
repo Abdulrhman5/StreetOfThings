@@ -79,6 +79,8 @@ namespace Transaction.Service
                 endpoints.MapRazorPages();
 
             });
+
+            ConfigDatabases.SeedUsersDatabase(app);
         }
 
         public void ConfigureContainer(IUnityContainer container)
