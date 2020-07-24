@@ -1,0 +1,220 @@
+﻿@page
+@model AuthorizationService.Pages.Documentation.V1.AddReceivingModel
+@{
+    ViewData["Title"] = "Add Receiving (Owner gives loaner)";
+}
+
+<h1>Add Receiving (Owner gives loaner)</h1>
+
+<div class="container">
+    <h1>
+        Can be accessed at POST <b>http://HostName:Port/api/transaction/receiving/create</b>
+    </h1>
+    <hr />
+    <div class="container">
+        <div class="container">
+            <h3>
+                Url Parameters
+            </h3>
+            <table class="table">
+                <tr>
+                    <th>
+                        Key
+                    </th>
+                    <th>
+                        Type
+                    </th>
+                    <th>
+                        Value
+                    </th>
+                </tr>
+            </table>
+            NONE.
+        </div>
+        <br />
+        <div class="container">
+            <h3>
+                Header Parameters
+            </h3>
+            <table class="table">
+                <tr>
+
+                    <th>
+                        Key
+                    </th>
+                    <th>
+                        Value
+                    </th>
+                </tr>
+            </table>
+            NONE.
+        </div>
+        <br />
+
+        <div class="container">
+            <h3>
+                Body as JSON Object
+            </h3>
+            <pre>
+{
+    "RegistrationToken" : "3ovoAn_oHCyBtvcncEzNAKF0IpJo-y_vUw51fjltCKKJq0dcoqVoSEPkfYevosfnHA-yBs2DBk4n525E7pxUcOSweyXXhD9gY5zo"
+}
+</pre>
+            <br />
+            <br />
+        </div>
+
+        <div class="container">
+            <h2>
+                The Response Scenarios
+                <br />
+            </h2>
+            <br />
+            <div class="container">
+                <h3>
+                    Scenario 1: All good.
+                </h3>
+                <br />
+                <br />
+                <div class="container">
+                    <h3>
+                        Headers parameters
+                    </h3>
+                    The most important headers are:
+                    <table class="table">
+                        <tr>
+
+                            <th>
+                                Key
+                            </th>
+                            <th>
+                                Value
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                StatusCode
+                            </td>
+                            <td>
+                                200
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <br />
+                <div class="container">
+                    <h3>
+                        Body
+                    </h3>
+
+
+                    <pre>
+{
+    "registrationId": "b713e5aa-a837-45bd-8b0f-292a132eb976",
+    "receivedAtUtc": "2020-07-24T18:05:28.7512684Z",
+    "objectId": 15,
+    "shouldBeReturnedAfterReceving": "04:00:00"
+}					 </pre>
+                    <br />
+                </div>
+            </div>
+            <div>
+                <hr />
+                <h3>
+                    Scenario 2: The Token is faulty.
+                </h3>
+                <br />
+                <div class="container">
+                    <h3>
+                        Headers parameters
+                    </h3>
+                    The most important headers are:
+                    <table class="table">
+                        <tr>
+
+                            <th>
+                                Key
+                            </th>
+                            <th>
+                                Value
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                StatusCode
+                            </td>
+                            <td>
+                                401
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <br />
+                <div class="container">
+                    <h3>
+                        Body
+                    </h3>
+                    <pre>
+{
+    "errorCode": "TRANSACTION.RECEIVING.ADD.UNAUTHOROIZED",
+    "message": "You are not authorized to make this request",
+    "statusCode": 401
+}</pre>
+
+                    <br />
+                </div>
+            </div>
+
+            <div>
+                <hr />
+                <h3>
+                    Scenario 3: The registrationToken been already used, Or it is too old.
+                </h3>
+                <br />
+                <div class="container">
+                    <h3>
+                        Headers parameters
+                    </h3>
+                    The most important headers are:
+                    <table class="table">
+                        <tr>
+
+                            <th>
+                                Key
+                            </th>
+                            <th>
+                                Value
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                StatusCode
+                            </td>
+                            <td>
+                                400
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <br />
+                <div class="container">
+                    <h3>
+                        Body
+                    </h3>
+                    <pre>
+{
+    "errorCode": "TRANSACTION.RECEIVING.ADD.TOKEN.INVALID",
+    "message": "The QR code provided is too old",
+    "statusCode": 400
+}</pre>
+
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

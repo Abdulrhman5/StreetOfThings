@@ -174,7 +174,7 @@ namespace Transaction.BusinessLogic.ReceivingCommands
             // Publish the event
             return new CommandResult<ObjectReceivingResultDto>(new ObjectReceivingResultDto
             {
-                ObjectId = _objectRepo.Get(theRegistration.ObjectId).OfferedObjectId,
+                ObjectId = _objectRepo.Get(theRegistration.ObjectId).OriginalObjectId,
                 ReceivedAtUtc = receiving.ReceivedAtUtc,
                 RegistrationId = theRegistration.ObjectRegistrationId,
                 ShouldBeReturnedAfterReceving = theRegistration.ShouldReturnItAfter,
