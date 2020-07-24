@@ -9,6 +9,6 @@ namespace HostingHelpers
 {
     public interface IImageSaver 
     {
-        public Task<CommandResult<SavedImageViewModel>> SaveImage(IFormFile image);
+        Task<CommandResult<SavedImageViewModel>> SaveImage(IFormFile image);
     }
 }
