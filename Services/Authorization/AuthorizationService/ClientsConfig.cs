@@ -23,7 +23,9 @@ namespace AuthorizationService
                 new ApiResource("MobileBff","Moble API"),
                 new ApiResource("Catalog.Api", "Catalog api"),
                 new ApiResource("ProfileManagement", "Profile management"),
-                new ApiResource("Transaction.Api", "Transaction Api")
+                new ApiResource("Transaction.Api", "Transaction Api"),
+                new ApiResource("Catalog.Admin", "Catalog Administration"),
+                new ApiResource("Transaction.Admin", "Transaction Administration"),
             };
 
         public static IEnumerable<Client> Clients =>
@@ -44,6 +46,25 @@ namespace AuthorizationService
                         "Catalog.Api",
                         "ProfileManagement",
                         "Transaction.Api",
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile
+                    },
+                    AllowOfflineAccess = true,
+                },
+                new Client
+                {
+                    ClientId="AdminBff",
+                    ClientSecrets =
+                    {
+                        new Secret("AdminBffSecret".Sha256()),
+                    },
+
+                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+                    AllowedScopes =
+                    {
+                        "Catalog.Admin",
+                        "ProfileManagement",
+                        "Transaction.Admin",
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile
                     },
