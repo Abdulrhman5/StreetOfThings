@@ -1,6 +1,7 @@
 ﻿using ApplicationLogic.AppUserCommands;
 using ApplicationLogic.ProfilePhotoCommand;
 using DataAccessLayer;
+using IdentityModel;
 using IdentityServer4;
 using IdentityServer4.AspNetIdentity;
 using IdentityServer4.Extensions;
@@ -55,6 +56,14 @@ namespace AuthorizationService.Identity
                 var photoUrl = _profilePhotoUrl.ConstructOrDefaultForUser(user);
                 var pictureUrl = new Claim(ProfilePhoto, photoUrl);
                 context.AddRequestedClaims(new []{ normNameClaim, pictureUrl });
+
+                var roles = await _userManager.GetRolesAsync(user);
+
+                foreach (var role in roles)
+                {
+                    context.IssuedClaims.Add(new Claim(JwtClaimTypes.Role, role));
+                }
+
                 await base.GetProfileDataAsync(context);
             }
             else
@@ -63,6 +72,15 @@ namespace AuthorizationService.Identity
 
                 var userId = context.Subject?.GetSubjectId();
                 var tokenId = _loginManager.GetUserLoginId(userId);
+
+                var user = await base.UserManager.FindByIdAsync(userId);
+                var roles = await _userManager.GetRolesAsync(user);
+
+                foreach (var role in roles)
+                {
+                    context.IssuedClaims.Add(new Claim(JwtClaimTypes.Role, role));
+                }
+
                 context.IssuedClaims.Add(new Claim(TokenIdKey, tokenId.ToString(),"tokenId"));
             }
         }
