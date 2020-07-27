@@ -18,7 +18,7 @@
     "CatalogService": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:30001;http://localhost:20001",
+      "applicationUrl": "http://localhost:20001;https://localhost:30001",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

@@ -18,7 +18,7 @@
     "Transaction.Service": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:30002;http://localhost:20002",
+      "applicationUrl": "http://localhost:20002;https://localhost:30002",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

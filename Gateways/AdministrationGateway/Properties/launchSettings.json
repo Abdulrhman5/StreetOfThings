@@ -18,7 +18,7 @@
     "AdministrationGateway": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:35001;http://localhost:25001",
+      "applicationUrl": "http://localhost:25001;https://localhost:35001",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
