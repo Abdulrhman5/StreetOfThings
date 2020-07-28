@@ -8,7 +8,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace AdministrationGateway
+namespace AdministrationGateway.Controllers
 {
     [Route("Identity/connect")]
     public class TokenController : ControllerBase

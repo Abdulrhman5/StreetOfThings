@@ -26,6 +26,7 @@ namespace AuthorizationService
                 new ApiResource("Transaction.Api", "Transaction Api"),
                 new ApiResource("Catalog.Admin", "Catalog Administration"),
                 new ApiResource("Transaction.Admin", "Transaction Administration"),
+                new ApiResource("AdminGateway", "Admin gateway")
             };
 
         public static IEnumerable<Client> Clients =>
@@ -65,6 +66,7 @@ namespace AuthorizationService
                         "Catalog.Admin",
                         "ProfileManagement",
                         "Transaction.Admin",
+                        "AdminGateway",
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile
                     },
