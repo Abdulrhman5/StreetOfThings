@@ -23,6 +23,9 @@ namespace AuthorizationService.Identity
         {
             var loginInfo = context?.Request?.Raw?["loginInfo"];
 
+            if (context.Request?.Client?.ClientId == "AdminBff")
+                return (true,null);
+
             if(loginInfo == null)
             {
                 return (false, null);

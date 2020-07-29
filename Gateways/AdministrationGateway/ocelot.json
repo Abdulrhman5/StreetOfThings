@@ -1,9 +1,8 @@
 {
-  "ReRoutes": [
+  "Routes": [
     {
       "UpstreamPathTemplate": "/api/identity/{everything}",
       "UpstreamHttpMethod": [],
-      "SwaggerKey": "Identity",
       "DownstreamPathTemplate": "/api/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -16,7 +15,6 @@
     {
       "UpstreamPathTemplate": "/api/catalog/{everything}",
       "UpstreamHttpMethod": [],
-      "SwaggerKey": "catalog",
       "DownstreamPathTemplate": "/api/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -29,7 +27,6 @@
     {
       "UpstreamPathTemplate": "/api/transaction/{everything}",
       "UpstreamHttpMethod": [],
-      "SwaggerKey": "transaction",
       "DownstreamPathTemplate": "/api/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -40,24 +37,7 @@
       ]
     }
   ],
-  "SwaggerEndPoints": [
-    {
-      "Key": "Identity",
-      "Config": [
-        {
-          "Name": "Identity API",
-          "Version": "v1",
-          "Url": "http://localhost:20000/swagger/v1/swagger.json"
-        },
-        {
-          "Name": "Catalog API",
-          "Version": "v1",
-          "Url": "http://localhost:20001/swagger/v1/swagger.json"
-        }
-      ]
-    }
-  ],
   "GlobalConfiguration": {
-    "BaseUrl": "http://localhost"
+    "BaseUrl": "http://localhost:25001"
   }
 }

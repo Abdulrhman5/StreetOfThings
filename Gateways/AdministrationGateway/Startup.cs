@@ -32,7 +32,7 @@ namespace AdministrationGateway
         {
             services.AddControllers();
             services.AddRazorPages();
-            services.AddOcelot(Configuration);
+            services.AddOcelot();
             services.AddHttpContextAccessor();
 
             services.AddAuthentication("Bearer")
@@ -54,7 +54,7 @@ namespace AdministrationGateway
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -81,7 +81,8 @@ namespace AdministrationGateway
                 endpoints.MapRazorPages();
             });
 
-            app.UseOcelot().Wait();
+
+            await app.UseOcelot();
         }
 
         public void ConfigureContainer(IUnityContainer container)

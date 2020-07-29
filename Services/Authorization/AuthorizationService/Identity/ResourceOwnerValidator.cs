@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Models;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -43,6 +44,70 @@ namespace AuthorizationService.Identity
 
         public async Task ValidateAsync(ResourceOwnerPasswordValidationContext context)
         {
+            string clientId = context.Request?.Client?.ClientId;
+            AppUser user = await _userManager.FindByNameAsync(context.UserName);
+
+            if (clientId == "AdminBff")
+            {
+                var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+                if (!isAdmin)
+                {
+                    LoggerExtensions.LogInformation(_logger, "No user found matching username: {username}", new object[1]
+                    {
+                    context.UserName
+                    });
+                    await _events.RaiseAsync(new UserLoginFailureEvent(context.UserName, "invalid credentials", interactive: false, clientId));
+                    return;
+                }
+
+                SignInResult signInResult = await _signInManager.CheckPasswordSignInAsync(user, context.Password, lockoutOnFailure: true);
+                if (signInResult.Succeeded)
+                {
+                    string sub = await _userManager.GetUserIdAsync(user);
+                    LoggerExtensions.LogInformation(_logger, "Credentials validated for username: {username}", new object[1]
+                    {
+                    context.UserName
+                    });
+                    await _events.RaiseAsync(new UserLoginSuccessEvent(context.UserName, sub, context.UserName, interactive: false, clientId));
+
+
+                    context.Result = new GrantValidationResult(sub,
+                        "pwd",
+                        authTime: DateTime.UtcNow);
+                    return;
+                }
+                if (signInResult.IsLockedOut)
+                {
+                    LoggerExtensions.LogInformation(_logger, "Authentication failed for username: {username}, reason: locked out", new object[1]
+                    {
+                    context.UserName
+                    });
+                    await _events.RaiseAsync(new UserLoginFailureEvent(context.UserName, "locked out", interactive: false, clientId));
+                    context.Result = new GrantValidationResult(TokenRequestErrors.InvalidGrant);
+                    return;
+                }
+                else if (signInResult.IsNotAllowed)
+                {
+                    LoggerExtensions.LogInformation(_logger, "Authentication failed for username: {username}, reason: not allowed", new object[1]
+                    {
+                    context.UserName
+                    });
+                    await _events.RaiseAsync(new UserLoginFailureEvent(context.UserName, "not allowed", interactive: false, clientId));
+                    context.Result = new GrantValidationResult(TokenRequestErrors.InvalidGrant);
+                    return;
+                }
+                else
+                {
+                    LoggerExtensions.LogInformation(_logger, "Authentication failed for username: {username}, reason: invalid credentials", new object[1]
+                    {
+                        context.UserName
+                    });
+                    await _events.RaiseAsync(new UserLoginFailureEvent(context.UserName, "invalid credentials", interactive: false, clientId));
+                    context.Result = new GrantValidationResult(TokenRequestErrors.InvalidGrant);
+                    return;
+                }
+            }
+
             var loginInformationValidationResult = _informationValidator.ValidateLoginInfo(context);
 
             if (!loginInformationValidationResult.IsSuccess)
@@ -56,8 +121,6 @@ namespace AuthorizationService.Identity
                 return;
             }
 
-            string clientId = context.Request?.Client?.ClientId;
-            AppUser user = await _userManager.FindByNameAsync(context.UserName);
             if (user is null)
             {
                 LoggerExtensions.LogInformation(_logger, "No user found matching username: {username}", new object[1]
@@ -66,20 +129,6 @@ namespace AuthorizationService.Identity
                 });
                 await _events.RaiseAsync(new UserLoginFailureEvent(context.UserName, "invalid credentials", interactive: false, clientId));
                 return;
-            }
-
-            if(clientId == "AdminBff")
-            {
-                var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
-                if (!isAdmin)
-                {
-                    LoggerExtensions.LogInformation(_logger, "No user found matching username: {username}", new object[1]
-                    {
-                    context.UserName
-                    });
-                    await _events.RaiseAsync(new UserLoginFailureEvent(context.UserName, "invalid credentials", interactive: false, clientId));
-                    return;
-                }
             }
 
             SignInResult val = await _signInManager.CheckPasswordSignInAsync(user, context.Password, lockoutOnFailure: true);

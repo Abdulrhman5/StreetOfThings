@@ -19,5 +19,7 @@ namespace ApplicationLogic.AppUserQueries
 
         public int AccessFeildCount { get; set; }
         public DateTime RegisteredAt { get; set; }
+        public string PictureUrl { get; set; }
+
     }
 }

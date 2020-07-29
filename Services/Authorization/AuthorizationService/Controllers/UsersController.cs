@@ -1,5 +1,7 @@
 ﻿using ApplicationLogic.AppUserQueries;
+using CommonLibrary;
 using HostingHelpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -23,6 +25,15 @@ namespace AuthorizationService.Controllers
         public async Task<IActionResult> GetUsersByIds([FromBody]string[] usersIds)
         {
             var users = _userGetter.GetUserByIds(usersIds.ToList());
+            return Ok(users);
+        }
+
+        [Route("list")]
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetUsers([FromQuery] PagingArguments pagingArguments)
+        {
+            List<UserForAdministrationDto> users = await _userGetter.GetUsersAsync(pagingArguments);
             return Ok(users);
         }
     }
