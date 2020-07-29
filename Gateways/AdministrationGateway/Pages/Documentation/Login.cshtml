@@ -1,0 +1,186 @@
+﻿@page
+@model AdministrationGateway.Pages.Documentation.LoginModel
+@{
+    ViewData["Title"] = "Get Access Token";
+}
+
+<div class="container">
+    <h1>
+        Can be accessed at POST <b>http://localhost:25001/identity/connect/token</b>
+    </h1>
+    <hr />
+    <div class="container">
+        <div class="container">
+            <h3>
+                Url Parameters
+            </h3>
+            <table class="table">
+                <tr>
+                    <th>
+                        Key
+                    </th>
+                    <th>
+                        Type
+                    </th>
+                    <th>
+                        Value
+                    </th>
+                </tr>
+            </table>
+            NONE.
+        </div>
+        <br />
+        <div class="container">
+            <h3>
+                Header Parameters
+            </h3>
+            <table class="table">
+                <tr>
+
+                    <th>
+                        Key
+                    </th>
+                    <th>
+                        Value
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        Content-Type
+                    </td>
+                    <td>
+                        application/json
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <br />
+
+        <div class="container">
+            <h3>
+                Body as JSON Object
+            </h3>
+            <pre>
+{
+	"username":"Abdulrhman.Alrifai@outlook.com",    : String
+	"password":"1234512345",                        : String
+	"grant_type":"password",                        : String Constant
+}
+</pre>
+        </div>
+
+        <div class="container">
+            <h2>
+                The Response Scenarios
+                <br />
+            </h2>
+            <br />
+            <div class="container">
+                <h3>
+                    Scenario 1: All good.
+                </h3>
+                <br />
+                <br />
+                <div class="container">
+                    <h3>
+                        Headers parameters
+                    </h3>
+                    The most important headers are:
+                    <table class="table">
+                        <tr>
+
+                            <th>
+                                Key
+                            </th>
+                            <th>
+                                Value
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                StatusCode
+                            </td>
+                            <td>
+                                200
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <br />
+                <div class="container">
+                    <h3>
+                        Body
+                    </h3>
+
+
+                    <pre>
+{
+    "access_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IlRiRy1uS0VRc2VzdjBERjJpWlJwYXciLCJ0eXAiOiJhdCtqd3QifQ.eyJuYmYiOjE1OTU5MjUxMjAsIm
+        V4cCI6MTU5NTkyODcyMCwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDoyMDAwMCIsImF1ZCI6WyJBZG1pbkdhdGV3YXkiLCJDYXRhbG9nLkFkbWluIiwiUHJvZmlsZU
+        1hbmFnZW1lbnQiLCJUcmFuc2FjdGlvbi5BZG1pbiJdLCJjbGllbnRfaWQiOiJBZG1pbkJmZiIsInN1YiI6IjNjNTY0ZGE4LTE4ODUtNGIyOC1iNzcwLWU2NjBiMjUzNWU1YiI
+        sImF1dGhfdGltZSI6MTU5NTkyNTExOSwiaWRwIjoibG9jYWwiLCJyb2xlIjoiQWRtaW4iLCJ0b2tlbklkIjoiZmM0MWMzNjEtYTNhMi00ODI1LTlhZDktYTZhZWQ2MjM3MTE5I
+        iwic2NvcGUiOlsib3BlbmlkIiwicHJvZmlsZSIsIkFkbWluR2F0ZXdheSIsIkNhdGFsb2cuQWRtaW4iLCJQcm9maWxlTWFuYWdlbWVudCIsIlRyYW5zYWN0aW9uLkFkbWluIiw
+        ib2ZmbGluZV9hY2Nlc3MiXSwiYW1yIjpbInB3ZCJdfQ.buFnyfrh1LdvR3OY8VA46l52tVa7gWFdPkjHEFHW3c3YAlTPhjBIJpbMIr9Xwbr3M3QHfhH1z-4pJU_MqlY41o3GB
+        JArvuNyqJLZpwW2REH8KtG2FhIARRben2-JtPz88oenoflYOvoH_6zaMQxfzcroXF3fAmD1kJAkJC7jZ1jOBh-GH-COUPU1-Z9FO8zV16bZOuSqNX4BtSnE-Ax_RYpzqv4vp1
+        JjKJjd3uiZNpHi1nH25y6PSJhLj2F-2fuf8C_xs5jbA38O2P8gy7kdgGUvggIok3cjdtK-7MSJKxaAnamYr0Md4W-EgjszMX7cIYQt--hd2mx74Fk_zWpMdw",
+    "expires_in": 3600,
+    "token_type": "Bearer",
+    "refresh_token": "gJIKFcnfbOTvaqRySEUfVPDMyWSW0tXZvHy7TfsrzFM",
+    "scope": "AdminGateway Catalog.Admin offline_access openid profile ProfileManagement Transaction.Admin",
+    "tokenId": "fc41c361-a3a2-4825-9ad9-a6aed6237119"
+}
+					 </pre>
+                    <br />
+                </div>
+            </div>
+            <div>
+                <hr />
+                <h3>
+                    Scenario 2: The email or the password is incorrect.
+                </h3>
+                <br />
+                <div class="container">
+                    <h3>
+                        Headers parameters
+                    </h3>
+                    The most important headers are:
+                    <table class="table">
+                        <tr>
+
+                            <th>
+                                Key
+                            </th>
+                            <th>
+                                Value
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                StatusCode
+                            </td>
+                            <td>
+                                400
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <br />
+                <div class="container">
+                    <h3>
+                        Body
+                    </h3>
+                    <pre>
+{
+    "error": "invalid_grant",
+    "error_description": "invalid_username_or_password"
+}
+</pre>
+
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

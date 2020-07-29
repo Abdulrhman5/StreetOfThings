@@ -12,7 +12,7 @@ namespace AdministrationGateway.Controllers
     public class TestController : MyControllerBase
     {
         [Route("Dummy")]
-        [Authorize]
+        [Authorize(Policy = "Admin")]
         public IActionResult DummyData()
         {
             return Ok(new[]

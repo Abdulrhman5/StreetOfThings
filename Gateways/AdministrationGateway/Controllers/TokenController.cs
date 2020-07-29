@@ -37,7 +37,6 @@ namespace AdministrationGateway.Controllers
                 dic.Add("grant_type", loginDto.grant_type);
                 dic.Add("username", loginDto.username);
                 dic.Add("password", loginDto.password);
-                dic.Add("loginInfo", loginDto.LoginInfo);
             }
 
             var request = new HttpRequestMessage(HttpMethod.Post, accessTokenUrl)

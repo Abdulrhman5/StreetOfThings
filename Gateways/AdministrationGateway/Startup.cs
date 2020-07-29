@@ -31,18 +31,26 @@ namespace AdministrationGateway
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddRazorPages();
             services.AddOcelot(Configuration);
             services.AddHttpContextAccessor();
 
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
-                    options.Authority = Configuration["Servers:Identity"];
+                    options.Authority = Configuration["Services:Authorization"];
                     options.RequireHttpsMetadata = false;
                     options.Audience = "AdminGateway";
                 });
 
-            services.AddAuthorization();
+            services.AddAuthorization(options=>
+            { 
+                options.AddPolicy("Admin",pb =>
+                {
+                    pb.RequireRole(ClaimTypes.Role, "Admin");
+
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,6 +66,7 @@ namespace AdministrationGateway
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseStaticFiles();
 
             app.UseRouting();
             app.UseAuthentication();
@@ -65,13 +74,11 @@ namespace AdministrationGateway
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
+
+                endpoints.MapRazorPages();
             });
 
             app.UseOcelot().Wait();
