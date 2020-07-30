@@ -24,7 +24,12 @@ namespace AuthorizationService.Identity
             var loginInfo = context?.Request?.Raw?["loginInfo"];
 
             if (context.Request?.Client?.ClientId == "AdminBff")
-                return (true,null);
+                return (true, new LoginInformationDto
+                {
+                    Imei = null,
+                    Latitude = null,
+                    Longitude = null
+                });
 
             if(loginInfo == null)
             {
@@ -72,7 +77,8 @@ namespace AuthorizationService.Identity
             return (true, new LoginInformationDto
             {
                 Imei = imei,
-                Location = (dLat, dLon)
+                Latitude = dLat,
+                Longitude = dLon
             });
         }
     }

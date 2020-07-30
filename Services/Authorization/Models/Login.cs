@@ -23,7 +23,7 @@ namespace Models
 
         public DateTime? LoggedOutAt { get; set; }
 
-        public Point LoginLocation { get; set; }
+        public Point? LoginLocation { get; set; }
 
         public string Imei { get; set; }
 

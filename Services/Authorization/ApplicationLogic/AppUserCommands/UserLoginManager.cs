@@ -43,7 +43,7 @@ namespace ApplicationLogic.AppUserCommands
             var login = new Login
             {
                 LoginId = Guid.NewGuid(),
-                LoginLocation = new NetTopologySuite.Geometries.Point(loginDto.Location.Longitude, loginDto.Location.Latitude) { SRID = 4326 },
+                LoginLocation =  loginDto.Latitude is null? null : new NetTopologySuite.Geometries.Point(loginDto.Longitude.Value, loginDto.Latitude.Value) { SRID = 4326 },
                 Imei = loginDto.Imei,
                 LoggedAt = DateTime.UtcNow,
                 IPAddress = _httpContext.Connection.RemoteIpAddress.ToString(),
@@ -70,7 +70,8 @@ namespace ApplicationLogic.AppUserCommands
     {
         public string Imei { get; set; }
 
-        public (double Latitude, double Longitude) Location { get; set; }
+        public double? Longitude { get; set; }
+        public double? Latitude { get; set; }
     }
 
 }
