@@ -25,6 +25,8 @@ namespace AdministrationGateway
         }
 
         public IConfiguration Configuration { get; }
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
@@ -50,6 +52,13 @@ namespace AdministrationGateway
                     pb.RequireRole(ClaimTypes.Role, "Admin");
 
                 });
+            }); 
+
+            services.AddCors(options =>
+            {
+                var origins = Configuration.GetSection("AllowedCorsOrigins").Get<string[]>();
+                options.AddPolicy(MyAllowSpecificOrigins, builder => builder.WithOrigins(origins).AllowAnyHeader()
+                                                  .AllowAnyMethod());
             });
         }
 
@@ -69,6 +78,8 @@ namespace AdministrationGateway
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseCors(MyAllowSpecificOrigins);
+
             app.UseAuthentication();
             app.UseAuthorization();
 
