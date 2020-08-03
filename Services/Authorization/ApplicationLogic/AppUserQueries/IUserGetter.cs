@@ -11,5 +11,7 @@ namespace ApplicationLogic.AppUserQueries
         IEnumerable<UserDto> GetUserByIds(List<string> usersId);
         IEnumerable<UserForAdministrationDto> GetUsers();
         Task<List<UserForAdministrationDto>> GetUsersAsync(PagingArguments args);
+        Task<List<UserForAdministrationDto>> GetUsersAsync();
+
     }
 }

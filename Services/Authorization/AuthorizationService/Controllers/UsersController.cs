@@ -31,9 +31,9 @@ namespace AuthorizationService.Controllers
         [Route("list")]
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetUsers([FromQuery] PagingArguments pagingArguments)
+        public async Task<IActionResult> GetUsers()
         {
-            List<UserForAdministrationDto> users = await _userGetter.GetUsersAsync(pagingArguments);
+            List<UserForAdministrationDto> users = await _userGetter.GetUsersAsync();
             return Ok(users);
         }
     }

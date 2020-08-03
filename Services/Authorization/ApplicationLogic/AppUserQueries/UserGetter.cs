@@ -78,5 +78,23 @@ namespace ApplicationLogic.AppUserQueries
                     };
             return await x.SkipTakeAsync(args);
         }
+
+        public async Task<List<UserForAdministrationDto>> GetUsersAsync()
+        {
+            var x = from u in _usersRepo.Table
+                    select new UserForAdministrationDto
+                    {
+                        Id = Guid.Parse(u.Id),
+                        Email = u.Email,
+                        Gender = u.Gender.ToString(),
+                        IsEmailConfirmed = u.EmailConfirmed,
+                        PhoneNumber = u.PhoneNumber,
+                        RegisteredAt = u.CreatedAt,
+                        Username = u.UserName,
+                        AccessFeildCount = u.AccessFailedCount,
+                        PictureUrl = _urlConstructor.ConstructOrDefault(u.Photos.OrderByDescending(pp => pp.AddedAtUtc).FirstOrDefault()),
+                    };
+            return await x.ToListAsync();
+        }
     }
 }
