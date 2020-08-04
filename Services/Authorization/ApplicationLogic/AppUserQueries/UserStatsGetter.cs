@@ -2,12 +2,8 @@
 using Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Security.Cryptography;
+using System.Threading.Tasks;
 
 namespace ApplicationLogic.AppUserQueries
 {
@@ -26,18 +22,18 @@ namespace ApplicationLogic.AppUserQueries
             var endDate = DateTime.UtcNow;
 
             var users = (from u in _usersRepo.Table.Where(uu => uu.CreatedAt >= startDate && uu.CreatedAt <= endDate)
-                        group u by u.CreatedAt.Date into g
-                        orderby g.Key
-                        select new UserMonthlyCountStats
-                        {
-                            Count = g.Count(),
-                            Day = g.Key
-                        }).ToList();
+                         group u by u.CreatedAt.Date into g
+                         orderby g.Key
+                         select new UserMonthlyCountStats
+                         {
+                             Count = g.Count(),
+                             Day = g.Key
+                         }).ToList();
             var days = Enumerable.Range(0, 31).Select(offset => endDate.AddDays(-offset)).ToList();
 
             days.ForEach(day =>
             {
-                if(!users.Any(u => u.Day.Date == day.Date))
+                if (!users.Any(u => u.Day.Date == day.Date))
                 {
                     users.Add(new UserMonthlyCountStats
                     {
@@ -48,8 +44,53 @@ namespace ApplicationLogic.AppUserQueries
             });
 
             users = users.OrderBy(u => u.Day.Date).ToList();
-            
+
             return users;
+        }
+
+        public async Task<List<UserDailyCountStats>> GetUsersCountOverToday()
+        {
+            var startDate = DateTime.UtcNow.AddHours(-24);
+            var endDate = DateTime.UtcNow;
+
+            var usersHourly = (from u in _usersRepo.Table
+                               where u.CreatedAt >= startDate && u.CreatedAt <= endDate
+                               group u by new
+                               {
+                                   u.CreatedAt.Date,
+                                   u.CreatedAt.Hour
+                               } into g
+                               select new
+                               {
+                                   Count = g.Count(),
+                                   Date = g.Key.Date,
+                                   Hour = g.Key.Hour
+                               }).ToList();
+            var usersHourlyFormated = usersHourly.Select(u => new UserDailyCountStats
+            {
+                Count = u.Count,
+                DateTime = new DateTime(u.Date.Year, u.Date.Month, u.Date.Day, u.Hour, 0, 0)
+            }).ToList();
+
+            var hours = Enumerable.Range(0, 24).Select(offset => {
+
+                var dateTime = endDate.AddHours(-offset);
+                return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, 0, 0);
+            }).ToList();
+
+            hours.ForEach(hour =>
+            {
+                if (!usersHourlyFormated.Any(u => u.DateTime == hour))
+                {
+                    usersHourlyFormated.Add(new UserDailyCountStats
+                    {
+                        Count = 0,
+                        DateTime = new DateTime(hour.Year, hour.Month, hour.Day, hour.Hour, 0, 0)
+                    });
+                }
+            });
+            usersHourlyFormated = usersHourlyFormated.OrderBy(u => u.DateTime).ToList();
+            return usersHourlyFormated;
         }
     }
 }

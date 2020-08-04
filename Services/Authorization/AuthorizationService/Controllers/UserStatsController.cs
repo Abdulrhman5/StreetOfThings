@@ -26,5 +26,13 @@ namespace AuthorizationService.Controllers
             var stats = await _userStats.GetUsersCountOverMonth();
             return Ok(stats);
         }
+
+        [Route("today")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> UsersStatsToday()
+        {
+            var stats = await _userStats.GetUsersCountOverToday();
+            return Ok(stats);
+        }
     }
 }
