@@ -33,6 +33,8 @@ namespace ApplicationLogic
             Container.RegisterType<ProfilePhotoUrlConstructor>();
             Container.RegisterType<UserProfileGetter>();
 
+            Container.RegisterType<IUserStatsGetter, UserStatsGetter>();
+
             new DalUnityConfiguration().ConfigUnity(container);
         }
     }

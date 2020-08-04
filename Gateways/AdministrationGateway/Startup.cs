@@ -33,7 +33,7 @@ namespace AdministrationGateway
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddRazorPages();
+            services.AddRazorPages().AddRazorRuntimeCompilation();
             services.AddOcelot();
             services.AddHttpContextAccessor();
 

@@ -20,7 +20,7 @@ namespace AuthorizationService.Controllers
         }
 
         [Route("lastMonth")]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> UsersStatsLastMonth()
         {
             var stats = await _userStats.GetUsersCountOverMonth();

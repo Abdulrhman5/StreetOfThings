@@ -41,7 +41,7 @@ namespace ApplicationLogic.AppUserQueries
                 {
                     users.Add(new UserMonthlyCountStats
                     {
-                        Day = day,
+                        Day = day.Date,
                         Count = 0
                     });
                 }

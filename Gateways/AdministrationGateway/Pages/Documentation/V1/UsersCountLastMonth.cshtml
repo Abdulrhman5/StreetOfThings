@@ -1,0 +1,240 @@
+﻿@page
+@model AdministrationGateway.Pages.Documentation.V1.UsersCountLastMonthModel
+@{
+    ViewData["Title"] = "Users count last month";
+}
+
+<h1>Users count last month</h1>
+
+<div class="container">
+    <h2>
+        Can be accessed at GET <b>http://localhost:25001/api/identity/stats/users/lastmonth</b>
+    </h2>
+    <hr />
+    <div class="container">
+        <div class="container">
+            <h3>
+                Url Parameters
+            </h3>
+            <table class="table">
+                <tr>
+                    <th>
+                        Key
+                    </th>
+                    <th>
+                        Type
+                    </th>
+                    <th>
+                        Value
+                    </th>
+                </tr>
+
+            </table>
+            None.
+        </div>
+        <br />
+        <div class="container">
+            <h3>
+                Header Parameters
+            </h3>
+            <table class="table">
+                <tr>
+
+                    <th>
+                        Key
+                    </th>
+                    <th>
+                        Value
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        Authorization
+                    </td>
+                    <td>
+                        bearer eyJhbGciOiJSU.zI1NiIsImtpZCI6Il.RimF1ZCI6WyJDYXRhbG9n
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <br />
+
+        <div class="container">
+            <h2>
+                The Response Scenarios
+                <br />
+            </h2>
+            <br />
+            <div class="container">
+                <h3>
+                    Scenario 1: All good.
+                </h3>
+                <br />
+                <br />
+                <div class="container">
+                    <h3>
+                        Headers parameters
+                    </h3>
+                    The most important headers are:
+                    <table class="table">
+                        <tr>
+
+                            <th>
+                                Key
+                            </th>
+                            <th>
+                                Value
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                StatusCode
+                            </td>
+                            <td>
+                                200
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <br />
+                <div class="container">
+                    <h3>
+                        Body
+                    </h3>
+
+
+                    <pre>
+[
+    {
+        "count": 0,
+        "day": "2020-07-05T11:08:42.5089988Z"
+    },
+    {
+        "count": 0,
+        "day": "2020-07-06T11:08:42.5089988Z"
+    },
+    {
+        "count": 0,
+        "day": "2020-07-07T11:08:42.5089988Z"
+    },
+    {
+        "count": 0,
+        "day": "2020-07-08T11:08:42.5089988Z"
+    },
+    {
+        "count": 0,
+        "day": "2020-07-09T11:08:42.5089988Z"
+    },
+    {
+        "count": 0,
+        "day": "2020-07-10T11:08:42.5089988Z"
+    },
+    {
+        "count": 0,
+        "day": "2020-07-11T11:08:42.5089988Z"
+    },
+    {
+        "count": 0,
+        "day": "2020-07-12T11:08:42.5089988Z"
+    },
+    {
+        "count": 0,
+        "day": "2020-07-13T11:08:42.5089988Z"
+    },
+    {
+        "count": 0,
+        "day": "2020-07-14T11:08:42.5089988Z"
+    },
+    {
+        "count": 0,
+        "day": "2020-07-15T11:08:42.5089988Z"
+    },
+    {
+        "count": 0,
+        "day": "2020-07-16T11:08:42.5089988Z"
+    },
+    {
+        "count": 0,
+        "day": "2020-07-17T11:08:42.5089988Z"
+    },
+    {
+        "count": 0,
+        "day": "2020-07-18T11:08:42.5089988Z"
+    },
+    {
+        "count": 0,
+        "day": "2020-07-19T11:08:42.5089988Z"
+    },
+    {
+        "count": 0,
+        "day": "2020-07-20T11:08:42.5089988Z"
+    },
+    {
+        "count": 0,
+        "day": "2020-07-21T11:08:42.5089988Z"
+    },
+    {
+        "count": 0,
+        "day": "2020-07-22T11:08:42.5089988Z"
+    },
+    {
+        "count": 0,
+        "day": "2020-07-23T11:08:42.5089988Z"
+    },
+    {
+        "count": 0,
+        "day": "2020-07-24T11:08:42.5089988Z"
+    },
+    {
+        "count": 0,
+        "day": "2020-07-25T11:08:42.5089988Z"
+    },
+    {
+        "count": 0,
+        "day": "2020-07-26T11:08:42.5089988Z"
+    },
+    {
+        "count": 0,
+        "day": "2020-07-27T11:08:42.5089988Z"
+    },
+    {
+        "count": 0,
+        "day": "2020-07-28T11:08:42.5089988Z"
+    },
+    {
+        "count": 0,
+        "day": "2020-07-29T11:08:42.5089988Z"
+    },
+    {
+        "count": 0,
+        "day": "2020-07-30T11:08:42.5089988Z"
+    },
+    {
+        "count": 0,
+        "day": "2020-07-31T11:08:42.5089988Z"
+    },
+    {
+        "count": 0,
+        "day": "2020-08-01T11:08:42.5089988Z"
+    },
+    {
+        "count": 0,
+        "day": "2020-08-02T11:08:42.5089988Z"
+    },
+    {
+        "count": 0,
+        "day": "2020-08-03T11:08:42.5089988Z"
+    },
+    {
+        "count": 0,
+        "day": "2020-08-04T11:08:42.5089988Z"
+    }
+]					 </pre>
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
