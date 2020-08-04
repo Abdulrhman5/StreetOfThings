@@ -17,6 +17,7 @@ using System;
 using Serilog;
 using System.Text;
 using AuthorizationService.Grpc;
+using Microsoft.Extensions.Logging;
 
 namespace AuthorizationService
 {
@@ -41,7 +42,7 @@ namespace AuthorizationService
             var configurationsCString = Configuration.GetConnectionString("ConfigurationsConnection");
             var persistedCString = Configuration.GetConnectionString("PersistedConnection");
 
-            services.AddDbContext<AuthorizationContext>(options => options.UseSqlServer(usersCString, x => x.UseNetTopologySuite()));
+            services.AddDbContext<AuthorizationContext>(options => options.UseSqlServer(usersCString, x => x.UseNetTopologySuite()).UseLoggerFactory(MyLoggerFactory));
 
             services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
@@ -115,6 +116,16 @@ namespace AuthorizationService
             ConfigDatabases.SeedUsersDatabase(app);
         }
 
+
+        public static readonly ILoggerFactory MyLoggerFactory
+            = LoggerFactory.Create(builder =>
+            {
+                builder
+                    .AddFilter((category, level) =>
+                        category == DbLoggerCategory.Database.Command.Name
+                        && level == LogLevel.Information)
+                    .AddConsole();
+            });
         public void ConfigureContainer(IUnityContainer container)
         {
             new UnityConfiguration().ConfigUnity(container);
