@@ -36,5 +36,16 @@ namespace AuthorizationService.Controllers
             List<UserForAdministrationDto> users = await _userGetter.GetUsersAsync();
             return Ok(users);
         }
+
+        [Route("V1.1/list")]
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetUsers1()
+        {
+            var usersWithStats = await _userGetter.GetUsersWithStatsAsync();
+            return Ok(usersWithStats);
+        }
+
+
     }
 }

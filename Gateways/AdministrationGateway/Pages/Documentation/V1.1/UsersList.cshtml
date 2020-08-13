@@ -1,0 +1,143 @@
+﻿@page
+@model AdministrationGateway.Pages.Documentation.V1_1.UsersListModel
+@{
+    ViewData["Title"] = "UsersList";
+}
+
+<div class="container">
+    <h1>
+        Can be accessed at GET <b>http://localhost:25001/api/identity/users/v1.1/list</b>
+    </h1>
+    <hr />
+    <div class="container">
+        <div class="container">
+            <h3>
+                Url Parameters
+            </h3>
+            <table class="table">
+                <tr>
+                    <th>
+                        Key
+                    </th>
+                    <th>
+                        Type
+                    </th>
+                    <th>
+                        Value
+                    </th>
+                </tr>
+
+            </table>
+            None.
+
+        </div>
+        <br />
+        <div class="container">
+            <h3>
+                Header Parameters
+            </h3>
+            <table class="table">
+                <tr>
+
+                    <th>
+                        Key
+                    </th>
+                    <th>
+                        Value
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        Authorization
+                    </td>
+                    <td>
+                        bearer eyJhbGciOiJSU.zI1NiIsImtpZCI6Il.RimF1ZCI6WyJDYXRhbG9n
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <br />
+
+        <div class="container">
+            <h2>
+                The Response Scenarios
+                <br />
+            </h2>
+            <br />
+            <div class="container">
+                <h3>
+                    Scenario 1: All good.
+                </h3>
+                <br />
+                <br />
+                <div class="container">
+                    <h3>
+                        Headers parameters
+                    </h3>
+                    The most important headers are:
+                    <table class="table">
+                        <tr>
+
+                            <th>
+                                Key
+                            </th>
+                            <th>
+                                Value
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                StatusCode
+                            </td>
+                            <td>
+                                200
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <br />
+                <div class="container">
+                    <h3>
+                        Body
+                    </h3>
+
+
+                    <pre>
+{
+    "allUserCount": 2,
+    "blockedUsersCount": 0,
+    "maleUsersCount": 2,
+    "femaleUsersCount": 0,
+    "users": [
+        {
+            "id": "3c564da8-1885-4b28-b770-e660b2535e5b",
+            "email": "Abdulrhman.m.Alrifai@gmail.com",
+            "username": "Abdulrhman.m.Alrifai@gmail.com",
+            "phoneNumber": "+963 930-129-552",
+            "gender": "Male",
+            "isEmailConfirmed": true,
+            "accessFeildCount": 0,
+            "registeredAt": "2020-08-04T08:18:46",
+            "pictureUrl": "http://localhost:20000/Resources/Photo/Profile/e25e7913-dbee-42fe-9d36-1ccc29272bee"
+        },
+        {
+            "id": "43853684-f96f-44dd-bb00-6dd6f5c70a5b",
+            "email": "TestUser@Auth.com",
+            "username": "TestUser@Auth.com",
+            "phoneNumber": null,
+            "gender": "Male",
+            "isEmailConfirmed": true,
+            "accessFeildCount": 0,
+            "registeredAt": "2020-07-17T08:18:33",
+            "pictureUrl": "http://localhost:20000/favicon.ico"
+        }
+    ]
+}					 </pre>
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
