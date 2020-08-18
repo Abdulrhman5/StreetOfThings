@@ -67,10 +67,12 @@ namespace AuthorizationService
                         "ProfileManagement",
                         "Transaction.Admin",
                         "AdminGateway",
+                        "Transaction.Api",
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile
                     },
                     AllowOfflineAccess = true,
+                    AccessTokenLifetime = 60*60*24*30
                 },
             };
     }

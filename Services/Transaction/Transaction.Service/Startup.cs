@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using EventBus;
 using Microsoft.AspNetCore.Builder;
@@ -43,6 +44,16 @@ namespace Transaction.Service
                     options.RequireHttpsMetadata = false;
                     options.Audience = "Transaction.Api";
                 });
+
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Admin", pb =>
+                {
+                    pb.RequireRole(ClaimTypes.Role, "Admin");
+
+                });
+            });
 
             services.AddIntegrationEventService(new IntegrationEventOptions
             {
