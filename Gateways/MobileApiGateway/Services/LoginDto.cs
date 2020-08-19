@@ -1,4 +1,4 @@
-﻿namespace MobileApiGateway
+﻿namespace MobileApiGateway.Services
 {
     public class LoginDto
     {

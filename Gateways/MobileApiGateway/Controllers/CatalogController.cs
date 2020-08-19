@@ -9,7 +9,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace MobileApiGateway
+namespace MobileApiGateway.Controllers
 {
     [Route("api/catalog")]
     public class CatalogController : MyControllerBase
