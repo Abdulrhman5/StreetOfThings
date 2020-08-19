@@ -19,6 +19,6 @@ services:
         build:
           context: .
           dockerfile: Services/Authorization/AuthorizationService/Dockerfile
-
+        
         depends_on:
             - sqldata

@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package AuthorizationService.Grpc;
+
+
+service UsersGrpc {
+  rpc GetUsersData (UsersIdsModel) returns (UsersModel) {}
+}
+
+message UsersModel{
+    repeated UserModel Users = 1;
+}
+
+// The User response DTO
+message UserModel {
+  string id = 1;
+  string username = 2;
+  string name= 3;
+  string email = 4;
+  string picture_url=5;
+}
+
+message UsersIdsModel {
+    repeated string UsersIds = 1;
+}

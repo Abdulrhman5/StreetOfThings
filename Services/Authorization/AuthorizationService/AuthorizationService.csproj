@@ -64,10 +64,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="Proto\user_directory.proto" Generator="MSBuild:Compile" />
-    <Content Include="Proto\user_directory.proto" />
+    <Protobuf Include="Proto\user_service.proto" Generator="MSBuild:Compile" />
+    <Content Include="Proto\user_service.proto" />
     <None Remove="@(Protobuf)" />
-    <None Remove="Proto\user_directory.proto" />
+    <None Remove="Proto\user_service.proto" />
   </ItemGroup>
 
 </Project>

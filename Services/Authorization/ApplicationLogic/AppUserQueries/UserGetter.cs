@@ -61,6 +61,28 @@ namespace ApplicationLogic.AppUserQueries
             return users;
         }
 
+
+        public async Task<IEnumerable<UserDto>> GetUserByIdsAsync(List<string> usersId)
+        {
+            if(usersId.IsNullOrEmpty())
+            {
+                return new List<UserDto>();
+            }
+
+            var users = from u in _usersRepo.Table
+                        where usersId.Any(i => i == u.Id)
+                        select new UserDto
+                        {
+                            Email = u.Email,
+                            Name = u.NormalizedName,
+                            PictureUrl = _urlConstructor.ConstructOrDefault(u.Photos.OrderByDescending(pp => pp.AddedAtUtc).FirstOrDefault()),
+                            Username = u.UserName,
+                            Id = u.Id
+                        };
+
+            return await users.ToListAsync();
+        }
+
         public async  Task<List<UserForAdministrationDto>> GetUsersAsync(PagingArguments args)
         {
             var x = from u in _usersRepo.Table

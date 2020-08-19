@@ -1,41 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using ApplicationLogic.AppUserQueries;
+using Grpc.Core;
 using System.Linq;
 using System.Threading.Tasks;
-using ApplicationLogic.ProfilePhotoCommand;
-using AuthorizationService;
-using DataAccessLayer;
-using Grpc.Core;
-using Models;
-using static AuthorizationService.UserDirectory;
+using static AuthorizationService.Grpc.UsersGrpc;
 
 namespace AuthorizationService.Grpc
 {
-    public class UserService : UserDirectoryBase
+    public class UserService : UsersGrpcBase
     {
-        private IRepository<string, AppUser> _usersRepo;
-
-        private ProfilePhotoUrlConstructor _urlConstructor;
-        public UserService (IRepository<string , AppUser> usersRepo)
+        private IUserGetter _userGetter;
+        public UserService(IUserGetter userGetter)
         {
-            _usersRepo = usersRepo;
+            _userGetter = userGetter;
 
         }
 
-        public override async Task<UsersModel> GetUsersData(UsersIds request, ServerCallContext context)
+        public override async Task<UsersModel> GetUsersData(UsersIdsModel request, ServerCallContext context)
         {
-            var users = from u in _usersRepo.Table
-                        where request.UserId.Any(i => i == u.Id)
-                        select new UserModel
-                        {
-                            Email = u.Email,
-                            NormializedName = u.NormalizedName,
-                            PictureUrl = _urlConstructor.ConstructOrDefault(u.Photos.OrderByDescending(pp => pp.AddedAtUtc).FirstOrDefault()),
-                            Username = u.UserName,
-                        };
+            var users = (await _userGetter.GetUserByIdsAsync(request.UsersIds.ToList())).ToList();
+            var model = new UsersModel();
 
-            var model =  new UsersModel();
-            model.Users.AddRange(users);
+            model.Users.AddRange(users.Select(user => new UserModel
+            {
+                Email = user.Email,
+                Id = user.Id,
+                Name = user.Name,
+                PictureUrl = user.PictureUrl,
+                Username = user.PictureUrl
+            }));
             return model;
         }
     }

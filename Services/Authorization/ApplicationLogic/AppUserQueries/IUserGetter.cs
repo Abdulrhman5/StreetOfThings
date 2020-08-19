@@ -9,6 +9,7 @@ namespace ApplicationLogic.AppUserQueries
     public interface IUserGetter
     {
         IEnumerable<UserDto> GetUserByIds(List<string> usersId);
+        Task<IEnumerable<UserDto>> GetUserByIdsAsync(List<string> usersId);
         IEnumerable<UserForAdministrationDto> GetUsers();
         Task<List<UserForAdministrationDto>> GetUsersAsync(PagingArguments args);
         Task<List<UserForAdministrationDto>> GetUsersAsync();

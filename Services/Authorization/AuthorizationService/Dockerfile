@@ -7,9 +7,11 @@ WORKDIR /src
 COPY ["Services/Authorization/AuthorizationService/AuthorizationService.csproj", "Services/Authorization/AuthorizationService/"]
 COPY ["Services/Authorization/ApplicationLogic/ApplicationLogic.csproj", "Services/Authorization/ApplicationLogic/"]
 COPY ["Services/Authorization/Models/Models.csproj", "Services/Authorization/Models/"]
-COPY ["Services/Authorization/CommonLibrary/CommonLibrary.csproj", "Services/Authorization/CommonLibrary/"]
+COPY ["Services/CommonLibrary/CommonLibrary.csproj", "Services/CommonLibrary/"]
 COPY ["Services/Authorization/DataAccessLayer/DataAccessLayer.csproj", "Services/Authorization/DataAccessLayer/"]
 COPY ["Services/Authorization/Infrastructure/Infrastructure.csproj", "Services/Authorization/Infrastructure/"]
+COPY ["BuildingBlocks/HostingHelpers/HostingHelpers.csproj", "BuildingBlocks/HostingHelpers/"]
+COPY ["BuildingBlocks/EventBus/EventBus.csproj", "BuildingBlocks/EventBus/"]
 
 RUN dotnet restore "Services/Authorization/AuthorizationService/AuthorizationService.csproj"
 COPY . .
