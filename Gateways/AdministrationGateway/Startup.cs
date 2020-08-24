@@ -75,6 +75,7 @@ namespace AdministrationGateway
                 options.Address = new Uri("http://localhost:21001");
                 options.ChannelOptionsActions.Add(channelOptions => channelOptions.Credentials = ChannelCredentials.Insecure);
             });
+            services.ConfigureProjectServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -109,11 +110,6 @@ namespace AdministrationGateway
 
 
             await app.UseOcelot();
-        }
-
-        public void ConfigureContainer(IUnityContainer container)
-        {
-            new UnityConfig().ConfigUnity(container);
         }
 
     }
