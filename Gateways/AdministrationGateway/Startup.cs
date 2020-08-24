@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using AuthorizationService.Grpc;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -12,6 +13,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using Grpc.Net.Client;
+using Grpc.Core;
+using Ocelot.Values;
 using Unity;
 
 namespace AdministrationGateway
@@ -26,7 +30,6 @@ namespace AdministrationGateway
 
         public IConfiguration Configuration { get; }
         readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
@@ -59,6 +62,18 @@ namespace AdministrationGateway
                 var origins = Configuration.GetSection("AllowedCorsOrigins").Get<string[]>();
                 options.AddPolicy(MyAllowSpecificOrigins, builder => builder.WithOrigins(origins).AllowAnyHeader()
                                                   .AllowAnyMethod());
+            });
+            // Enable support for unencrypted HTTP2  
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+
+            // Registration of the DI service
+            services.AddGrpcClient<UsersGrpc.UsersGrpcClient>(options => {
+                options.Address = new Uri("http://localhost:21000");
+                options.ChannelOptionsActions.Add(channelOptions => channelOptions.Credentials = ChannelCredentials.Insecure);
+            }); 
+            services.AddGrpcClient<CatalogService.Grpc.ObjectsGrpc.ObjectsGrpcClient>(options => {
+                options.Address = new Uri("http://localhost:21001");
+                options.ChannelOptionsActions.Add(channelOptions => channelOptions.Credentials = ChannelCredentials.Insecure);
             });
         }
 
@@ -100,5 +115,6 @@ namespace AdministrationGateway
         {
             new UnityConfig().ConfigUnity(container);
         }
+
     }
 }

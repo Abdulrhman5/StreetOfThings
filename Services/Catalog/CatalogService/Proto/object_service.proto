@@ -1,0 +1,23 @@
+﻿syntax = "proto3";
+
+package CatalogService.Grpc;
+
+
+service ObjectsGrpc {
+  rpc GetObjectsData (ObjectsIdsModel) returns (ObjectsModel) {}
+}
+
+message ObjectsModel{
+    repeated ObjectModel Objects = 1;
+}
+
+// The User response DTO
+message ObjectModel {
+  int32 id = 1;
+  string name = 2;
+  string description = 3;   
+}
+
+message ObjectsIdsModel {
+    repeated int32 ObjectsIds = 1;
+}

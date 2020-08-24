@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -50,8 +52,14 @@ namespace CatalogService
             }
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
+        public static IHostBuilder CreateHostBuilder(string[] args) {
+            var configurations = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", true, true)
+                .AddEnvironmentVariables()
+                .Build();
+
+            return Host.CreateDefaultBuilder(args)
                 .UseUnityServiceProvider()
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
@@ -64,6 +72,19 @@ namespace CatalogService
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.ConfigureKestrel(serverOptions =>
+                    {
+                        serverOptions.Listen(IPAddress.Any, configurations.GetValue<int>("Hosting:HttpPort"), options =>
+                        {
+                            options.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http1AndHttp2;
+                        });
+
+                        serverOptions.Listen(IPAddress.Any, configurations.GetValue<int>("Hosting:GrpcPort"), options =>
+                        {
+                            options.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http2;
+                        });
+                    });
                 });
+        }
     }
 }

@@ -1,21 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Catalog.ApplicationLogic.Events;
+using Catalog.ApplicationLogic.Events.EventHandlers;
+using Catalog.DataAccessLayer;
+using CatalogService.Grpc;
+using EventBus;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Serilog;
 using Microsoft.OpenApi.Models;
-using Catalog.DataAccessLayer;
-using Microsoft.EntityFrameworkCore;
+using Serilog;
 using Unity;
-using EventBus;
-using Catalog.ApplicationLogic.Events;
-using Catalog.ApplicationLogic.Events.EventHandlers;
 
 namespace CatalogService
 {
@@ -62,6 +59,13 @@ namespace CatalogService
                 RetryCount = 5,
                 SubscriptionClientName = "Catalog",
             });
+
+            services.AddGrpc(o =>
+            {
+                o.EnableDetailedErrors = true;
+
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -75,7 +79,7 @@ namespace CatalogService
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-    
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
@@ -86,6 +90,7 @@ namespace CatalogService
                 {
                     await context.Response.WriteAsync("Hello World!");
                 });
+                endpoints.MapGrpcService<ObjectService>();
             });
 
             ConfigDatabases.SeedUsersDatabase(app);

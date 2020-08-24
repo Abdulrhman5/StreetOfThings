@@ -11,6 +11,13 @@ namespace AdministrationGateway.Controllers
     [Route("api/[controller]")]
     public class TestController : MyControllerBase
     {
+        private CatalogService.Grpc.ObjectsGrpc.ObjectsGrpcClient client;
+
+        public TestController(CatalogService.Grpc.ObjectsGrpc.ObjectsGrpcClient client)
+        {
+            this.client = client;
+        }
+
         [Route("Dummy")]
         [Authorize(Policy = "Admin")]
         public IActionResult DummyData()

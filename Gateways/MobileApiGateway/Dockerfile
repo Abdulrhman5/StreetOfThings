@@ -8,7 +8,10 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 WORKDIR /src
 COPY ["Gateways/MobileApiGateway/MobileApiGateway.csproj", "Gateways/MobileApiGateway/"]
-COPY ["Services/Authorization/CommonLibrary/CommonLibrary.csproj", "Services/Authorization/CommonLibrary/"]
+COPY ["Services/CommonLibrary/CommonLibrary.csproj", "Services/CommonLibrary/"]
+COPY ["BuildingBlocks/HostingHelpers/HostingHelpers.csproj", "BuildingBlocks/HostingHelpers/"]
+COPY ["Services/Authorization/AuthorizationService/Proto/user_service.proto", "Services/Authorization/AuthorizationService/Proto/user_service.proto"]
+
 RUN dotnet restore "Gateways/MobileApiGateway/MobileApiGateway.csproj"
 COPY . .
 WORKDIR "/src/Gateways/MobileApiGateway"

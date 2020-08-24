@@ -26,7 +26,7 @@ namespace AuthorizationService.Grpc
                 Id = user.Id,
                 Name = user.Name,
                 PictureUrl = user.PictureUrl,
-                Username = user.PictureUrl
+                Username = user.Username
             }));
             return model;
         }

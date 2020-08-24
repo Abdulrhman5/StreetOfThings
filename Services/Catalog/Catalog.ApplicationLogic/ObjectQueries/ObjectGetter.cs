@@ -82,5 +82,30 @@ namespace Catalog.ApplicationLogic.ObjectQueries
             var objectsList = await objects.FirstOrDefaultAsync();
             return objectsList;
         }
+
+
+        public async Task<List<ObjectDto>> GetObjectsByIds(List<int> objectsIds)
+        {
+            var filteredObjects = _objectRepo.Table.Where(_queryHelper.IsValidObject)
+                .Where(_queryHelper.ValidForFreeAndLendibg);
+
+            var objects = from o in filteredObjects
+                          where objectsIds.Any(oid => oid == o.OfferedObjectId)
+                          orderby o.OfferedObjectId
+                          select new ObjectDto
+                          {
+                              Id = o.OfferedObjectId,
+                              CountOfImpressions = o.Impressions.Count,
+                              CountOfViews = 0,
+                              Description = o.Description,
+                              Name = o.Name,
+                              Rating = null,
+                              OwnerId = o.OwnerLogin.User.OriginalUserId,
+                              Photos = o.Photos.Select(op => _photoConstructor.Construct(op)).ToList(),
+                              Tags = o.Tags.Select(ot => ot.Tag.Name).ToList(),
+                              Type = o.CurrentTransactionType,
+                          };
+            return await objects.ToListAsync();
+        }
     }
 }

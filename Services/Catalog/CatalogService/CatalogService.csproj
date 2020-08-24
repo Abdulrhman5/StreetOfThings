@@ -22,12 +22,26 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.5.0" />
     <PackageReference Include="Unity" Version="5.11.7" />
     <PackageReference Include="Unity.Microsoft.DependencyInjection" Version="5.11.5" />
+    <PackageReference Include="Google.Protobuf" Version="3.12.3" />
+    <PackageReference Include="Grpc" Version="2.29.0" />
+    <PackageReference Include="Grpc.AspNetCore.Server" Version="2.29.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.29.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBus.csproj" />
     <ProjectReference Include="..\Catalog.ApplicationLogic\Catalog.ApplicationLogic.csproj" />
     <ProjectReference Include="..\Catalog.DataAccessLayer\Catalog.DataAccessLayer.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="Proto\object_service.proto" Generator="MSBuild:Compile" />
+    <Content Include="Proto\object_service.proto" />
+    <None Remove="@(Protobuf)" />
+    <None Remove="Proto\object_service.proto" />
   </ItemGroup>
 
 </Project>

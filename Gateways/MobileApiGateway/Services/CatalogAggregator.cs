@@ -23,6 +23,17 @@ namespace MobileApiGateway.Services
         private ILogger<CatalogService> _logger;
 
         private UserService _userService;
+
+        public CatalogAggregator(HttpClient httpClient, HttpContext httpContext, HttpClientHelpers responseProcessor, IConfiguration configs, ILogger<CatalogService> logger, UserService userService)
+        {
+            _httpClient = httpClient;
+            _httpContext = httpContext;
+            _responseProcessor = responseProcessor;
+            _configs = configs;
+            _logger = logger;
+            _userService = userService;
+        }
+
         public async Task<CommandResult<List<DownstreamObjectDto>>> AggregateObjects()
         {
             var request = await _responseProcessor.CreateAsync(_httpContext, HttpMethod.Get, $"{_configs["Servers:Catalog"]}/api/object/list", true, true, changeBody: null);
