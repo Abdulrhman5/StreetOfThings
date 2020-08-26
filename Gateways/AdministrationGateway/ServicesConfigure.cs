@@ -6,7 +6,7 @@ using Unity;
 
 namespace AdministrationGateway
 {
-    internal static class ProjectServices
+    internal static class ServicesConfigure
     {
         internal static void ConfigureProjectServices(this IServiceCollection serviceCollection)
         {

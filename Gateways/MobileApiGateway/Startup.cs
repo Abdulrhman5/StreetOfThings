@@ -36,8 +36,7 @@ namespace MobileApiGateway
             services.AddSwaggerForOcelot(Configuration);
             services.AddHttpContextAccessor();
 
-            services.AddTransient<CatalogService>();
-
+            services.ConfigureIoc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -75,11 +74,6 @@ namespace MobileApiGateway
             });
 
             app.UseOcelot().Wait();
-        }
-
-        public void ConfigureContainer(IUnityContainer container)
-        {
-            new UnityConfig().ConfigUnity(container);
         }
     }
 }
