@@ -79,6 +79,7 @@ namespace CatalogService.Controllers
             return StatusCode(200, objects);
         }
 
+
         [Route("delete")]
         [HttpPost]
         [Authorize]

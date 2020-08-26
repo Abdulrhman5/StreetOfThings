@@ -60,6 +60,13 @@ namespace CatalogService
                 SubscriptionClientName = "Catalog",
             });
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Admin", builder =>
+                {
+                    builder.RequireRole("Admin");
+                });
+            });
             services.AddGrpc(o =>
             {
                 o.EnableDetailedErrors = true;
