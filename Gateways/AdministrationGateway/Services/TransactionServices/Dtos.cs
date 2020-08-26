@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 
 namespace AdministrationGateway.Services.TransactionServices
 {
@@ -82,6 +84,7 @@ namespace AdministrationGateway.Services.TransactionServices
         public int ObjectId { get; set; }
     }
 
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum TransactionType
     {
         Free,
@@ -89,6 +92,7 @@ namespace AdministrationGateway.Services.TransactionServices
         Renting
     }
 
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum TransactionStatus
     {
         RegisteredOnly,
