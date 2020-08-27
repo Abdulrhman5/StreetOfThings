@@ -1,4 +1,5 @@
-﻿using AdministrationGateway.Services.TransactionServices;
+﻿using AdministrationGateway.Services;
+using AdministrationGateway.Services.TransactionServices;
 using Microsoft.Extensions.DependencyInjection;
 using Ocelot.Values;
 using System;
@@ -15,6 +16,7 @@ namespace AdministrationGateway
             serviceCollection.AddTransient<UserService>();
             serviceCollection.AddTransient<HttpClientHelpers>();
             serviceCollection.AddTransient<HttpResponseMessageConverter>();
+            serviceCollection.AddHttpClient<ObjectAggregator>();
 
         }
     }

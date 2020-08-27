@@ -1,10 +1,6 @@
-﻿using IdentityModel;
-using IdentityServer4;
+﻿using IdentityServer4;
 using IdentityServer4.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace AuthorizationService
 {
@@ -31,7 +27,7 @@ namespace AuthorizationService
 
         public static IEnumerable<Client> Clients =>
             new List<Client>
-            { 
+            {
                 new Client
                 {
                     ClientId="MobileBff",
@@ -63,6 +59,7 @@ namespace AuthorizationService
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
                     AllowedScopes =
                     {
+                        "Catalog.Api",
                         "Catalog.Admin",
                         "ProfileManagement",
                         "Transaction.Admin",

@@ -26,9 +26,9 @@ namespace AdministrationGateway.Services.TransactionServices
 
         public TransactionStatus TransactionStatus { get; set; }
 
-        public TransactionUserDto Owner { get; set; }
+        public UserDto Owner { get; set; }
 
-        public TransactionUserDto Receiver { get; set; }
+        public UserDto Receiver { get; set; }
 
         public TransactionObjectDto Object { get; set; }
     }
@@ -42,19 +42,6 @@ namespace AdministrationGateway.Services.TransactionServices
         public string Description { get; set; }
     }
 
-
-    public class TransactionUserDto
-    {
-        public string Id { get; set; }
-
-        public string Username { get; set; }
-
-        public string Name { get; set; }
-
-        public string Email { get; set; }
-
-        public string PictureUrl { get; set; }
-    }
 
     public class TransactionUpstreamDto
     {

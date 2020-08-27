@@ -9,7 +9,7 @@ using AdministrationGateway.Services.TransactionServices;
 using Microsoft.Extensions.Configuration;
 using Grpc.Net.Client;
 
-namespace AdministrationGateway.Services.TransactionServices
+namespace AdministrationGateway.Services
 {
     public class UserService
     {
@@ -24,18 +24,18 @@ namespace AdministrationGateway.Services.TransactionServices
             _grpcClient = new UsersGrpcClient(channel);
         }
 
-        public async Task<List<TransactionUserDto>> GetUsersAsync(List<string> usersIds)
+        public async Task<List<UserDto>> GetUsersAsync(List<string> usersIds)
         {
             if (usersIds.IsNullOrEmpty())
             {
-                return new List<TransactionUserDto>();
+                return new List<UserDto>();
             }
             var usersIdsModel = new UsersIdsModel();
             usersIds.ForEach(uid => usersIdsModel.UsersIds.Add(uid));
 
             var users = await _grpcClient.GetUsersDataAsync(usersIdsModel);
 
-            var usersDtos = users.Users.Select(umodel => new TransactionUserDto
+            var usersDtos = users.Users.Select(umodel => new UserDto
             {
                 Email = umodel.Email,
                 Id = umodel.Id,
@@ -46,5 +46,19 @@ namespace AdministrationGateway.Services.TransactionServices
 
             return usersDtos;
         }
+    }
+
+
+    public class UserDto
+    {
+        public string Id { get; set; }
+
+        public string Username { get; set; }
+
+        public string Name { get; set; }
+
+        public string Email { get; set; }
+
+        public string PictureUrl { get; set; }
     }
 }

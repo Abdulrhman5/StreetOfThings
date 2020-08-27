@@ -73,7 +73,7 @@ namespace AdministrationGateway.Services.TransactionServices
             }
         }
 
-        private List<TransactionDownstreamDto> AggregateTransactionWithObject8User(List<TransactionUpstreamDto> trans, List<TransactionUserDto> users, List<TransactionObjectDto> objects)
+        private List<TransactionDownstreamDto> AggregateTransactionWithObject8User(List<TransactionUpstreamDto> trans, List<UserDto> users, List<TransactionObjectDto> objects)
         {
             var downStreamTransactions = new List<TransactionDownstreamDto>();
             foreach (var tran in trans)

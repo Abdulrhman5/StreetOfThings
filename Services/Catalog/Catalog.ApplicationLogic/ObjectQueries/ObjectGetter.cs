@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CommonLibrary;
+using System.Linq.Expressions;
 
 namespace Catalog.ApplicationLogic.ObjectQueries
 {
@@ -21,6 +22,8 @@ namespace Catalog.ApplicationLogic.ObjectQueries
         private IObjectImpressionsManager _impressionManager;
 
         private ObjectQueryHelper _queryHelper;
+
+        private Expression<Func<OfferedObject, ObjectDto>> ObjectDtoSelectExp { get; set; }
         public ObjectGetter(IRepository<int, OfferedObject> repository,
             IObjectPhotoUrlConstructor photoUrlConstructor,
             IObjectImpressionsManager impressionsManager, ObjectQueryHelper queryHelper)
@@ -29,6 +32,20 @@ namespace Catalog.ApplicationLogic.ObjectQueries
             _photoConstructor = photoUrlConstructor;
             _impressionManager = impressionsManager;
             _queryHelper = queryHelper;
+
+            ObjectDtoSelectExp = (o) => new ObjectDto
+            {
+                Id = o.OfferedObjectId,
+                CountOfImpressions = o.Impressions.Count,
+                CountOfViews = 0,
+                Description = o.Description,
+                Name = o.Name,
+                Rating = null,
+                OwnerId = o.OwnerLogin.User.OriginalUserId,
+                Photos = o.Photos.Select(op => _photoConstructor.Construct(op)).ToList(),
+                Tags = o.Tags.Select(ot => ot.Tag.Name).ToList(),
+                Type = o.CurrentTransactionType,
+            };
         }
 
         public async Task<List<ObjectDto>> GetObjects(PagingArguments arguments)
@@ -54,6 +71,19 @@ namespace Catalog.ApplicationLogic.ObjectQueries
 
             var objectsList = await objects.SkipTakeAsync(arguments);
             await _impressionManager.AddImpressions(objectsList);
+            return objectsList;
+        }
+
+        public async Task<List<ObjectDto>> GetAllObjects() 
+        {
+            var filteredObjects = _objectRepo.Table.Where(_queryHelper.IsValidObject)
+                .Where(_queryHelper.ValidForFreeAndLendibg);
+
+            var objects = from o in filteredObjects
+                          orderby o.OfferedObjectId
+                          select o;
+
+            var objectsList = await objects.Select(ObjectDtoSelectExp).ToListAsync();
             return objectsList;
         }
 
