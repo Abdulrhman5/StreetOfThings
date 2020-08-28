@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http.Extensions;
 using DataAccessLayer;
 using System.Linq;
 using System.Web;
+using Microsoft.Extensions.Configuration;
 
 namespace ApplicationLogic.ProfilePhotoCommand
 {
@@ -15,9 +16,9 @@ namespace ApplicationLogic.ProfilePhotoCommand
         private string _domainName;
 
         private IRepository<int, ProfilePhoto> _photosRepo;
-        public ProfilePhotoUrlConstructor(IHttpContextAccessor httpContextAccessor, IRepository<int, ProfilePhoto> photosRepo)
+        public ProfilePhotoUrlConstructor(IHttpContextAccessor httpContextAccessor, IRepository<int, ProfilePhoto> photosRepo, IConfiguration configs)
         {
-            _domainName = new Uri(httpContextAccessor.HttpContext.Request.GetDisplayUrl()).GetLeftPart(UriPartial.Authority);
+            _domainName = configs["Services:Authorization"];
             _photosRepo = photosRepo;
         }
 

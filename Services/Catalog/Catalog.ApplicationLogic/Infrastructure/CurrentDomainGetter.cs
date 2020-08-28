@@ -2,21 +2,22 @@
 using System;
 using Microsoft.AspNetCore.Http.Extensions;
 using System.Web;
+using Microsoft.Extensions.Configuration;
 
 namespace Catalog.ApplicationLogic.Infrastructure
 {
     public class CurrentDomainGetter
     {
-        private HttpContext _httpContext;
+        private IConfiguration _configs;
 
-        public CurrentDomainGetter(IHttpContextAccessor contextAccessor)
+        public CurrentDomainGetter(IConfiguration configs)
         {
-            _httpContext = contextAccessor.HttpContext;
+            _configs = configs;
         }
 
         internal string GetDomain8Schema()
         {
-            return new Uri(_httpContext.Request.GetDisplayUrl()).GetLeftPart(UriPartial.Authority);
+            return _configs["Services:Catalog"];
         }
     }
 }
