@@ -17,6 +17,7 @@ namespace AdministrationGateway
             serviceCollection.AddTransient<HttpClientHelpers>();
             serviceCollection.AddTransient<HttpResponseMessageConverter>();
             serviceCollection.AddHttpClient<ObjectAggregator>();
+            serviceCollection.AddHttpClient<CommentAggregator>();
 
         }
     }

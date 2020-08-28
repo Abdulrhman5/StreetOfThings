@@ -1,4 +1,5 @@
 ﻿using Catalog.ApplicationLogic.CommentsCommands;
+using Catalog.ApplicationLogic.CommentsQueries;
 using Catalog.ApplicationLogic.Infrastructure;
 using Catalog.ApplicationLogic.ObjectCommands;
 using Catalog.ApplicationLogic.ObjectQueries;
@@ -34,6 +35,7 @@ namespace Catalog.ApplicationLogic
 
             Container.RegisterType<IObjectImpressionsManager, ObjectImpressionsManager>();
             Container.RegisterType<IObjectCommentAdder, ObjectCommentAdder>();
+            Container.RegisterType<ICommentsGetter, CommentsGetter>();
             Container.RegisterType<TagsGetter>();
 
             Container.RegisterType<ObjectQueryHelper>();

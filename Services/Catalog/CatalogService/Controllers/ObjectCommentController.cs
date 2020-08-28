@@ -1,4 +1,6 @@
 ﻿using Catalog.ApplicationLogic.CommentsCommands;
+using Catalog.ApplicationLogic.CommentsQueries;
+using CommonLibrary;
 using HostingHelpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,9 +16,12 @@ namespace CatalogService.Controllers
     {
         private IObjectCommentAdder _commentAdder;
 
-        public ObjectCommentController(IObjectCommentAdder commentAdder)
+        private ICommentsGetter _commentsGetter;
+
+        public ObjectCommentController(IObjectCommentAdder commentAdder, ICommentsGetter commentsGetter)
         {
             _commentAdder = commentAdder;
+            _commentsGetter = commentsGetter;
         }
 
         [Route("add")]
@@ -29,6 +34,23 @@ namespace CatalogService.Controllers
             {
                 Message = "A New comment has been added"
             });
+        }
+
+        [Route("forObject")]
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetForObject(int objectId, PagingArguments pagingArguments = null)
+        {
+            if (pagingArguments is null)
+            {
+                var result = await _commentsGetter.GetCommentsForObject(objectId);
+                return Ok(result);
+            }
+            else
+            {
+                var result = await _commentsGetter.GetCommentsForObject(objectId, pagingArguments);
+                return Ok(result);
+            }
         }
     }
 }
