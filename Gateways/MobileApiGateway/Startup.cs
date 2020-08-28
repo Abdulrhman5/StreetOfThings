@@ -14,6 +14,9 @@ using Ocelot.DependencyInjection;
 using Serilog;
 using MobileApiGateway.Services;
 using Unity;
+using System.Security.Claims;
+using AuthorizationService.Grpc;
+using Grpc.Core;
 
 namespace MobileApiGateway
 {
@@ -36,6 +39,36 @@ namespace MobileApiGateway
             services.AddSwaggerForOcelot(Configuration);
             services.AddHttpContextAccessor();
 
+
+            services.AddAuthentication("Bearer")
+                .AddJwtBearer("Bearer", options =>
+                {
+                    options.Authority = Configuration["Services:Authorization"];
+                    options.RequireHttpsMetadata = false;
+                    options.Audience = "Catalog.Api";
+                });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Admin", pb =>
+                {
+                    pb.RequireRole(ClaimTypes.Role, "Admin");
+
+                });
+            });
+
+            // Enable support for unencrypted HTTP2  
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+
+            // Registration of the DI service
+            services.AddGrpcClient<UsersGrpc.UsersGrpcClient>(options => {
+                options.Address = new Uri("http://localhost:21000");
+                options.ChannelOptionsActions.Add(channelOptions => channelOptions.Credentials = ChannelCredentials.Insecure);
+            });
+            services.AddGrpcClient<CatalogService.Grpc.ObjectsGrpc.ObjectsGrpcClient>(options => {
+                options.Address = new Uri("http://localhost:21001");
+                options.ChannelOptionsActions.Add(channelOptions => channelOptions.Credentials = ChannelCredentials.Insecure);
+            });
             services.ConfigureIoc();
         }
 
@@ -57,6 +90,9 @@ namespace MobileApiGateway
             }
 
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

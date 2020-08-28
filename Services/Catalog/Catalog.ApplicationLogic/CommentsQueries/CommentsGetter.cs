@@ -19,7 +19,7 @@ namespace Catalog.ApplicationLogic.CommentsQueries
             _commentsRepo = commentsRepo;
         }
 
-        public async Task<List<CommentDto>> GetCommentsForObject(int objectId, PagingArguments pagingArguments)
+        public async Task<CommentListDto> GetCommentsForObject(int objectId, PagingArguments pagingArguments)
         {
             var comments = from comment in _commentsRepo.Table
                            where comment.ObjectId == objectId
@@ -32,11 +32,15 @@ namespace Catalog.ApplicationLogic.CommentsQueries
                                CommentId = comment.ObjectCommentId
                            };
 
-            return await comments.SkipTakeAsync(pagingArguments);
+            return new CommentListDto
+            {
+                Comments = await comments.SkipTakeAsync(pagingArguments),
+                CommentsCount = comments.Count()
+            };
 
         }
 
-        public async Task<List<CommentDto>> GetCommentsForObject(int objectId)
+        public async Task<CommentListDto> GetCommentsForObject(int objectId)
         {
             var comments = from comment in _commentsRepo.Table
                            where comment.ObjectId == objectId
@@ -49,7 +53,11 @@ namespace Catalog.ApplicationLogic.CommentsQueries
                                CommentId = comment.ObjectCommentId
                            };
 
-            return await comments.ToListAsync();
+            return new CommentListDto
+            {
+                Comments = await comments.ToListAsync(),
+                CommentsCount = comments.Count()
+            };
         }
     }
 }

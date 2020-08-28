@@ -14,8 +14,8 @@ namespace MobileApiGateway.Controllers
     [Route("api/catalog")]
     public class CatalogController : MyControllerBase
     {
-        private CatalogService _catalogService;
-        public CatalogController(CatalogService catalogService)
+        private Services.CatalogService _catalogService;
+        public CatalogController(Services.CatalogService catalogService)
         {
             _catalogService = catalogService;
             

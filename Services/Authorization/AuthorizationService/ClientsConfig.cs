@@ -47,6 +47,8 @@ namespace AuthorizationService
                         IdentityServerConstants.StandardScopes.Profile
                     },
                     AllowOfflineAccess = true,
+                    AccessTokenLifetime = 60*60*24*30
+
                 },
                 new Client
                 {

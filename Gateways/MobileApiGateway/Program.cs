@@ -10,7 +10,6 @@ using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
-using Unity.Microsoft.DependencyInjection;
 
 namespace MobileApiGateway
 {

@@ -8,7 +8,7 @@ namespace Catalog.ApplicationLogic.CommentsQueries
 {
     public interface ICommentsGetter
     {
-        public Task<List<CommentDto>> GetCommentsForObject(int objectId);
-        Task<List<CommentDto>> GetCommentsForObject(int objectId, PagingArguments pagingArguments);
+        public Task<CommentListDto> GetCommentsForObject(int objectId);
+        Task<CommentListDto> GetCommentsForObject(int objectId, PagingArguments pagingArguments);
     }
 }

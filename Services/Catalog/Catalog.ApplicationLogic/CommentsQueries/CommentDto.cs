@@ -5,6 +5,12 @@ using System.Text;
 
 namespace Catalog.ApplicationLogic.CommentsQueries
 {
+    public class CommentListDto
+    {
+        public int CommentsCount { get; set; }
+
+        public List<CommentDto> Comments { get; set; }
+    }
     public class CommentDto
     {
         public Guid CommentId { get; set; }
