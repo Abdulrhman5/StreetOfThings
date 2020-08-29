@@ -63,7 +63,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Transaction.Service", "Serv
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdministrationGateway", "Gateways\AdministrationGateway\AdministrationGateway.csproj", "{E1ED045D-A5B6-41DA-A16F-CBFDAD091A48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authorization.ApplicationLogic.Test", "..\Authorization.ApplicationLogic.Test\Authorization.ApplicationLogic.Test.csproj", "{8B1FB14A-A7E1-4BD6-BCC9-01FB29558EAB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authorization.ApplicationLogic.Test", "..\Authorization.ApplicationLogic.Test\Authorization.ApplicationLogic.Test.csproj", "{8B1FB14A-A7E1-4BD6-BCC9-01FB29558EAB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

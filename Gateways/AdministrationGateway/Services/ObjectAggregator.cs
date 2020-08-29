@@ -38,21 +38,21 @@ namespace AdministrationGateway.Services
             _userService = userService;
         }
 
-        public async Task<CommandResult<List<DownstreamObjectDto>>> AggregateObjects()
+        public async Task<CommandResult<DownstreamObjectsListDto>> AggregateObjects()
         {
             var request = await _responseProcessor.CreateAsync(_httpContext, HttpMethod.Get, $"{_configs["Services:Catalog"]}/api/object/allObjects", true, true, changeBody: null);
             try
             {
                 var response = await _httpClient.SendAsync(request);
-                var objectResult = await _responseProcessor.Process<List<UpstreamObjectDto>>(response);
+                var objectResult = await _responseProcessor.Process<UpstreamObjectsListDto>(response);
                 if (!objectResult.IsSuccessful)
                 {
-                    return new CommandResult<List<DownstreamObjectDto>>(objectResult.Error);
+                    return new CommandResult<DownstreamObjectsListDto>(objectResult.Error);
                 }
 
-                var originalUserIds = objectResult.Result.Select(o => o.OwnerId).ToList();
+                var originalUserIds = objectResult.Result.Objects.Select(o => o.OwnerId).ToList();
                 var users = await _userService.GetUsersAsync(originalUserIds);
-                return new CommandResult<List<DownstreamObjectDto>>(ReplaceUserIdWithUser(objectResult.Result, users));
+                return new CommandResult<DownstreamObjectsListDto>(ReplaceUserIdWithUser(objectResult.Result, users));
             }
             catch (Exception e)
             {
@@ -63,13 +63,13 @@ namespace AdministrationGateway.Services
                     Message = "there were an error while trying to execute your request",
                     StatusCode = System.Net.HttpStatusCode.InternalServerError,
                 };
-                return new CommandResult<List<DownstreamObjectDto>>(message);
+                return new CommandResult<DownstreamObjectsListDto>(message);
             }
         }
-        private List<DownstreamObjectDto> ReplaceUserIdWithUser(List<UpstreamObjectDto> objects, List<UserDto> users)
+        private DownstreamObjectsListDto ReplaceUserIdWithUser(UpstreamObjectsListDto objects, List<UserDto> users)
         {
             var downStreamObjects = new List<DownstreamObjectDto>();
-            foreach (var @object in objects)
+            foreach (var @object in objects.Objects)
             {
                 downStreamObjects.Add(new DownstreamObjectDto
                 {
@@ -87,13 +87,28 @@ namespace AdministrationGateway.Services
                 downStreamObjects.RemoveAll(o => o.Owner is null);
             }
 
-            return downStreamObjects;
+            return new DownstreamObjectsListDto
+            {
+                Objects = downStreamObjects,
+                FreeObjectsCount = objects.FreeObjectsCount,
+                LendingObjectsCount = objects.LendingObjectsCount,
+                RentingObjectsCount = objects.RentingObjectsCount,
+            };
         }
 
 
 
+        public class UpstreamObjectsListDto
+        {
+            public int FreeObjectsCount { get; set; }
 
-        class UpstreamObjectDto
+            public int RentingObjectsCount { get; set; }
+
+            public int LendingObjectsCount { get; set; }
+
+            public List<UpstreamObjectDto> Objects { get; set; }
+        }
+        public class UpstreamObjectDto
         {
             public int Id { get; set; }
 
@@ -117,6 +132,16 @@ namespace AdministrationGateway.Services
             public TransactionType Type { get; set; }
         }
 
+        public class DownstreamObjectsListDto
+        {
+            public int FreeObjectsCount { get; set; }
+
+            public int RentingObjectsCount { get; set; }
+
+            public int LendingObjectsCount { get; set; }
+
+            public List<DownstreamObjectDto> Objects { get; set; }
+        }
         public class DownstreamObjectDto
         {
             public int Id { get; set; }

@@ -74,17 +74,22 @@ namespace Catalog.ApplicationLogic.ObjectQueries
             return objectsList;
         }
 
-        public async Task<List<ObjectDto>> GetAllObjects() 
+        public async Task<ObjectsForAdministrationListDto> GetAllObjects() 
         {
-            var filteredObjects = _objectRepo.Table.Where(_queryHelper.IsValidObject)
-                .Where(_queryHelper.ValidForFreeAndLendibg);
+            var filteredObjects = _objectRepo.Table.Where(_queryHelper.IsValidObject);
 
             var objects = from o in filteredObjects
                           orderby o.OfferedObjectId
                           select o;
 
             var objectsList = await objects.Select(ObjectDtoSelectExp).ToListAsync();
-            return objectsList;
+            return new ObjectsForAdministrationListDto
+            {
+                LendingObjectsCount = objects.Count(o => o.CurrentTransactionType == TransactionType.Lending),
+                FreeObjectsCount = objects.Count(o => o.CurrentTransactionType == TransactionType.Free),
+                RentingObjectsCount = 0,
+                Objects = objectsList
+            };
         }
 
         public async Task<ObjectDto> GetObjectById(int objectId)
