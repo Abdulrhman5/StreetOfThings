@@ -65,7 +65,7 @@ namespace AdministrationGateway.Services.TransactionServices
                 _logger.LogError(e, "Error When getting list of transactions that belog to user");
                 var message = new ErrorMessage
                 {
-                    ErrorCode = "CATALOG.OBJECT.LIST.ERROR",
+                    ErrorCode = "TRANSACTION.LIST.FORUSER.ERROR",
                     Message = "there were an error while trying to execute your request",
                     StatusCode = System.Net.HttpStatusCode.InternalServerError,
                 };

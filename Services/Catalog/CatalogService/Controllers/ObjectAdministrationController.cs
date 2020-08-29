@@ -24,7 +24,7 @@ namespace CatalogService.Controllers
         [HttpGet]
         public async Task<IActionResult> GetObjectsForUser(string userId)
         {
-            var objects = await _objectGetter.GetObjectsOwnerdByUser(userId);
+            var objects = await _objectGetter.GetObjectsOwnedByUser(userId);
             return StatusCode(200, objects);
         }
 

@@ -138,10 +138,9 @@ namespace Catalog.ApplicationLogic.ObjectQueries
             return await objects.ToListAsync();
         }  
         
-        public async Task<List<ObjectDto>> GetObjectsOwnerdByUser(string originalUserId)
+        public async Task<ObjectsForUserListDto> GetObjectsOwnedByUser(string originalUserId)
         {
-            var filteredObjects = _objectRepo.Table.Where(_queryHelper.IsValidObject)
-                .Where(_queryHelper.ValidForFreeAndLendibg);
+            var filteredObjects = _objectRepo.Table.Where(_queryHelper.IsValidObject);
 
             var objects = from o in filteredObjects
                           where o.OwnerLogin.User.OriginalUserId == originalUserId
@@ -159,7 +158,16 @@ namespace Catalog.ApplicationLogic.ObjectQueries
                               Tags = o.Tags.Select(ot => ot.Tag.Name).ToList(),
                               Type = o.CurrentTransactionType,
                           };
-            return await objects.ToListAsync();
+            var freeObjects = _objectRepo.Table.Where(_queryHelper.IsValidObject).Where(_queryHelper.ValidForFreeAndLendibg);
+            var availableObjectsCount = freeObjects.Count();
+            var reservedObjectsCount = filteredObjects.Count() - availableObjectsCount;
+
+            return new ObjectsForUserListDto()
+            {
+                Objects = await objects.ToListAsync(),
+                AvailableObjectsCount = availableObjectsCount,
+                ReservedObjectsCount = reservedObjectsCount
+            };
         }
     }
 }
