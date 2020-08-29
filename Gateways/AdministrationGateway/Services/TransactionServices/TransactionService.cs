@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Ocelot.Infrastructure.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +38,7 @@ namespace AdministrationGateway.Services.TransactionServices
             _objectService = objectService;
         }
 
-        public async Task<CommandResult<List<TransactionDownstreamDto>>> GetTransactions()
+        public async Task<CommandResult<TransactionForUserDownstreamListDto>> GetTransactions()
         {
             var request = await _responseProcessor.CreateAsync(_httpContext, HttpMethod.Get, $"{_configs["Services:Transaction"]}/api/Transaction/foruser", true, true, changeBody: null);
             try
@@ -46,7 +47,7 @@ namespace AdministrationGateway.Services.TransactionServices
                 var transactionsResult = await _responseProcessor.Process<List<TransactionUpstreamDto>>(response);
                 if (!transactionsResult.IsSuccessful)
                 {
-                    return new CommandResult<List<TransactionDownstreamDto>>(transactionsResult.Error);
+                    return new CommandResult<TransactionForUserDownstreamListDto>(transactionsResult.Error);
                 }
 
                 var originalUserIds = transactionsResult.Result.Select(o => o.OwnerId)
@@ -58,7 +59,7 @@ namespace AdministrationGateway.Services.TransactionServices
                 var objectsIds = transactionsResult.Result.Select(t => t.ObjectId).ToList();
                 var objects = await _objectService.GetObjectsByIds(objectsIds);
 
-                return new CommandResult<List<TransactionDownstreamDto>>(AggregateTransactionWithObject8User(transactionsResult.Result, users, objects));
+                return new CommandResult<TransactionForUserDownstreamListDto>(AggregateTransactionWithObject8User(transactionsResult.Result, users, objects));
             }
             catch (Exception e)
             {
@@ -69,11 +70,11 @@ namespace AdministrationGateway.Services.TransactionServices
                     Message = "there were an error while trying to execute your request",
                     StatusCode = System.Net.HttpStatusCode.InternalServerError,
                 };
-                return new CommandResult<List<TransactionDownstreamDto>>(message);
+                return new CommandResult<TransactionForUserDownstreamListDto>(message);
             }
         }
 
-        private List<TransactionDownstreamDto> AggregateTransactionWithObject8User(List<TransactionUpstreamDto> trans, List<UserDto> users, List<TransactionObjectDto> objects)
+        private TransactionForUserDownstreamListDto AggregateTransactionWithObject8User(List<TransactionUpstreamDto> trans, List<UserDto> users, List<TransactionObjectDto> objects)
         {
             var downStreamTransactions = new List<TransactionDownstreamDto>();
             foreach (var tran in trans)
@@ -97,8 +98,13 @@ namespace AdministrationGateway.Services.TransactionServices
 
                 downStreamTransactions.RemoveAll(t => t.Owner is null || t.Receiver == null || t.Object is null);
             }
-
-            return downStreamTransactions;
+            var userId = _httpContext.Request.Query["userId"].GetValue();
+            return new TransactionForUserDownstreamListDto()
+            {
+                Transactions = downStreamTransactions,
+                OtherUsersReservationsCount = downStreamTransactions.Count(t => t.Owner.Id == userId),
+                TheUserReservationsCount = downStreamTransactions.Count(t => t.Receiver.Id == userId)
+            };
         }
     }
 }

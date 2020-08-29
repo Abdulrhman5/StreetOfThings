@@ -1,9 +1,19 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
+using System.Collections.Generic;
+using System.Transactions;
 
 namespace AdministrationGateway.Services.TransactionServices
 {
+    public class TransactionForUserDownstreamListDto
+    {
+        public int TheUserReservationsCount { get; set; }
+
+        public int OtherUsersReservationsCount { get; set; }
+
+        public List<TransactionDownstreamDto> Transactions { get; set; }
+    }
     public class TransactionDownstreamDto
     {
         public Guid RegistrationId { get; set; }
