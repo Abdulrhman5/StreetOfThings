@@ -23,6 +23,7 @@ namespace Catalog.ApplicationLogic.CommentsQueries
         {
             var comments = from comment in _commentsRepo.Table
                            where comment.ObjectId == objectId
+                           orderby comment.AddedAtUtc descending
                            select new CommentDto
                            {
                                UserId = comment.Login.User.OriginalUserId,
@@ -44,6 +45,7 @@ namespace Catalog.ApplicationLogic.CommentsQueries
         {
             var comments = from comment in _commentsRepo.Table
                            where comment.ObjectId == objectId
+                           orderby comment.AddedAtUtc descending
                            select new CommentDto
                            {
                                UserId = comment.Login.User.OriginalUserId,
