@@ -24,6 +24,9 @@ namespace Catalog.Models
         public List<ObjectComment> Comments { get; set; }
 
         public List<OfferedObject> OwnedObjects { get; set; }
+
+        public List<ObjectLike> Likes { get; set; }
+
         public Guid Id => LoginId;
     }
 }
