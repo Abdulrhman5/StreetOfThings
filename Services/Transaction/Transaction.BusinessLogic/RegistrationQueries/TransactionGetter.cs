@@ -106,6 +106,7 @@ namespace Transaction.BusinessLogic.RegistrationQueries
                         where rg.Object.OwnerUser.OriginalUserId == userId
                         let isReceived = rg.ObjectReceiving is object
                         let isReturned = rg.ObjectReceiving is object && rg.ObjectReceiving.ObjectReturning is object
+                        orderby rg.RegisteredAtUtc descending
                         select new TransactionDto
                         {
                             RegistrationId = rg.ObjectRegistrationId,
@@ -144,6 +145,7 @@ namespace Transaction.BusinessLogic.RegistrationQueries
                         where rg.RecipientLogin.User.OriginalUserId == userId
                         let isReceived = rg.ObjectReceiving is object
                         let isReturned = rg.ObjectReceiving is object && rg.ObjectReceiving.ObjectReturning is object
+                        orderby rg.RegisteredAtUtc descending
                         select new TransactionDto
                         {
                             RegistrationId = rg.ObjectRegistrationId,
