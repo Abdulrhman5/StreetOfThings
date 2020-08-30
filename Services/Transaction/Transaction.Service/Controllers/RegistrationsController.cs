@@ -1,4 +1,5 @@
-﻿using HostingHelpers;
+﻿using CommonLibrary;
+using HostingHelpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Transaction.BusinessLogic.RegistrationCommands;
+using Transaction.BusinessLogic.RegistrationQueries;
 
 namespace Transaction.Service.Controllers
 {
@@ -18,13 +20,16 @@ namespace Transaction.Service.Controllers
 
         private ObjectRegistrationCanceller _registrationCanceler;
 
+        private ITransactionGetter _transactionsGetter;
+
         public RegistrationsController(INewRegistrationAdder registrationAdder,
             RegistrationTokenRefresher tokenRefresher,
-            ObjectRegistrationCanceller registrationCanceler)
+            ObjectRegistrationCanceller registrationCanceler, ITransactionGetter transactionsGetter)
         {
             _registrationAdder = registrationAdder;
             _tokenRefresher = tokenRefresher;
             _registrationCanceler = registrationCanceler;
+            _transactionsGetter = transactionsGetter;
         }
 
         [Route("create")]
@@ -57,5 +62,22 @@ namespace Transaction.Service.Controllers
             });
         }
 
+        [Route("mineOnOthers")]
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetUsersRegistrationsOnOtherUsersObjects([FromQuery] PagingArguments pagingArguments)
+        {
+            var result = await _transactionsGetter.GetUserTransactionsWithOtherUsersObjects(pagingArguments);
+            return Ok(result);
+        }
+
+        [Route("othersOnMine")]
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetUserObjectsTransactions([FromQuery] PagingArguments pagingArguments)
+        {
+            var result = await _transactionsGetter.GetUserObjectsTransactions(pagingArguments);
+            return Ok(result);
+        }
     }
 }
