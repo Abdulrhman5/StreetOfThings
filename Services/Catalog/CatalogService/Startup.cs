@@ -19,6 +19,7 @@ namespace CatalogService
     public class Startup
     {
         public IConfiguration Configuration { get; }
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
         public Startup(IConfiguration configuration)
         {
@@ -73,6 +74,14 @@ namespace CatalogService
 
             });
 
+            services.AddCors(options =>
+            {
+                var origins = Configuration.GetSection("AllowedCorsOrigins").Get<string[]>();
+                options.AddPolicy(MyAllowSpecificOrigins, builder => builder.WithOrigins(origins).AllowAnyHeader()
+                                                  .AllowAnyMethod());
+            });
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -84,6 +93,7 @@ namespace CatalogService
             }
 
             app.UseRouting();
+            app.UseCors(MyAllowSpecificOrigins);
             app.UseAuthentication();
             app.UseAuthorization();
 

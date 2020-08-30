@@ -29,6 +29,7 @@ namespace AuthorizationService
         }
 
         public IConfiguration Configuration { get; }
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -72,6 +73,14 @@ namespace AuthorizationService
                 o.EnableDetailedErrors = true;
                 
             });
+
+            services.AddCors(options =>
+            {
+                var origins = Configuration.GetSection("AllowedCorsOrigins").Get<string[]>();
+                options.AddPolicy(MyAllowSpecificOrigins, builder => builder.WithOrigins(origins).AllowAnyHeader()
+                                                  .AllowAnyMethod());
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -100,6 +109,8 @@ namespace AuthorizationService
 
 
             app.UseRouting();
+            app.UseCors(MyAllowSpecificOrigins);
+
             app.UseAuthentication();
             app.UseAuthorization();
 
