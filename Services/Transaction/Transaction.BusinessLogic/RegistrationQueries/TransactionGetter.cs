@@ -93,7 +93,7 @@ namespace Transaction.BusinessLogic.RegistrationQueries
         /// </summary>
         /// <param name="pagingArguments"></param>
         /// <returns></returns>
-        public async Task<List<TransactionDto>> GetUserObjectsTransactions(PagingArguments pagingArguments)
+        public async Task<List<TransactionDto>> GetTransactionsWhereUserIsOwner(PagingArguments pagingArguments)
         {
             var currentUser = _currentUserGetter.GetCuurentUser();
             if (currentUser?.UserId is null)
@@ -131,7 +131,7 @@ namespace Transaction.BusinessLogic.RegistrationQueries
         /// </summary>
         /// <param name="pagingArguments"></param>
         /// <returns></returns>
-        public async Task<List<TransactionDto>> GetUserTransactionsWithOtherUsersObjects(PagingArguments pagingArguments)
+        public async Task<List<TransactionDto>> GetTransactionsWhereUserIsRecipient(PagingArguments pagingArguments)
         {
             var currentUser = _currentUserGetter.GetCuurentUser();
             if (currentUser?.UserId is null)

@@ -10,7 +10,7 @@ namespace Transaction.BusinessLogic.RegistrationQueries
     {
         Task<AllTransactionsListDto> GetAllTransactions();
         public Task<List<TransactionDto>> GetUserTransactions(string userId);
-        Task<List<TransactionDto>> GetUserObjectsTransactions(PagingArguments pagingArguments);
-        Task<List<TransactionDto>> GetUserTransactionsWithOtherUsersObjects(PagingArguments pagingArguments);
+        Task<List<TransactionDto>> GetTransactionsWhereUserIsOwner(PagingArguments pagingArguments);
+        Task<List<TransactionDto>> GetTransactionsWhereUserIsRecipient(PagingArguments pagingArguments);
     }
 }

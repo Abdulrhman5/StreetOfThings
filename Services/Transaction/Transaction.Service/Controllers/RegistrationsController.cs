@@ -62,21 +62,21 @@ namespace Transaction.Service.Controllers
             });
         }
 
-        [Route("mineOnOthers")]
+        [Route("MeAsRecipient")]
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> GetUsersRegistrationsOnOtherUsersObjects([FromQuery] PagingArguments pagingArguments)
         {
-            var result = await _transactionsGetter.GetUserTransactionsWithOtherUsersObjects(pagingArguments);
+            var result = await _transactionsGetter.GetTransactionsWhereUserIsRecipient(pagingArguments);
             return Ok(result);
         }
 
-        [Route("othersOnMine")]
+        [Route("MeAsOwner")]
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> GetUserObjectsTransactions([FromQuery] PagingArguments pagingArguments)
         {
-            var result = await _transactionsGetter.GetUserObjectsTransactions(pagingArguments);
+            var result = await _transactionsGetter.GetTransactionsWhereUserIsOwner(pagingArguments);
             return Ok(result);
         }
     }

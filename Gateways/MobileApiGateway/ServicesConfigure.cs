@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using MobileApiGateway.Services;
+using MobileApiGateway.Services.TransactionServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,8 @@ namespace MobileApiGateway
             servicesCollection.AddTransient<Services.CatalogService>();
             servicesCollection.AddHttpClient<CommentAggregator>();
             servicesCollection.AddTransient<UserService>();
+            servicesCollection.AddHttpClient<TransactionService>();
+            servicesCollection.AddTransient<ObjectService>();
         }
     }
 }
