@@ -1,6 +1,7 @@
 ﻿using Catalog.ApplicationLogic.CommentsCommands;
 using Catalog.ApplicationLogic.CommentsQueries;
 using Catalog.ApplicationLogic.Infrastructure;
+using Catalog.ApplicationLogic.LikeCommands;
 using Catalog.ApplicationLogic.ObjectCommands;
 using Catalog.ApplicationLogic.ObjectQueries;
 using Catalog.ApplicationLogic.TypeQueries;
@@ -38,6 +39,7 @@ namespace Catalog.ApplicationLogic
             Container.RegisterType<ICommentsGetter, CommentsGetter>();
             Container.RegisterType<TagsGetter>();
 
+            Container.RegisterType<LikeAdder>();
             Container.RegisterType<ObjectQueryHelper>();
             Container.RegisterType(typeof(OwnershipAuthorization<,>));
             new DalUnityConfig().ConfigUnity(container);
