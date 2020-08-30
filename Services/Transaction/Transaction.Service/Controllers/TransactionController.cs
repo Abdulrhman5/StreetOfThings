@@ -27,5 +27,14 @@ namespace Transaction.Service.Controllers
             var trans = await _transactionGetter.GetUserTransactions(userId);
             return Ok(trans);
         }
+
+        [Route("allTranses")]
+        [Authorize(Policy = "Admin")]
+        [HttpGet]
+        public async Task<IActionResult> AllTransactions()
+        {
+            var trans = await _transactionGetter.GetAllTransactions();
+            return Ok(trans);
+        }
     }
 }

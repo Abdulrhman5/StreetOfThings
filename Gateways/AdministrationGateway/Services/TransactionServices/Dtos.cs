@@ -52,6 +52,27 @@ namespace AdministrationGateway.Services.TransactionServices
         public string Description { get; set; }
     }
 
+    public class AllTransactionsUpstreamListDto
+    {
+        public int ReservedTransactionsCount { get; set; }
+
+        public int DeliveredTransactionsCount { get; set; }
+
+        public int ReturnedTransactionsCount { get; set; }
+
+        public List<TransactionUpstreamDto> Transactions { get; set; }
+    }
+
+    public class AllTransactionsDownstreamListDto
+    {
+        public int ReservedTransactionsCount { get; set; }
+
+        public int DeliveredTransactionsCount { get; set; }
+
+        public int ReturnedTransactionsCount { get; set; }
+
+        public List<TransactionDownstreamDto> Transactions { get; set; }
+    }
 
     public class TransactionUpstreamDto
     {

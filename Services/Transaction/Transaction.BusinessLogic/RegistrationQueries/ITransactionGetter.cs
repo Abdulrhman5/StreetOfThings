@@ -7,6 +7,7 @@ namespace Transaction.BusinessLogic.RegistrationQueries
 {
     public interface ITransactionGetter
     {
+        Task<AllTransactionsListDto> GetAllTransactions();
         public Task<List<TransactionDto>> GetUserTransactions(string userId);
 
 

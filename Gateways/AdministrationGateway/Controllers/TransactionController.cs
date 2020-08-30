@@ -21,10 +21,17 @@ namespace AdministrationGateway.Controllers
 
         [Route("foruser")]
         [HttpGet]
-        public async Task<IActionResult> GetObjects()
+        public async Task<IActionResult> GetTransactionsForUser()
         {
             return StatusCode(await _transactionService.GetTransactions());
         }
 
+
+        [Route("AllTranses")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllTransactions()
+        {
+            return StatusCode(await _transactionService.GetAllTransactions());
+        }
     }
 }

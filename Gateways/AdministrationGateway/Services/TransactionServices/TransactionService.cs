@@ -74,6 +74,76 @@ namespace AdministrationGateway.Services.TransactionServices
             }
         }
 
+        public async Task<CommandResult<AllTransactionsDownstreamListDto>> GetAllTransactions()
+        {
+            var request = await _responseProcessor.CreateAsync(_httpContext, HttpMethod.Get, $"{_configs["Services:Transaction"]}/api/Transaction/allTranses", true, true, changeBody: null);
+            try
+            {
+                var response = await _httpClient.SendAsync(request);
+                var transactionsResult = await _responseProcessor.Process<AllTransactionsUpstreamListDto>(response);
+                if (!transactionsResult.IsSuccessful)
+                {
+                    return new CommandResult<AllTransactionsDownstreamListDto>(transactionsResult.Error);
+                }
+
+                var originalUserIds = transactionsResult.Result.Transactions.Select(o => o.OwnerId)
+                    .Union(transactionsResult.Result.Transactions.Select(o => o.ReceiverId))
+                    .Distinct()
+                    .ToList();
+                var users = await _userService.GetUsersAsync(originalUserIds);
+
+                var objectsIds = transactionsResult.Result.Transactions.Select(t => t.ObjectId).ToList();
+                var objects = await _objectService.GetObjectsByIds(objectsIds);
+
+                return new CommandResult<AllTransactionsDownstreamListDto>(AggregateAllTransactionWithObject8User(transactionsResult.Result, users, objects));
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Error When getting list of transactions that belog to user");
+                var message = new ErrorMessage
+                {
+                    ErrorCode = "TRANSACTION.LIST.FORUSER.ERROR",
+                    Message = "there were an error while trying to execute your request",
+                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
+                };
+                return new CommandResult<AllTransactionsDownstreamListDto>(message);
+            }
+        }
+
+        private AllTransactionsDownstreamListDto AggregateAllTransactionWithObject8User(AllTransactionsUpstreamListDto trans, List<UserDto> users, List<TransactionObjectDto> objects)
+        {
+            var downStreamTransactions = new List<TransactionDownstreamDto>();
+            foreach (var tran in trans.Transactions)
+            {
+                downStreamTransactions.Add(new TransactionDownstreamDto
+                {
+                    RegistrationId = tran.RegistrationId,
+                    ReceivingId = tran.ReceivingId,
+                    ReturnId = tran.ReturnId,
+                    RegistredAtUtc = tran.RegistredAtUtc,
+                    HourlyCharge = tran.HourlyCharge,
+                    ReceivedAtUtc = tran.ReceivedAtUtc,
+                    ReturenedAtUtc = tran.ReturenedAtUtc,
+                    ShouldReturnAfter = tran.ShouldReturnAfter,
+                    TransactionStatus = tran.TransactionStatus,
+                    TranscationType = tran.TranscationType,
+                    Object = objects.Find(o => o.Id == tran.ObjectId),
+                    Owner = users.Find(u => u.Id == tran.OwnerId || u.Id == tran.ReceiverId),
+                    Receiver = users.Find(u => u.Id == tran.OwnerId || u.Id == tran.ReceiverId),
+                });
+
+                downStreamTransactions.RemoveAll(t => t.Owner is null || t.Receiver == null || t.Object is null);
+            }
+            var userId = _httpContext.Request.Query["userId"].GetValue();
+            return new AllTransactionsDownstreamListDto()
+            {
+                Transactions = downStreamTransactions,
+                ReservedTransactionsCount = trans.ReservedTransactionsCount,
+                DeliveredTransactionsCount = trans.DeliveredTransactionsCount,
+                ReturnedTransactionsCount = trans.ReturnedTransactionsCount
+            };
+        }
+
         private TransactionForUserDownstreamListDto AggregateTransactionWithObject8User(List<TransactionUpstreamDto> trans, List<UserDto> users, List<TransactionObjectDto> objects)
         {
             var downStreamTransactions = new List<TransactionDownstreamDto>();
