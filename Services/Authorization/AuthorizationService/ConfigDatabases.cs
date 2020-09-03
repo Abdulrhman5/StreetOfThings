@@ -53,7 +53,7 @@ namespace AuthorizationService
             {
                 new AppUser
                 {
-                    Id = Guid.NewGuid().ToString(),
+                    Id = Guid.Parse("cc0eb95f-52a0-4131-b8f6-b79ab5e7728f").ToString(),
                     Email = "TestUser@Auth.com",
                     UserName = "TestUser@Auth.com",
                     LockoutEnabled = false,
@@ -61,6 +61,59 @@ namespace AuthorizationService
                     PhoneNumberConfirmed = true,
                     CreatedAt = DateTime.UtcNow,
                     Gender = Gender.Male,
+                    Logins = new List<Login>
+                    {
+                        new Login
+                        {
+                            IsValid = true,
+                            LoggedAt = DateTime.UtcNow,
+                            LoginId = Guid.Parse("5b9be4be-bac2-4677-8d3b-cfd9b749cde0"),
+                            Token = "This is dummy token, this token is generated during seeding data.",
+                        },
+
+                    }
+                },
+                new AppUser
+                {
+                    Id = Guid.Parse("dd6cafb3-b154-475e-a309-610f3d2d91bf").ToString(),
+                    Email = "SecondUser@Street.com",
+                    UserName = "SecondUser@Street.com",
+                    LockoutEnabled = false,
+                    EmailConfirmed = true,
+                    PhoneNumberConfirmed = true,
+                    CreatedAt = DateTime.UtcNow,
+                    Gender = Gender.Male,
+                    Logins = new List<Login>
+                    {
+                        new Login
+                        {
+                            IsValid = true,
+                            LoggedAt = DateTime.UtcNow,
+                            LoginId = Guid.Parse("25291904-86a0-4b1d-b24b-fab3c332c59d"),
+                            Token = "This is dummy token, this token is generated during seeding data.",
+                        }
+                    }
+                },
+                new AppUser
+                {
+                    Id = Guid.Parse("9b4210dc-49b9-4031-9a7a-dcc769a0cac8").ToString(),
+                    Email = "ThirdUser@Street.com",
+                    UserName = "ThirdUser@Street.com",
+                    LockoutEnabled = false,
+                    EmailConfirmed = true,
+                    PhoneNumberConfirmed = true,
+                    CreatedAt = DateTime.UtcNow,
+                    Gender = Gender.Male,
+                    Logins = new List<Login>
+                    {
+                        new Login
+                        {
+                            IsValid = true,
+                            LoggedAt = DateTime.UtcNow,
+                            LoginId = Guid.Parse("b1590daf-7004-48f0-8af5-bc6ba97d5bed"),
+                            Token = "This is dummy token, this token is generated during seeding data.",
+                        }
+                    }
                 }
             };
 
