@@ -67,6 +67,8 @@ namespace Catalog.ApplicationLogic.ObjectQueries
                               Photos = o.Photos.Select(op => _photoConstructor.Construct(op)).ToList(),
                               Tags = o.Tags.Select(ot => ot.Tag.Name).ToList(),
                               Type = o.CurrentTransactionType,
+                              CommentsCount = o.Comments.Count,
+                              LikesCount =o.Comments.Count,
                           };
 
             var objectsList = await objects.SkipTakeAsync(arguments);

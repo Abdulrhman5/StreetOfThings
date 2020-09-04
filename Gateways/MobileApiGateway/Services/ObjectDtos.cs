@@ -30,6 +30,11 @@ namespace MobileApiGateway.Services
 
         [JsonConverter(typeof(StringEnumConverter))]
         public TransactionType Type { get; set; }
+
+        public int CommentsCount { get; set; }
+
+        public int LikesCount { get; set; }
+
     }
 
     public class DownstreamObjectDto
@@ -54,7 +59,13 @@ namespace MobileApiGateway.Services
         public TransactionType Type { get; set; }
 
         public UserDto Owner { get; set; }
-        
+
+        public int CommentsCount { get; set; }
+
+        public int LikesCount { get; set; }
+
+        public int DistanceInMeters { get; set; }
+
     }
     public enum TransactionType
     {

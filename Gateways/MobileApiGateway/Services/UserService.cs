@@ -39,5 +39,17 @@ namespace MobileApiGateway.Services
 
             return usersDtos;
         }
+
+        public async Task<List<(double? distance, string userId)>> CalculateUsersDistances(string theUserId, List<string> usersIds)
+        {
+            var request = new CalculateDistanceRequest();
+            request.TheUserId = theUserId;
+            usersIds.ForEach(uid => request.UserIds.Add(uid));
+
+            var result = await _grpcClient.CalculateDistanceAsync(request);
+
+            return result.Distances.Select(d => (d.Distance, d.UserId)).ToList();
+        }
+             
     }
 }

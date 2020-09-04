@@ -1,10 +1,12 @@
 syntax = "proto3";
 
 package AuthorizationService.Grpc;
-
+import "google/protobuf/wrappers.proto";
 
 service UsersGrpc {
-  rpc GetUsersData (UsersIdsModel) returns (UsersModel) {}
+  rpc GetUsersData (UsersIdsModel) returns (UsersModel) {};
+    
+  rpc CalculateDistance(CalculateDistanceRequest) returns(DistancesResponse) {};
 }
 
 message UsersModel{
@@ -22,4 +24,22 @@ message UserModel {
 
 message UsersIdsModel {
     repeated string UsersIds = 1;
+}
+
+message DistanceModel{
+    google.protobuf.DoubleValue distance = 1;
+    string user_id = 2;
+}
+
+message DistancesResponse{
+    repeated DistanceModel distances = 1;
+}
+
+message UserIdModel{
+    string user_id = 1;
+}
+
+message CalculateDistanceRequest{
+    repeated string user_ids = 1;
+    string the_user_id = 2;
 }

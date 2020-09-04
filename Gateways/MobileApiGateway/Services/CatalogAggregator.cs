@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using MobileApiGateway.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,8 @@ namespace MobileApiGateway.Services
         private ILogger<CatalogService> _logger;
 
         private UserService _userService;
+
+        private CurrentUserCredentialsGetter _credentialsGetter;
 
         public CatalogAggregator(HttpClient httpClient, HttpContext httpContext, HttpClientHelpers responseProcessor, IConfiguration configs, ILogger<CatalogService> logger, UserService userService)
         {
@@ -48,6 +51,8 @@ namespace MobileApiGateway.Services
 
                 var originalUserIds = objectResult.Result.Select(o => o.OwnerId).ToList();
                 var users = await _userService.GetUsersAsync(originalUserIds);
+                var callerUserId = _credentialsGetter.GetCuurentUser().UserId;
+                var distances = await _userService.CalculateUsersDistances(callerUserId, users.Select(u =>u.Id).ToList());
                 return new CommandResult<List<DownstreamObjectDto>>(ReplaceUserIdWithUser(objectResult.Result, users));
             }
             catch (Exception e)

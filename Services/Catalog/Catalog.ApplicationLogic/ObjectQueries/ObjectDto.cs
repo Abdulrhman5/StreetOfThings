@@ -29,5 +29,10 @@ namespace Catalog.ApplicationLogic.ObjectQueries
 
         [JsonConverter(typeof(StringEnumConverter))]
         public TransactionType Type { get; set; }
+
+        public int CommentsCount { get; set; }
+
+        public int LikesCount { get; set; }
     }
+
 }

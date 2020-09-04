@@ -9,10 +9,12 @@ namespace AuthorizationService.Grpc
     public class UserService : UsersGrpcBase
     {
         private IUserGetter _userGetter;
-        public UserService(IUserGetter userGetter)
+
+        private IDistanceCalcultaor _distanceCalcultaor;
+        public UserService(IUserGetter userGetter, IDistanceCalcultaor distanceCalcultaor)
         {
             _userGetter = userGetter;
-
+            _distanceCalcultaor = distanceCalcultaor;
         }
 
         public override async Task<UsersModel> GetUsersData(UsersIdsModel request, ServerCallContext context)
@@ -29,6 +31,23 @@ namespace AuthorizationService.Grpc
                 Username = user.Username
             }));
             return model;
+        }
+
+        public override async Task<DistancesResponse> CalculateDistance(CalculateDistanceRequest request, ServerCallContext context)
+        {
+            var userIds = request.UserIds.ToList();
+            var theUserId = request.TheUserId;
+
+            var distances = await _distanceCalcultaor.CalculateDistancesAsync(theUserId, userIds);
+
+            var distanceResponse = new DistancesResponse();
+            distances.ForEach(distance => distanceResponse.Distances.Add(new DistanceModel
+            {
+                Distance = distance.distance,
+                UserId = distance.userId
+            }));
+
+            return distanceResponse;
         }
     }
 }
