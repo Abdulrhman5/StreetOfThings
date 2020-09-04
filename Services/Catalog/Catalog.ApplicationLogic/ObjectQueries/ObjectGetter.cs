@@ -165,9 +165,9 @@ namespace Catalog.ApplicationLogic.ObjectQueries
                               Tags = o.Tags.Select(ot => ot.Tag.Name).ToList(),
                               Type = o.CurrentTransactionType,
                           };
-            var freeObjects = _objectRepo.Table.Where(_queryHelper.IsValidObject).Where(_queryHelper.ValidForFreeAndLendibg);
+            var freeObjects = _objectRepo.Table.Where(_queryHelper.IsValidObject).Where(_queryHelper.ValidForFreeAndLendibg).Where(o => o.OwnerLogin.User.OriginalUserId == originalUserId);
             var availableObjectsCount = freeObjects.Count();
-            var reservedObjectsCount = filteredObjects.Count() - availableObjectsCount;
+            var reservedObjectsCount = objects.Count() - availableObjectsCount;
 
             return new ObjectsForUserListDto()
             {

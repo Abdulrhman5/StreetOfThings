@@ -16,10 +16,10 @@ message UsersModel{
 // The User response DTO
 message UserModel {
   string id = 1;
-  string username = 2;
-  string name= 3;
-  string email = 4;
-  string picture_url=5;
+  google.protobuf.StringValue username = 2;
+  google.protobuf.StringValue name= 3;
+  google.protobuf.StringValue email = 4;
+  google.protobuf.StringValue picture_url=5;
 }
 
 message UsersIdsModel {

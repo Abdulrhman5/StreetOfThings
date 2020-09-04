@@ -2,6 +2,7 @@
 
 package CatalogService.Grpc;
 
+import "google/protobuf/wrappers.proto";
 
 service ObjectsGrpc {
   rpc GetObjectsData (ObjectsIdsModel) returns (ObjectsModel) {}
@@ -14,8 +15,8 @@ message ObjectsModel{
 // The User response DTO
 message ObjectModel {
   int32 id = 1;
-  string name = 2;
-  string description = 3;   
+  google.protobuf.StringValue name = 2;
+  google.protobuf.StringValue description = 3;   
 }
 
 message ObjectsIdsModel {
