@@ -21,17 +21,11 @@ namespace Catalog.ApplicationLogic.ObjectQueries
 
         private ObjectQueryHelper _queryHelper;
 
-        private IRepository<Guid, ObjectLike> _likesRepo;
-
-        private IRepository<Guid, ObjectComment> _commentsRepo;
-
         private CurrentUserCredentialsGetter _credentialsGetter;
         private Expression<Func<OfferedObject, ObjectDto>> ObjectDtoSelectExp { get; set; }
         public ObjectGetter(IRepository<int, OfferedObject> repository,
             IObjectPhotoUrlConstructor photoUrlConstructor,
             IObjectImpressionsManager impressionsManager, ObjectQueryHelper queryHelper,
-            IRepository<Guid, ObjectLike> likesRepo, 
-            IRepository<Guid, ObjectComment> commentsRepo, 
             CurrentUserCredentialsGetter credentialsGetter)
         {
             _objectRepo = repository;
@@ -52,8 +46,6 @@ namespace Catalog.ApplicationLogic.ObjectQueries
                 Tags = o.Tags.Select(ot => ot.Tag.Name).ToList(),
                 Type = o.CurrentTransactionType,
             };
-            _likesRepo = likesRepo;
-            _commentsRepo = commentsRepo;
             _credentialsGetter = credentialsGetter;
         }
 

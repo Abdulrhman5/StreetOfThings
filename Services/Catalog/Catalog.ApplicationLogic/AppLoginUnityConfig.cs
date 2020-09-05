@@ -35,9 +35,12 @@ namespace Catalog.ApplicationLogic
             Container.RegisterType<IObjectPhotoUrlConstructor, ObjectPhotoUrlConstructor>();
 
             Container.RegisterType<IObjectImpressionsManager, ObjectImpressionsManager>();
+            Container.RegisterType<IObjectViewsManager, ObjectViewsManager>();
             Container.RegisterType<IObjectCommentAdder, ObjectCommentAdder>();
             Container.RegisterType<ICommentsGetter, CommentsGetter>();
             Container.RegisterType<TagsGetter>();
+
+            Container.RegisterType<IObjectDetailsGetter, ObjectDetailsGetter>();
 
             Container.RegisterType<LikeAdder>();
             Container.RegisterType<ObjectQueryHelper>();

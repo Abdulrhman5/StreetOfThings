@@ -12,7 +12,6 @@ namespace Catalog.ApplicationLogic.Infrastructure
 {
     class ObjectImpressionsManager : IObjectImpressionsManager
     {
-        private CurrentUserCredentialsGetter _credintialsGetter;
 
         private UserDataManager _userDataManager;
 
@@ -20,12 +19,10 @@ namespace Catalog.ApplicationLogic.Infrastructure
 
         private IRepository<(int, Guid, DateTime), ObjectImpression> _impressionsRepo;
         public ObjectImpressionsManager(
-            CurrentUserCredentialsGetter credentialsGetter,
             UserDataManager userDataManager,
             IRepository<(int, Guid, DateTime), ObjectImpression> impressionRepo,
             ILogger<ObjectImpressionsManager> logger)
         {
-            _credintialsGetter = credentialsGetter;
             _userDataManager = userDataManager;
             _impressionsRepo = impressionRepo;
             _logger = logger;

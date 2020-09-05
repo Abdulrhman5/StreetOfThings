@@ -20,6 +20,7 @@ namespace Catalog.Models
         public List<ObjectLoan> Loans { get; set; }
 
         public List<ObjectImpression> Impressions { get; set; }
+        public List<ObjectView> Views { get; set; }
 
         public List<ObjectComment> Comments { get; set; }
 

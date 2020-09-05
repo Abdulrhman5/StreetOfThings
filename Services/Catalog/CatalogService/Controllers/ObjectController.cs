@@ -25,15 +25,19 @@ namespace CatalogService.Controllers
         private ObjectGetter _objectGetter;
 
         private IObjectDeleter _objectDeleter;
+
+        private IObjectDetailsGetter _objectDetailsGetter;
         public ObjectController(IObjectAdder objectAdder,
             PhotoAdder photoAdder,
             ObjectGetter objectGetter,
-            IObjectDeleter objectDeleter)
+            IObjectDeleter objectDeleter, 
+            IObjectDetailsGetter objectDetaissGetter)
         {
             _objectAdder = objectAdder;
             _photoAdder = photoAdder;
             _objectGetter = objectGetter;
             _objectDeleter = objectDeleter;
+            _objectDetailsGetter = objectDetaissGetter;
         }
 
         [Route("create")]
@@ -99,6 +103,13 @@ namespace CatalogService.Controllers
             {
                 Message = "The object has been deleted."
             });
+        }
+
+        [Route("details/{objectId:int}")]
+        public async Task<IActionResult> GetObjectDetails(int objectId)
+        {
+            var result = await _objectDetailsGetter.GetObjectDetails(objectId);
+            return StatusCode(result);
         }
     }
 }

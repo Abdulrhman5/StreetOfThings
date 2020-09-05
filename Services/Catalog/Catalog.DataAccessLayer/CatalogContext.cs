@@ -51,6 +51,7 @@ namespace Catalog.DataAccessLayer
             modelBuilder.Entity<ObjectTag>().HasKey(ot => new { ot.ObjectId, ot.TagId });
 
             modelBuilder.Entity<ObjectImpression>().HasKey(op => new { op.ObjectId, op.LoginId, op.ViewedAtUtc });
+            modelBuilder.Entity<ObjectView>().HasKey(op => new { op.ObjectId, op.LoginId, op.ViewedAtUtc });
 
             modelBuilder.Entity<Login>().HasMany(u => u.OwnedObjects).WithOne(ob => ob.OwnerLogin).OnDelete(DeleteBehavior.NoAction);
         }
