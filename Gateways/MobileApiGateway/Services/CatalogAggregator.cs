@@ -22,7 +22,7 @@ namespace MobileApiGateway.Services
 
         private IConfiguration _configs;
 
-        private ILogger<CatalogService> _logger;
+        private ILogger<CatalogAggregator> _logger;
 
         private UserService _userService;
 
@@ -32,7 +32,7 @@ namespace MobileApiGateway.Services
         public CatalogAggregator(HttpClient httpClient, IHttpContextAccessor httpContextAccessor,
             HttpClientHelpers responseProcessor,
             IConfiguration configs,
-            ILogger<CatalogService> logger,
+            ILogger<CatalogAggregator> logger,
             UserService userService,
             CurrentUserCredentialsGetter credentialsGetter,
             IMapper mapper)
@@ -49,7 +49,7 @@ namespace MobileApiGateway.Services
 
         public async Task<CommandResult<List<DownstreamObjectDto>>> AggregateObjects()
         {
-            var request = await _responseProcessor.CreateAsync(_httpContext, HttpMethod.Get, $"{_configs["Servers:Catalog"]}/api/object/list", true, true, changeBody: null);
+            var request = await _responseProcessor.CreateAsync(HttpMethod.Get, $"{_configs["Servers:Catalog"]}/api/object/list", true, true, null);
             try
             {
                 var response = await _httpClient.SendAsync(request);
@@ -79,7 +79,7 @@ namespace MobileApiGateway.Services
 
         public async Task<CommandResult<List<DownstreamObjectDtoV1_1>>> AggregateObjectsV1_1()
         {
-            var request = await _responseProcessor.CreateAsync(_httpContext, HttpMethod.Get, $"{_configs["Servers:Catalog"]}/api/object/v1.1/list", true, true, changeBody: null);
+            var request = await _responseProcessor.CreateAsync(HttpMethod.Get, $"{_configs["Servers:Catalog"]}/api/object/v1.1/list", true, true, null);
             try
             {
                 var response = await _httpClient.SendAsync(request);

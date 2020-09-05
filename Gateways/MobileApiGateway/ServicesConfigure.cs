@@ -15,9 +15,9 @@ namespace MobileApiGateway
     {
         public static void ConfigureIoc(this IServiceCollection servicesCollection)
         {
-            servicesCollection.AddTransient<HttpClientHelpers>();
+            servicesCollection.AddHttpClient<HttpClientHelpers>();
             servicesCollection.AddTransient<Services.CatalogService>();
-            servicesCollection.AddHttpClient<CommentAggregator>();
+            servicesCollection.AddTransient<CommentAggregator>();
             servicesCollection.AddTransient<UserService>();
             servicesCollection.AddHttpClient<TransactionService>();
             servicesCollection.AddTransient<ObjectService>();

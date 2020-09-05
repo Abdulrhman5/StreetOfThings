@@ -1,8 +1,8 @@
 ﻿using CommonLibrary;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -12,6 +12,19 @@ namespace MobileApiGateway
 {
     public class HttpClientHelpers
     {
+        private HttpContext _httpContext;
+        private HttpClient _httpClient;
+        private ILogger<HttpClientHelpers> _logger;
+
+        public HttpClientHelpers(IHttpContextAccessor httpContextAccessor,
+            HttpClient httpClient,
+            ILogger<HttpClientHelpers> logger)
+        {
+            _httpContext = httpContextAccessor.HttpContext;
+            _httpClient = httpClient;
+            _logger = logger;
+        }
+
         public async Task<CommandResult<T>> Process<T>(HttpResponseMessage responseMessage)
         {
             var jsonString = await responseMessage.Content.ReadAsStringAsync();
@@ -40,22 +53,20 @@ namespace MobileApiGateway
         }
 
         public async Task<HttpRequestMessage> CreateAsync(
-            HttpContext context,
             HttpMethod method,
             string url,
             bool forwardUrlPars,
             bool forwardHeaders,
             // add new headers,
-            Func<string, (string Content, string ContentType)> changeBody = null
-            )
+            Func<string, (string Content, string ContentType)> changeBody = null)
         {
-            string finalUrl = forwardUrlPars ? url + context.Request.QueryString.ToUriComponent() : url;
+            string finalUrl = forwardUrlPars ? url + _httpContext.Request.QueryString.ToUriComponent() : url;
 
             var request = new HttpRequestMessage(method, finalUrl);
-            context.Request.QueryString.ToUriComponent();
+            _httpContext.Request.QueryString.ToUriComponent();
             if (forwardHeaders)
             {
-                foreach (var requestHeader in context.Request.Headers)
+                foreach (var requestHeader in _httpContext.Request.Headers)
                 {
                     if (requestHeader.Key.EqualsIC("Host")) continue;
                     request.Headers.TryAddWithoutValidation(requestHeader.Key, requestHeader.Value.AsEnumerable());
@@ -68,7 +79,7 @@ namespace MobileApiGateway
 
             }
 
-            var body = new StreamReader(context.Request.Body);
+            var body = new StreamReader(_httpContext.Request.Body);
             //The modelbinder has already read the stream and need to reset the stream index
             body.BaseStream.Seek(0, SeekOrigin.Begin);
             var requestBody = await body.ReadToEndAsync();
@@ -87,8 +98,7 @@ namespace MobileApiGateway
             bool forwardUrlPars,
             bool forwardHeaders,
             // add new headers,
-            string content, string contentType
-            )
+            string content, string contentType)
         {
             string finalUrl = forwardUrlPars ? url + context.Request.QueryString.ToUriComponent() : url;
 
@@ -116,11 +126,56 @@ namespace MobileApiGateway
             bool forwardUrlPars,
             bool forwardHeaders,
             // add new headers,
-            object @object
-            )
+            object @object)
         {
             var jsonString = JsonConvert.SerializeObject(@object);
             return await CreateAsync(context, method, url, forwardUrlPars, forwardHeaders, jsonString, "application/json");
+        }
+
+        public async Task<CommandResult<T>> SendAndProcess<T>(HttpRequestMessage request, string errorCode)
+        {
+            try
+            {
+                var response = await _httpClient.SendAsync(request);
+                var objectResult = await Process<T>(response);
+
+                return objectResult;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Error While making a remote request");
+                var message = new ErrorMessage
+                {
+                    ErrorCode = errorCode,
+                    Message = "there were an error while trying to execute your request",
+                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
+                };
+                return new CommandResult<T>(message);
+            }
+        }
+
+
+        public async Task<CommandResult<T>> CreateAndProcess<T>(HttpMethod method, string url, string errorCode)
+        {
+            var request = await CreateAsync(method, url, true, true, null);
+            try
+            {
+                var response = await _httpClient.SendAsync(request);
+                var objectResult = await Process<T>(response);
+
+                return objectResult;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Error While making a remote request");
+                var message = new ErrorMessage
+                {
+                    ErrorCode = errorCode,
+                    Message = "there were an error while trying to execute your request",
+                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
+                };
+                return new CommandResult<T>(message);
+            }
         }
     }
 }

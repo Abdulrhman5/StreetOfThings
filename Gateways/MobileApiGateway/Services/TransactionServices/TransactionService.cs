@@ -40,7 +40,7 @@ namespace MobileApiGateway.Services.TransactionServices
 
         public async Task<CommandResult<List<TransactionDownstreamDto>>> GetTransactionsWhereUserIsRecipient()
         {
-            var request = await _responseProcessor.CreateAsync(_httpContext, HttpMethod.Get, $"{_configs["Services:Transaction"]}/api/Registrations/MeAsRecipient", true, true, changeBody: null);
+            var request = await _responseProcessor.CreateAsync(HttpMethod.Get, $"{_configs["Services:Transaction"]}/api/Registrations/MeAsRecipient", true, true, null);
             try
             {
                 var response = await _httpClient.SendAsync(request);
@@ -76,7 +76,7 @@ namespace MobileApiGateway.Services.TransactionServices
         
         public async Task<CommandResult<List<TransactionDownstreamDto>>> GetTransactionsWhereUserIsOwner()
         {
-            var request = await _responseProcessor.CreateAsync(_httpContext, HttpMethod.Get, $"{_configs["Services:Transaction"]}/api/Registrations/MeAsOwner", true, true, changeBody: null);
+            var request = await _responseProcessor.CreateAsync(HttpMethod.Get, $"{_configs["Services:Transaction"]}/api/Registrations/MeAsOwner", true, true, changeBody: null);
             try
             {
                 var response = await _httpClient.SendAsync(request);

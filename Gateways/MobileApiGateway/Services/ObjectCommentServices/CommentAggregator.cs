@@ -14,55 +14,29 @@ namespace MobileApiGateway.Services.ObjectCommentServices
 {
     public class CommentAggregator
     {
-        private HttpClient _httpClient;
-
-        private HttpContext _httpContext;
-
         private HttpClientHelpers _responseProcessor;
 
         private IConfiguration _configs;
 
-        private ILogger<CommentAggregator> _logger;
-
         private UserService _userService;
 
         private IMapper _mapper;
-        public CommentAggregator(HttpClient httpClient,
-            IHttpContextAccessor httpContextAccessor,
+        public CommentAggregator(
             HttpClientHelpers responseProcessor,
             IConfiguration configs,
-            ILogger<CommentAggregator> logger,
             UserService userService, IMapper mapper)
         {
-            _httpClient = httpClient;
-            _httpContext = httpContextAccessor.HttpContext;
             _responseProcessor = responseProcessor;
             _configs = configs;
-            _logger = logger;
             _userService = userService;
             _mapper = mapper;
         }
 
         public async Task<CommandResult<UpstreamCommentListDto>> GetComments()
         {
-            var request = await _responseProcessor.CreateAsync(_httpContext, HttpMethod.Get, $"{_configs["Services:Catalog"]}/api/object/comment/forObject", true, true, changeBody: null);
-            try
-            {
-                var response = await _httpClient.SendAsync(request);
-                var commentsResult = await _responseProcessor.Process<UpstreamCommentListDto>(response);
-                return commentsResult;
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, "Error When getting list of objects");
-                var message = new ErrorMessage
-                {
-                    ErrorCode = "CATALOG.OBJECT.COMMENT.LIST.ERROR",
-                    Message = "there were an error while trying to execute your request",
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                };
-                return new CommandResult<UpstreamCommentListDto>(message);
-            }
+            return await _responseProcessor.CreateAndProcess<UpstreamCommentListDto>(HttpMethod.Get, 
+                $"{_configs["Services:Catalog"]}/api/object/comment/forObject", 
+                "CATALOG.OBJECT.COMMENT.LIST.ERROR");
         }
 
         public  async Task<DownstreamCommentListDto> AggregateCommentsWithUsers(UpstreamCommentListDto comments)

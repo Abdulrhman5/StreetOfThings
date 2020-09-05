@@ -41,7 +41,7 @@ namespace MobileApiGateway.Services
 
         public async Task<CommandResult<List<DownstreamObjectDto>>> AggregateObjects()
         {
-            var request = await _responseProcessor.CreateAsync(_httpContext, HttpMethod.Get, $"{_configs["Servers:Catalog"]}/api/object/list",true, true, changeBody: null);
+            var request = await _responseProcessor.CreateAsync(_httpContext, HttpMethod.Get, $"{_configs["Servers:Catalog"]}/api/object/list",true, true, null);
             try
             {
                 var response = await _httpClient.SendAsync(request);
