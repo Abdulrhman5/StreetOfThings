@@ -50,6 +50,21 @@ namespace MobileApiGateway.Services
 
             return result.Distances.Select(d => (d.Distance, d.UserId)).ToList();
         }
-             
+
+        public async Task<(double? longitude, double? latitude)> GetUserLocation(string userId)
+        {
+            if (userId is null)
+            {
+                throw new ArgumentNullException(nameof(userId));
+            }
+
+            var request = new UserIdModel()
+            {
+                UserId = userId
+            };
+
+            var result = await _grpcClient.GetUserLocationAsync(request);
+            return (result.Longitude, result.Latitude);
+        }
     }
 }

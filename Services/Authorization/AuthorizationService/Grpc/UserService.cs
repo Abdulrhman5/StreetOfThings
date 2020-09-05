@@ -1,4 +1,5 @@
 ﻿using ApplicationLogic.AppUserQueries;
+using ApplicationLogic.LoginQueries;
 using Grpc.Core;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,6 +12,9 @@ namespace AuthorizationService.Grpc
         private IUserGetter _userGetter;
 
         private IDistanceCalcultaor _distanceCalcultaor;
+
+        private IUserLocationGetter _userLocationGetter;
+
         public UserService(IUserGetter userGetter, IDistanceCalcultaor distanceCalcultaor)
         {
             _userGetter = userGetter;
@@ -48,6 +52,26 @@ namespace AuthorizationService.Grpc
             }));
 
             return distanceResponse;
+        }
+
+        public override async Task<UserLocationResponse> GetUserLocation(UserIdModel request, ServerCallContext context)
+        {
+            var userId = request.UserId;
+            if(userId == null)
+            {
+                return new UserLocationResponse
+                {
+                    Latitude = null,
+                    Longitude = null
+                };
+            }
+
+            var location = _userLocationGetter.GetUserLocation(userId);
+            return new UserLocationResponse
+            {
+                Longitude = location.longitude,
+                Latitude = location.latitude
+            };
         }
     }
 }

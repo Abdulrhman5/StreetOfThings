@@ -7,6 +7,8 @@ service UsersGrpc {
   rpc GetUsersData (UsersIdsModel) returns (UsersModel) {};
     
   rpc CalculateDistance(CalculateDistanceRequest) returns(DistancesResponse) {};
+
+  rpc GetUserLocation(UserIdModel) returns(UserLocationResponse){};
 }
 
 message UsersModel{
@@ -42,4 +44,9 @@ message UserIdModel{
 message CalculateDistanceRequest{
     repeated string user_ids = 1;
     string the_user_id = 2;
+}
+
+message UserLocationResponse{
+    google.protobuf.DoubleValue longitude = 1;
+    google.protobuf.DoubleValue latitude = 2;
 }

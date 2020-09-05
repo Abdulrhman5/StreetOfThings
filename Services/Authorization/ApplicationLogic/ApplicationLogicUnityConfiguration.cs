@@ -1,5 +1,6 @@
 ﻿using ApplicationLogic.AppUserCommands;
 using ApplicationLogic.AppUserQueries;
+using ApplicationLogic.LoginQueries;
 using ApplicationLogic.ProfilePhotoCommand;
 using ApplicationLogic.UserConfirmations;
 using CommonLibrary;
@@ -35,7 +36,7 @@ namespace ApplicationLogic
 
             Container.RegisterType<IUserStatsGetter, UserStatsGetter>();
             Container.RegisterType<IDistanceCalcultaor, DistanceCalculator>();
-
+            Container.RegisterType<IUserLocationGetter, UserLocationGetter>();
             new DalUnityConfiguration().ConfigUnity(container);
         }
     }
