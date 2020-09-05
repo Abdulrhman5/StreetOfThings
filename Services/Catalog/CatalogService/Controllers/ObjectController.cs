@@ -69,6 +69,15 @@ namespace CatalogService.Controllers
         {
             var objects = await _objectGetter.GetObjects(pagings);
             return StatusCode(200, objects);
+        } 
+        
+        [Route("v1.1/list")]
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetObjectsV1_1(PagingArguments pagings)
+        {
+            var objects = await _objectGetter.GetObjectsV1_1(pagings);
+            return StatusCode(200, objects);
         }
 
         [Route("byId/{objectId:int}")]

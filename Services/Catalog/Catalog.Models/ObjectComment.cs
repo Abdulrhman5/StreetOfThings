@@ -10,6 +10,7 @@ namespace Catalog.Models
         public Guid ObjectCommentId { get; set; }
 
         public int ObjectId { get; set; }
+        public OfferedObject Object { get; set; }
 
         public Guid LoginId { get; set; }
         public Login Login { get; set; }

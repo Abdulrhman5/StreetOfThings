@@ -1,10 +1,6 @@
-﻿using AuthorizationService;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MobileApiGateway.Services
 {
@@ -30,11 +26,15 @@ namespace MobileApiGateway.Services
 
         [JsonConverter(typeof(StringEnumConverter))]
         public TransactionType Type { get; set; }
+    }
 
+    public class UpstreamObjectDtoV1_1 : UpstreamObjectDto
+    {
         public int CommentsCount { get; set; }
 
         public int LikesCount { get; set; }
 
+        public bool IsLikedByMe { get; set; }
     }
 
     public class DownstreamObjectDto
@@ -60,11 +60,18 @@ namespace MobileApiGateway.Services
 
         public UserDto Owner { get; set; }
 
+    }
+
+
+    public class DownstreamObjectDtoV1_1 : DownstreamObjectDto
+    {
         public int CommentsCount { get; set; }
 
         public int LikesCount { get; set; }
 
-        public int DistanceInMeters { get; set; }
+        public double? DistanceInMeters { get; set; }
+
+        public bool IsLikedByMe { get; set; }
 
     }
     public enum TransactionType

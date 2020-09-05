@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using MobileApiGateway.Infrastructure;
 using MobileApiGateway.Services;
 using MobileApiGateway.Services.TransactionServices;
 using System;
@@ -19,6 +20,8 @@ namespace MobileApiGateway
             servicesCollection.AddTransient<UserService>();
             servicesCollection.AddHttpClient<TransactionService>();
             servicesCollection.AddTransient<ObjectService>();
+            servicesCollection.AddTransient<CurrentUserCredentialsGetter>();
+            servicesCollection.AddHttpClient<CatalogAggregator>();
         }
     }
 }

@@ -50,7 +50,7 @@ namespace ApplicationLogic.AppUserQueries
                         select new
                         {
                             Distance = lastLogin == null ? null as double? : lastLogin.LoginLocation.Distance(theUserLogin.LoginLocation),
-                            UserId = u.Id
+                            UserId = u.Id,
                         };
 
             return (await usersDistancies.ToListAsync())

@@ -15,10 +15,12 @@ namespace MobileApiGateway.Controllers
     public class CatalogController : MyControllerBase
     {
         private Services.CatalogService _catalogService;
-        public CatalogController(Services.CatalogService catalogService)
+
+        private CatalogAggregator _catalogAggregator;
+        public CatalogController(Services.CatalogService catalogService, CatalogAggregator catalogAggregator)
         {
             _catalogService = catalogService;
-            
+            _catalogAggregator = catalogAggregator;
         }
 
         [Route("object/list")]
@@ -26,6 +28,13 @@ namespace MobileApiGateway.Controllers
         public async Task<IActionResult> GetObjects()
         {
             return StatusCode(await _catalogService.AggregateObjects());
+        }    
+        
+        [Route("object/v1.1/list")]
+        [HttpGet]
+        public async Task<IActionResult> GetObjectsV1_1()
+        {
+            return StatusCode(await _catalogAggregator.AggregateObjectsV1_1());
         }
     }
 }

@@ -6,10 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CommonLibrary;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Catalog.ApplicationLogic.ObjectQueries
 {
@@ -23,10 +21,18 @@ namespace Catalog.ApplicationLogic.ObjectQueries
 
         private ObjectQueryHelper _queryHelper;
 
+        private IRepository<Guid, ObjectLike> _likesRepo;
+
+        private IRepository<Guid, ObjectComment> _commentsRepo;
+
+        private CurrentUserCredentialsGetter _credentialsGetter;
         private Expression<Func<OfferedObject, ObjectDto>> ObjectDtoSelectExp { get; set; }
         public ObjectGetter(IRepository<int, OfferedObject> repository,
             IObjectPhotoUrlConstructor photoUrlConstructor,
-            IObjectImpressionsManager impressionsManager, ObjectQueryHelper queryHelper)
+            IObjectImpressionsManager impressionsManager, ObjectQueryHelper queryHelper,
+            IRepository<Guid, ObjectLike> likesRepo, 
+            IRepository<Guid, ObjectComment> commentsRepo, 
+            CurrentUserCredentialsGetter credentialsGetter)
         {
             _objectRepo = repository;
             _photoConstructor = photoUrlConstructor;
@@ -46,6 +52,9 @@ namespace Catalog.ApplicationLogic.ObjectQueries
                 Tags = o.Tags.Select(ot => ot.Tag.Name).ToList(),
                 Type = o.CurrentTransactionType,
             };
+            _likesRepo = likesRepo;
+            _commentsRepo = commentsRepo;
+            _credentialsGetter = credentialsGetter;
         }
 
         public async Task<List<ObjectDto>> GetObjects(PagingArguments arguments)
@@ -67,8 +76,6 @@ namespace Catalog.ApplicationLogic.ObjectQueries
                               Photos = o.Photos.Select(op => _photoConstructor.Construct(op)).ToList(),
                               Tags = o.Tags.Select(ot => ot.Tag.Name).ToList(),
                               Type = o.CurrentTransactionType,
-                              CommentsCount = o.Comments.Count,
-                              LikesCount =o.Comments.Count,
                           };
 
             var objectsList = await objects.SkipTakeAsync(arguments);
@@ -76,7 +83,38 @@ namespace Catalog.ApplicationLogic.ObjectQueries
             return objectsList;
         }
 
-        public async Task<ObjectsForAdministrationListDto> GetAllObjects() 
+        public async Task<List<ObjectDtoV1_1>> GetObjectsV1_1(PagingArguments arguments)
+        {
+            var filteredObjects = _objectRepo.Table.Where(_queryHelper.IsValidObject)
+                .Where(_queryHelper.ValidForFreeAndLendibg);
+
+            var userId = _credentialsGetter.GetCuurentUser()?.UserId;
+
+            var objects = from o in filteredObjects
+                          orderby o.OfferedObjectId
+                          select new ObjectDtoV1_1
+                          {
+                              Id = o.OfferedObjectId,
+                              CountOfImpressions = o.Impressions.Count,
+                              CountOfViews = 0,
+                              Description = o.Description,
+                              Name = o.Name,
+                              Rating = null,
+                              OwnerId = o.OwnerLogin.User.OriginalUserId,
+                              Photos = o.Photos.Select(op => _photoConstructor.Construct(op)).ToList(),
+                              Tags = o.Tags.Select(ot => ot.Tag.Name).ToList(),
+                              Type = o.CurrentTransactionType,
+                              CommentsCount = o.Comments.Count,
+                              LikesCount = o.Likes.Count,
+                              IsLikedByMe = o.Likes.Any(like => like.Login.User.OriginalUserId == userId)
+                          };
+
+            var objectsList = await objects.SkipTakeAsync(arguments);
+            await _impressionManager.AddImpressions(objectsList.Select(o => o.Id).ToList());
+            return objectsList;
+        }
+
+        public async Task<ObjectsForAdministrationListDto> GetAllObjects()
         {
             var filteredObjects = _objectRepo.Table.Where(_queryHelper.IsValidObject);
 
@@ -143,8 +181,8 @@ namespace Catalog.ApplicationLogic.ObjectQueries
                               Type = o.CurrentTransactionType,
                           };
             return await objects.ToListAsync();
-        }  
-        
+        }
+
         public async Task<ObjectsForUserListDto> GetObjectsOwnedByUser(string originalUserId)
         {
             var filteredObjects = _objectRepo.Table.Where(_queryHelper.IsValidObject);
