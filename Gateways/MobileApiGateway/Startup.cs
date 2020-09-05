@@ -17,6 +17,7 @@ using Unity;
 using System.Security.Claims;
 using AuthorizationService.Grpc;
 using Grpc.Core;
+using AutoMapper;
 
 namespace MobileApiGateway
 {
@@ -38,7 +39,7 @@ namespace MobileApiGateway
             services.AddOcelot(Configuration);
             services.AddSwaggerForOcelot(Configuration);
             services.AddHttpContextAccessor();
-
+            services.AddAutoMapper(typeof(Startup));
 
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>

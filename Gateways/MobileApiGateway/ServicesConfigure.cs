@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using MobileApiGateway.Infrastructure;
 using MobileApiGateway.Services;
+using MobileApiGateway.Services.ObjectCommentServices;
 using MobileApiGateway.Services.TransactionServices;
 using System;
 using System.Collections.Generic;

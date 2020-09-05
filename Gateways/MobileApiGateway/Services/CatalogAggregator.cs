@@ -1,4 +1,5 @@
-﻿using CommonLibrary;
+﻿using AutoMapper;
+using CommonLibrary;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -27,12 +28,14 @@ namespace MobileApiGateway.Services
 
         private CurrentUserCredentialsGetter _credentialsGetter;
 
+        private IMapper _mapper;
         public CatalogAggregator(HttpClient httpClient, IHttpContextAccessor httpContextAccessor,
             HttpClientHelpers responseProcessor,
-            IConfiguration configs, 
-            ILogger<CatalogService> logger, 
+            IConfiguration configs,
+            ILogger<CatalogService> logger,
             UserService userService,
-            CurrentUserCredentialsGetter credentialsGetter)
+            CurrentUserCredentialsGetter credentialsGetter,
+            IMapper mapper)
         {
             _httpClient = httpClient;
             _httpContext = httpContextAccessor.HttpContext;
@@ -41,6 +44,7 @@ namespace MobileApiGateway.Services
             _logger = logger;
             _userService = userService;
             _credentialsGetter = credentialsGetter;
+            _mapper = mapper;
         }
 
         public async Task<CommandResult<List<DownstreamObjectDto>>> AggregateObjects()
@@ -105,54 +109,26 @@ namespace MobileApiGateway.Services
         }
         private List<DownstreamObjectDto> ReplaceUserIdWithUser(List<UpstreamObjectDto> objects, List<UserDto> users)
         {
-            var downStreamObjects = new List<DownstreamObjectDto>();
-            foreach (var @object in objects)
+            var downstreamObjects = _mapper.Map<List<DownstreamObjectDto>>(objects);
+            downstreamObjects.ForEach(downObject =>
             {
-                downStreamObjects.Add(new DownstreamObjectDto
-                {
-                    CountOfImpressions = @object.CountOfImpressions,
-                    CountOfViews = @object.CountOfViews,
-                    Description = @object.Description,
-                    Id = @object.Id,
-                    Name = @object.Name,
-                    Owner = users?.FirstOrDefault(u => u.Id == @object.OwnerId),
-                    Photos = @object.Photos,
-                    Rating = @object.Rating,
-                    Tags = @object.Tags,
-                    Type = @object.Type
-                });
-                downStreamObjects.RemoveAll(o => o.Owner is null);
-            }
-
-            return downStreamObjects;
+                var upObject = objects.Find(o => o.Id == downObject.Id);
+                downObject.Owner = users.FirstOrDefault(u => u.Id == upObject.OwnerId);
+            });
+            downstreamObjects.RemoveAll(o => o.Owner is null);
+            return downstreamObjects;
         }
 
         private List<DownstreamObjectDtoV1_1> ReplaceUserIdWithUserV1_1(List<UpstreamObjectDtoV1_1> objects, List<UserDto> users, List<(double? distance, string userId)> distances)
         {
-            var downStreamObjects = new List<DownstreamObjectDtoV1_1>();
-            foreach (var @object in objects)
+            var downstreamObjects = _mapper.Map<List<DownstreamObjectDtoV1_1>>(objects);
+            downstreamObjects.ForEach(downObject =>
             {
-                downStreamObjects.Add(new DownstreamObjectDtoV1_1
-                {
-                    CountOfImpressions = @object.CountOfImpressions,
-                    CountOfViews = @object.CountOfViews,
-                    Description = @object.Description,
-                    Id = @object.Id,
-                    Name = @object.Name,
-                    Owner = users?.FirstOrDefault(u => u.Id == @object.OwnerId),
-                    Photos = @object.Photos,
-                    Rating = @object.Rating,
-                    Tags = @object.Tags,
-                    Type = @object.Type,
-                    LikesCount = @object.LikesCount,
-                    CommentsCount = @object.CommentsCount,
-                    DistanceInMeters = distances.SingleOrDefault(d => d.userId == @object.OwnerId).distance,
-                    IsLikedByMe = @object.IsLikedByMe
-                });
-                downStreamObjects.RemoveAll(o => o.Owner is null);
-            }
-
-            return downStreamObjects;
+                var upObject = objects.Find(o => o.Id == downObject.Id);
+                downObject.Owner = users.FirstOrDefault(u => u.Id == upObject.OwnerId);
+            });
+            downstreamObjects.RemoveAll(o => o.Owner is null);
+            return downstreamObjects;
         }
     }
 }

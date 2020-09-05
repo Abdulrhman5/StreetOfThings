@@ -3,6 +3,7 @@ using HostingHelpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MobileApiGateway.Services;
+using MobileApiGateway.Services.ObjectCommentServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +27,7 @@ namespace MobileApiGateway.Controllers
         [Authorize]
         public async Task<IActionResult> GetObjectComments()
         {
-            var result = await _commentAggregator.AggregateComments();
+            var result = await _commentAggregator.GetAndAggregateComments();
             return StatusCode(result);
         }
     }
