@@ -1,0 +1,220 @@
+﻿@page
+@model AdministrationGateway.Pages.Documentation.V1.UsersCountLastTwoYearModel
+@{
+    ViewData["Title"] = "Users count last 2 years";
+}
+
+<h1>Users count last 2 years</h1>
+
+<div class="container">
+    <h2>
+        Can be accessed at GET <b>http://localhost:25001/api/identity/stats/users/lastTwoYears</b>
+    </h2>
+    <hr />
+    <div class="container">
+        <div class="container">
+            <h3>
+                Url Parameters
+            </h3>
+            <table class="table">
+                <tr>
+                    <th>
+                        Key
+                    </th>
+                    <th>
+                        Type
+                    </th>
+                    <th>
+                        Value
+                    </th>
+                </tr>
+
+            </table>
+            None.
+        </div>
+        <br />
+        <div class="container">
+            <h3>
+                Header Parameters
+            </h3>
+            <table class="table">
+                <tr>
+
+                    <th>
+                        Key
+                    </th>
+                    <th>
+                        Value
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        Authorization
+                    </td>
+                    <td>
+                        bearer eyJhbGciOiJSU.zI1NiIsImtpZCI6Il.RimF1ZCI6WyJDYXRhbG9n
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <br />
+
+        <div class="container">
+            <h2>
+                The Response Scenarios
+                <br />
+            </h2>
+            <br />
+            <div class="container">
+                <h3>
+                    Scenario 1: All good.
+                </h3>
+                <br />
+                <br />
+                <div class="container">
+                    <h3>
+                        Headers parameters
+                    </h3>
+                    The most important headers are:
+                    <table class="table">
+                        <tr>
+
+                            <th>
+                                Key
+                            </th>
+                            <th>
+                                Value
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                StatusCode
+                            </td>
+                            <td>
+                                200
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <br />
+                <div class="container">
+                    <h3>
+                        Body
+                    </h3>
+                    <h5>NOTE:
+                    </h5>
+                    Assuming we are now at 5/3/2020
+                    every thing after the 3rd month will be 0
+
+                    <pre>
+{
+    "currentYear": [
+        {
+            "count": 100,
+            "monthYear": "2020-01-01T00:00:00Z"
+        },
+        {
+            "count": 200,
+            "monthYear": "2020-02-01T00:00:00Z"
+        },
+        {
+            "count": 399,
+            "monthYear": "2020-03-01T00:00:00Z"
+        },
+        {
+            "count": 0,
+            "monthYear": "2020-04-01T00:00:00Z"
+        },
+        {
+            "count": 0,
+            "monthYear": "2020-05-01T00:00:00Z"
+        },
+        {
+            "count": 0,
+            "monthYear": "2020-06-01T00:00:00Z"
+        },
+        {
+            "count": 1,
+            "monthYear": "2020-07-01T00:00:00"
+        },
+        {
+            "count": 1,
+            "monthYear": "2020-08-01T00:00:00"
+        },
+        {
+            "count": 2,
+            "monthYear": "2020-09-01T00:00:00"
+        },
+        {
+            "count": 0,
+            "monthYear": "2020-10-01T00:00:00Z"
+        },
+        {
+            "count": 0,
+            "monthYear": "2020-11-01T00:00:00Z"
+        },
+        {
+            "count": 0,
+            "monthYear": "2020-12-01T00:00:00Z"
+        }
+    ],
+    "previousYear": [
+        {
+            "count": 0,
+            "monthYear": "2019-01-01T00:00:00Z"
+        },
+        {
+            "count": 0,
+            "monthYear": "2019-02-01T00:00:00Z"
+        },
+        {
+            "count": 0,
+            "monthYear": "2019-03-01T00:00:00Z"
+        },
+        {
+            "count": 0,
+            "monthYear": "2019-04-01T00:00:00Z"
+        },
+        {
+            "count": 0,
+            "monthYear": "2019-05-01T00:00:00Z"
+        },
+        {
+            "count": 0,
+            "monthYear": "2019-06-01T00:00:00Z"
+        },
+        {
+            "count": 0,
+            "monthYear": "2019-07-01T00:00:00Z"
+        },
+        {
+            "count": 0,
+            "monthYear": "2019-08-01T00:00:00Z"
+        },
+        {
+            "count": 0,
+            "monthYear": "2019-09-01T00:00:00Z"
+        },
+        {
+            "count": 0,
+            "monthYear": "2019-10-01T00:00:00Z"
+        },
+        {
+            "count": 0,
+            "monthYear": "2019-11-01T00:00:00Z"
+        },
+        {
+            "count": 0,
+            "monthYear": "2019-12-01T00:00:00Z"
+        }
+    ]
+}					 </pre>
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

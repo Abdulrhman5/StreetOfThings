@@ -10,5 +10,19 @@ namespace ApplicationLogic.AppUserQueries
         Task<List<int>> GetUsersCountOverMonth();
 
         Task<List<int>> GetUsersCountOverToday();
+
+        Task<UserYearlyCountListStats> GetUsersCountOverTwoYears();
+    }
+
+    public class UserYearlyCountStats
+    {
+        public int Count { get; set; }
+        public DateTime MonthYear { get; set; }
+    }
+    public class UserYearlyCountListStats
+    {
+        public List<UserYearlyCountStats> CurrentYear { get; set; }
+         
+        public List<UserYearlyCountStats> PreviousYear { get; set; }
     }
 }

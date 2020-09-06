@@ -33,6 +33,14 @@ namespace AuthorizationService.Controllers
         {
             var stats = await _userStats.GetUsersCountOverToday();
             return Ok(stats);
+        }  
+        
+        [Route("lastTwoYears")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> UsersStatsLastTwoYears()
+        {
+            var stats = await _userStats.GetUsersCountOverTwoYears();
+            return Ok(stats);
         }
     }
 }
