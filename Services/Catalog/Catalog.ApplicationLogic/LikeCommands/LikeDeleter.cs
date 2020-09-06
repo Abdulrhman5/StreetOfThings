@@ -11,13 +11,25 @@ using System.Threading.Tasks;
 
 namespace Catalog.ApplicationLogic.LikeCommands
 {
-    public class LikeDeleter
+    public interface ILikeDeleter
+    {
+        Task<CommandResult> Unlike(AddLikeDto removeLikeDto);
+    }
+
+    class LikeDeleter : ILikeDeleter
     {
         private IRepository<Guid, ObjectLike> _likesRepo;
 
         private IRepository<int, OfferedObject> _objectsRepo;
 
         private UserDataManager _userDataManager;
+
+        public LikeDeleter(IRepository<Guid, ObjectLike> likesRepo, IRepository<int, OfferedObject> objectsRepo, UserDataManager userDataManager)
+        {
+            _likesRepo = likesRepo;
+            _objectsRepo = objectsRepo;
+            _userDataManager = userDataManager;
+        }
 
         public async Task<CommandResult> Unlike(AddLikeDto removeLikeDto)
         {
@@ -36,7 +48,7 @@ namespace Catalog.ApplicationLogic.LikeCommands
             {
                 return new CommandResult(new ErrorMessage
                 {
-                    ErrorCode = "CATALOG.LIKE.ADD.UNAUTHORIZED",
+                    ErrorCode = "CATALOG.LIKE.REMOVE.UNAUTHORIZED",
                     Message = "You are not authorized to execute this request",
                     StatusCode = System.Net.HttpStatusCode.Unauthorized,
                 });
@@ -47,9 +59,9 @@ namespace Catalog.ApplicationLogic.LikeCommands
             {
                 return new CommandResult(new ErrorMessage
                 {
-                    ErrorCode = "CATALOG.LIKE.ADD.UNAVAILABLE",
+                    ErrorCode = "CATALOG.LIKE.REMOVE.UNAVAILABLE",
                     Message = "This object is unavailable",
-                    StatusCode = System.Net.HttpStatusCode.Unauthorized,
+                    StatusCode = System.Net.HttpStatusCode.BadRequest,
                 });
             }
 
@@ -58,9 +70,9 @@ namespace Catalog.ApplicationLogic.LikeCommands
             {
                 return new CommandResult(new ErrorMessage
                 {
-                    ErrorCode = "CATALOG.LIKE.ADD.NO.PREVIOUS.LIKE",
+                    ErrorCode = "CATALOG.LIKE.REMOVE.NO.PREVIOUS.LIKE",
                     Message = "You have not liked this object before",
-                    StatusCode = System.Net.HttpStatusCode.Unauthorized,
+                    StatusCode = System.Net.HttpStatusCode.BadRequest,
                 });
             }
 

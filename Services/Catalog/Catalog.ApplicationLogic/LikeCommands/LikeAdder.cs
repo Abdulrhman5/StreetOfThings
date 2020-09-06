@@ -11,7 +11,12 @@ using System.Threading.Tasks;
 
 namespace Catalog.ApplicationLogic.LikeCommands
 {
-    public class LikeAdder
+    public interface ILikeAdder
+    {
+        Task<CommandResult> AddLike(AddLikeDto addLikeDto);
+    }
+
+    class LikeAdder : ILikeAdder
     {
         private IRepository<Guid, ObjectLike> _likesRepository;
 
@@ -19,10 +24,16 @@ namespace Catalog.ApplicationLogic.LikeCommands
 
         private IRepository<int, OfferedObject> _objectsRepo;
 
+        public LikeAdder(IRepository<Guid, ObjectLike> likesRepository, UserDataManager userDataManager, IRepository<int, OfferedObject> objectsRepo)
+        {
+            _likesRepository = likesRepository;
+            _userDataManager = userDataManager;
+            _objectsRepo = objectsRepo;
+        }
 
         public async Task<CommandResult> AddLike(AddLikeDto addLikeDto)
         {
-            if(addLikeDto is null)
+            if (addLikeDto is null)
             {
                 return new CommandResult(new ErrorMessage
                 {
@@ -33,7 +44,7 @@ namespace Catalog.ApplicationLogic.LikeCommands
 
             }
             var (login, user) = await _userDataManager.AddCurrentUserIfNeeded();
-            if(user?.UserId is null)
+            if (user?.UserId is null)
             {
                 return new CommandResult(new ErrorMessage
                 {
@@ -44,13 +55,13 @@ namespace Catalog.ApplicationLogic.LikeCommands
             }
 
             var @object = _objectsRepo.Get(addLikeDto.ObjectId);
-            if(@object is null || @object.ObjectStatus != ObjectStatus.Available)
+            if (@object is null || @object.ObjectStatus != ObjectStatus.Available)
             {
                 return new CommandResult(new ErrorMessage
                 {
                     ErrorCode = "CATALOG.LIKE.ADD.UNAVAILABLE",
                     Message = "This object is unavailable",
-                    StatusCode = System.Net.HttpStatusCode.Unauthorized,
+                    StatusCode = System.Net.HttpStatusCode.BadRequest,
                 });
             }
 
@@ -61,7 +72,7 @@ namespace Catalog.ApplicationLogic.LikeCommands
                 {
                     ErrorCode = "CATALOG.LIKE.ADD.ALREADY.LIKED",
                     Message = "You already liked this object",
-                    StatusCode = System.Net.HttpStatusCode.Unauthorized,
+                    StatusCode = System.Net.HttpStatusCode.BadRequest,
                 });
             }
 

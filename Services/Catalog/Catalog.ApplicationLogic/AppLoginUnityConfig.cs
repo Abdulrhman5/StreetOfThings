@@ -42,6 +42,9 @@ namespace Catalog.ApplicationLogic
 
             Container.RegisterType<IObjectDetailsGetter, ObjectDetailsGetter>();
 
+            Container.RegisterType<ILikeAdder, LikeAdder>();
+            Container.RegisterType<ILikeDeleter, LikeDeleter>();
+
             Container.RegisterType<LikeAdder>();
             Container.RegisterType<ObjectQueryHelper>();
             Container.RegisterType(typeof(OwnershipAuthorization<,>));

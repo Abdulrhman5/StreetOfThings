@@ -13,10 +13,10 @@ namespace CatalogService.Controllers
     [Route("api/[controller]")]
     public class LikesController : MyControllerBase
     {
-        private LikeAdder _likeAdder;
+        private ILikeAdder _likeAdder;
 
-        private LikeDeleter _likeDeleter;
-        public LikesController(LikeAdder likeAdder, LikeDeleter likeDeleter)
+        private ILikeDeleter _likeDeleter;
+        public LikesController(ILikeAdder likeAdder, ILikeDeleter likeDeleter)
         {
             _likeAdder = likeAdder;
             _likeDeleter = likeDeleter;
@@ -25,7 +25,7 @@ namespace CatalogService.Controllers
         [Route("Like")]
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> AddLike(AddLikeDto addLikeDto)
+        public async Task<IActionResult> AddLike([FromBody]AddLikeDto addLikeDto)
         {
             var result = await _likeAdder.AddLike(addLikeDto);
             return StatusCode(result, new
@@ -37,7 +37,7 @@ namespace CatalogService.Controllers
         [Route("Unlike")]
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> RemoveLike(AddLikeDto removeLikeDto)
+        public async Task<IActionResult> RemoveLike([FromBody]AddLikeDto removeLikeDto)
         {
             var result = await _likeDeleter.Unlike(removeLikeDto);
             return StatusCode(result, new
