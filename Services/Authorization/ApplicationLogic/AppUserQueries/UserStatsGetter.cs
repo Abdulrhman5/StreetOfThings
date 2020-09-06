@@ -16,7 +16,7 @@ namespace ApplicationLogic.AppUserQueries
             _usersRepo = usersRepo;
         }
 
-        public async Task<List<UserMonthlyCountStats>> GetUsersCountOverMonth()
+        public async Task<List<int>> GetUsersCountOverMonth()
         {
             var startDate = DateTime.UtcNow.AddDays(-31);
             var endDate = DateTime.UtcNow;
@@ -24,7 +24,7 @@ namespace ApplicationLogic.AppUserQueries
             var users = (from u in _usersRepo.Table.Where(uu => uu.CreatedAt >= startDate && uu.CreatedAt <= endDate)
                          group u by u.CreatedAt.Date into g
                          orderby g.Key
-                         select new UserMonthlyCountStats
+                         select new
                          {
                              Count = g.Count(),
                              Day = g.Key
@@ -35,20 +35,20 @@ namespace ApplicationLogic.AppUserQueries
             {
                 if (!users.Any(u => u.Day.Date == day.Date))
                 {
-                    users.Add(new UserMonthlyCountStats
+                    users.Add(new
                     {
-                        Day = day.Date,
-                        Count = 0
+                        Count = 0,
+                        Day = day.Date
                     });
                 }
             });
 
-            users = users.OrderBy(u => u.Day.Date).ToList();
+            var stats = users.OrderBy(u => u.Day.Date).Select(s => s.Count).ToList();
 
-            return users;
+            return stats;
         }
 
-        public async Task<List<UserDailyCountStats>> GetUsersCountOverToday()
+        public async Task<List<int>> GetUsersCountOverToday()
         {
             var startDate = DateTime.UtcNow.AddHours(-24);
             var endDate = DateTime.UtcNow;
@@ -66,7 +66,7 @@ namespace ApplicationLogic.AppUserQueries
                                    Date = g.Key.Date,
                                    Hour = g.Key.Hour
                                }).ToList();
-            var usersHourlyFormated = usersHourly.Select(u => new UserDailyCountStats
+            var usersHourlyFormated = usersHourly.Select(u => new 
             {
                 Count = u.Count,
                 DateTime = new DateTime(u.Date.Year, u.Date.Month, u.Date.Day, u.Hour, 0, 0)
@@ -82,7 +82,7 @@ namespace ApplicationLogic.AppUserQueries
             {
                 if (!usersHourlyFormated.Any(u => u.DateTime == hour))
                 {
-                    usersHourlyFormated.Add(new UserDailyCountStats
+                    usersHourlyFormated.Add(new 
                     {
                         Count = 0,
                         DateTime = new DateTime(hour.Year, hour.Month, hour.Day, hour.Hour, 0, 0)
@@ -90,7 +90,9 @@ namespace ApplicationLogic.AppUserQueries
                 }
             });
             usersHourlyFormated = usersHourlyFormated.OrderBy(u => u.DateTime).ToList();
-            return usersHourlyFormated;
+
+            var stats = usersHourlyFormated.Select(u => u.Count).ToList();
+            return stats;
         }
     }
 }
