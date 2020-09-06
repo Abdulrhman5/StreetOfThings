@@ -39,20 +39,35 @@ namespace MobileApiGateway.Services.ObjectCommentServices
                 "CATALOG.OBJECT.COMMENT.LIST.ERROR");
         }
 
-        public  async Task<DownstreamCommentListDto> AggregateCommentsWithUsers(UpstreamCommentListDto comments)
+        public async Task<DownstreamCommentListDto> AggregateCommentsWithUsers(UpstreamCommentListDto comments, List<UserDto> users = null)
         {
-            var originalUserIds = comments.Comments.Select(o => o.UserId).ToList();
-            var users = await _userService.GetUsersAsync(originalUserIds);
-
-            return await AggregateCommentsWithUsers(comments, users);
-        }
-
-        public async Task<DownstreamCommentListDto> AggregateCommentsWithUsers(UpstreamCommentListDto comments, List<UserDto> users)
-        {
+            if(users is null)
+            {
+                var originalUserIds = comments.Comments.Select(o => o.UserId).ToList();
+                users = await _userService.GetUsersAsync(originalUserIds);
+            }
+                
             var downComments = _mapper.Map<DownstreamCommentListDto>(comments);
             downComments.Comments.ForEach(downComment =>
             {
                 var upComment = comments.Comments.FirstOrDefault(c => downComment.CommentId == c.CommentId);
+                downComment.Commenter = users.FirstOrDefault(u => u.Id == upComment.UserId);
+            });
+            return downComments;
+        }
+               
+        public async Task<List<DownstreamCommentDto>> AggregateCommentsWithUsers(List<UpstreamCommentDto> comments, List<UserDto> users = null)
+        {
+            if(users is null)
+            {
+                var originalUserIds = comments.Select(o => o.UserId).ToList();
+                users = await _userService.GetUsersAsync(originalUserIds);
+            }
+                
+            var downComments = _mapper.Map<List<DownstreamCommentDto>>(comments);
+            downComments.ForEach(downComment =>
+            {
+                var upComment = comments.FirstOrDefault(c => downComment.CommentId == c.CommentId);
                 downComment.Commenter = users.FirstOrDefault(u => u.Id == upComment.UserId);
             });
             return downComments;

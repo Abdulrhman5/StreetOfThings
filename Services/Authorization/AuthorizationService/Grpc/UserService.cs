@@ -15,10 +15,11 @@ namespace AuthorizationService.Grpc
 
         private IUserLocationGetter _userLocationGetter;
 
-        public UserService(IUserGetter userGetter, IDistanceCalcultaor distanceCalcultaor)
+        public UserService(IUserGetter userGetter, IDistanceCalcultaor distanceCalcultaor, IUserLocationGetter userLocationGetter)
         {
             _userGetter = userGetter;
             _distanceCalcultaor = distanceCalcultaor;
+            _userLocationGetter = userLocationGetter;
         }
 
         public override async Task<UsersModel> GetUsersData(UsersIdsModel request, ServerCallContext context)

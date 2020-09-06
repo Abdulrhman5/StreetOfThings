@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MobileApiGateway.Services;
 using MobileApiGateway.Services.ObjectCommentServices;
+using MobileApiGateway.Services.ObjectServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace MobileApiGateway
         {
             CreateMap<UpstreamObjectDto, DownstreamObjectDto>();
             CreateMap<UpstreamObjectDtoV1_1, DownstreamObjectDtoV1_1>();
+            CreateMap<UpstreamObjectDetailsDto, DownstreamObjectDetailsDto>();
         }
     }
 

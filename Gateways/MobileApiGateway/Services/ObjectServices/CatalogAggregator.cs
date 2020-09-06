@@ -1,22 +1,20 @@
 ﻿using AutoMapper;
 using CommonLibrary;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MobileApiGateway.Infrastructure;
+using MobileApiGateway.Services.ObjectCommentServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace MobileApiGateway.Services
+namespace MobileApiGateway.Services.ObjectServices
 {
     public class CatalogAggregator
     {
         private HttpClient _httpClient;
-
-        private HttpContext _httpContext;
 
         private HttpClientHelpers _responseProcessor;
 
@@ -29,22 +27,24 @@ namespace MobileApiGateway.Services
         private CurrentUserCredentialsGetter _credentialsGetter;
 
         private IMapper _mapper;
-        public CatalogAggregator(HttpClient httpClient, IHttpContextAccessor httpContextAccessor,
+
+        private CommentAggregator _commentAggregator;
+        public CatalogAggregator(HttpClient httpClient,
             HttpClientHelpers responseProcessor,
             IConfiguration configs,
             ILogger<CatalogAggregator> logger,
             UserService userService,
             CurrentUserCredentialsGetter credentialsGetter,
-            IMapper mapper)
+            IMapper mapper, CommentAggregator commentAggregator)
         {
             _httpClient = httpClient;
-            _httpContext = httpContextAccessor.HttpContext;
             _responseProcessor = responseProcessor;
             _configs = configs;
             _logger = logger;
             _userService = userService;
             _credentialsGetter = credentialsGetter;
             _mapper = mapper;
+            _commentAggregator = commentAggregator;
         }
 
         public async Task<CommandResult<List<DownstreamObjectDto>>> AggregateObjects()
@@ -107,6 +107,7 @@ namespace MobileApiGateway.Services
                 return new CommandResult<List<DownstreamObjectDtoV1_1>>(message);
             }
         }
+
         private List<DownstreamObjectDto> ReplaceUserIdWithUser(List<UpstreamObjectDto> objects, List<UserDto> users)
         {
             var downstreamObjects = _mapper.Map<List<DownstreamObjectDto>>(objects);
@@ -129,6 +130,44 @@ namespace MobileApiGateway.Services
             });
             downstreamObjects.RemoveAll(o => o.Owner is null);
             return downstreamObjects;
+        }
+
+        public async Task<CommandResult<UpstreamObjectDetailsDto>> GetObjectDetails()
+        {
+            return await _responseProcessor.CreateAndProcess<UpstreamObjectDetailsDto>(HttpMethod.Get, $"{_configs["Servers:Catalog"]}/api/object/details", "CATALOG.OBJECT.DETAILS.ERROR");
+        }
+
+        public async Task<DownstreamObjectDetailsDto> AggregateObject(UpstreamObjectDetailsDto @object)
+        {
+            var usersIds = new List<string>
+            {
+                @object.OwnerId
+            }.Union(@object.Comments.Select(c => c.UserId)).Distinct().ToList();
+
+            var dsUsers = await _userService.GetUsersAsync(usersIds);
+            var dsComments = await _commentAggregator.AggregateCommentsWithUsers(@object.Comments, dsUsers);
+            var location = await _userService.GetUserLocation(@object.OwnerId);
+
+            var downstreamObject = _mapper.Map<DownstreamObjectDetailsDto>(@object);
+            downstreamObject.Comments = dsComments;
+            downstreamObject.Owner = dsUsers.FirstOrDefault(u => u.Id == @object.OwnerId);
+            downstreamObject.OwnerLocation = location.longitude is null ? null : new LocationDto
+            {
+                Longitude = location.longitude.Value,
+                Latitude = location.latitude.Value
+            };
+
+            return downstreamObject;
+        }
+
+        public async Task<CommandResult<DownstreamObjectDetailsDto>> GetAndAggregateObjectDetails()
+        {
+            var upObjectResult = await _responseProcessor.CreateAndProcess<UpstreamObjectDetailsDto>(HttpMethod.Get, $"{_configs["Servers:Catalog"]}/api/object/details", "CATALOG.OBJECT.DETAILS.ERROR");
+            if (!upObjectResult.IsSuccessful)
+            {
+                return new CommandResult<DownstreamObjectDetailsDto>(upObjectResult.Error);
+            }
+            return new CommandResult<DownstreamObjectDetailsDto>(await AggregateObject(upObjectResult.Result));
         }
     }
 }

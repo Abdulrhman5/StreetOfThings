@@ -105,7 +105,7 @@ namespace CatalogService.Controllers
             });
         }
 
-        [Route("details/{objectId:int}")]
+        [Route("details")]
         public async Task<IActionResult> GetObjectDetails(int objectId)
         {
             var result = await _objectDetailsGetter.GetObjectDetails(objectId);

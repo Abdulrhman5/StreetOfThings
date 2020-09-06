@@ -3,6 +3,7 @@ using HostingHelpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MobileApiGateway.Services;
+using MobileApiGateway.Services.ObjectServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +36,13 @@ namespace MobileApiGateway.Controllers
         public async Task<IActionResult> GetObjectsV1_1()
         {
             return StatusCode(await _catalogAggregator.AggregateObjectsV1_1());
+        }
+
+        [Route("object/details")]
+        [HttpGet]
+        public async Task<IActionResult> GetObjectDetails()
+        {
+            return StatusCode(await _catalogAggregator.GetAndAggregateObjectDetails());
         }
     }
 }
