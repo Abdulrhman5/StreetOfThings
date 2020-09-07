@@ -33,7 +33,7 @@ namespace AdministrationGateway.Services
             var usersIdsModel = new UsersIdsModel();
             usersIds.ForEach(uid => usersIdsModel.UsersIds.Add(uid));
 
-            var users = await _grpcClient.GetUsersDataAsync(usersIdsModel);
+            var users = await _grpcClient.GetUsersDataV1_1Async(usersIdsModel);
 
             var usersDtos = users.Users.Select(umodel => new UserDto
             {
@@ -41,7 +41,7 @@ namespace AdministrationGateway.Services
                 Id = umodel.Id,
                 Name = umodel.Name,
                 PictureUrl = umodel.PictureUrl,
-                Username = umodel.Username
+                Username = umodel.Username, PhoneNumber = umodel.PhoneNumber
             }).ToList();
 
             return usersDtos;
@@ -60,5 +60,7 @@ namespace AdministrationGateway.Services
         public string Email { get; set; }
 
         public string PictureUrl { get; set; }
-    }
+
+        public string PhoneNumber { get; set; }
+    }   
 }

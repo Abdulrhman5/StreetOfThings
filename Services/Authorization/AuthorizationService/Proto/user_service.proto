@@ -5,6 +5,7 @@ import "google/protobuf/wrappers.proto";
 
 service UsersGrpc {
   rpc GetUsersData (UsersIdsModel) returns (UsersModel) {};
+  rpc GetUsersDataV1_1 (UsersIdsModel) returns (UsersModelV1_1) {};
     
   rpc CalculateDistance(CalculateDistanceRequest) returns(DistancesResponse) {};
 
@@ -15,6 +16,9 @@ message UsersModel{
     repeated UserModel Users = 1;
 }
 
+message UsersModelV1_1{
+    repeated UserModelV1_1 users = 1;
+}
 // The User response DTO
 message UserModel {
   string id = 1;
@@ -22,6 +26,15 @@ message UserModel {
   google.protobuf.StringValue name= 3;
   google.protobuf.StringValue email = 4;
   google.protobuf.StringValue picture_url=5;
+}
+
+message UserModelV1_1{
+  string id = 1;
+  google.protobuf.StringValue username = 2;
+  google.protobuf.StringValue name= 3;
+  google.protobuf.StringValue email = 4;
+  google.protobuf.StringValue picture_url=5;
+  google.protobuf.StringValue phone_number = 6;
 }
 
 message UsersIdsModel {

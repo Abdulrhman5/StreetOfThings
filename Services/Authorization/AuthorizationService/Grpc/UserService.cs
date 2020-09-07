@@ -33,7 +33,24 @@ namespace AuthorizationService.Grpc
                 Id = user.Id,
                 Name = user.Name,
                 PictureUrl = user.PictureUrl,
-                Username = user.Username
+                Username = user.Username,
+            }));
+            return model;
+        } 
+        
+        public override async Task<UsersModelV1_1> GetUsersDataV1_1(UsersIdsModel request, ServerCallContext context)
+        {
+            var users = (await _userGetter.GetUserByIdsAsync(request.UsersIds.ToList())).ToList();
+            var model = new UsersModelV1_1();
+
+            model.Users.AddRange(users.Select(user => new UserModelV1_1
+            {
+                Email = user.Email,
+                Id = user.Id,
+                Name = user.Name,
+                PictureUrl = user.PictureUrl,
+                Username = user.Username,
+                PhoneNumber = user.PhoneNumber
             }));
             return model;
         }

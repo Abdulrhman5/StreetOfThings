@@ -77,7 +77,8 @@ namespace ApplicationLogic.AppUserQueries
                             Name = u.NormalizedName,
                             PictureUrl = _urlConstructor.ConstructOrDefault(u.Photos.OrderByDescending(pp => pp.AddedAtUtc).FirstOrDefault()),
                             Username = u.UserName,
-                            Id = u.Id
+                            Id = u.Id,
+                            PhoneNumber = u.PhoneNumber
                         };
 
             return await users.ToListAsync();
