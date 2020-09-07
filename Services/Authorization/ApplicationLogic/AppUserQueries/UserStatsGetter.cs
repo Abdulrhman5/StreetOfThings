@@ -16,7 +16,7 @@ namespace ApplicationLogic.AppUserQueries
             _usersRepo = usersRepo;
         }
 
-        public async Task<List<int>> GetUsersCountOverMonth()
+        public async Task<List<UserMonthlyCountStats>> GetUsersCountOverMonth()
         {
             var startDate = DateTime.UtcNow.AddDays(-31);
             var endDate = DateTime.UtcNow;
@@ -24,7 +24,7 @@ namespace ApplicationLogic.AppUserQueries
             var users = (from u in _usersRepo.Table.Where(uu => uu.CreatedAt >= startDate && uu.CreatedAt <= endDate)
                          group u by u.CreatedAt.Date into g
                          orderby g.Key
-                         select new
+                         select new UserMonthlyCountStats
                          {
                              Count = g.Count(),
                              Day = g.Key
@@ -35,23 +35,27 @@ namespace ApplicationLogic.AppUserQueries
             {
                 if (!users.Any(u => u.Day.Date == day.Date))
                 {
-                    users.Add(new
+                    users.Add(new UserMonthlyCountStats
                     {
-                        Count = 0,
-                        Day = day.Date
+                        Day = day.Date,
+                        Count = 0
                     });
                 }
             });
 
-            var stats = users.OrderBy(u => u.Day.Date).Select(s => s.Count).ToList();
+            users = users.OrderBy(u => u.Day.Date).ToList();
 
-            return stats;
+            return users;
         }
+
 
         public async Task<List<int>> GetUsersCountOverToday()
         {
-            var startDate = DateTime.UtcNow.AddHours(-24);
-            var endDate = DateTime.UtcNow;
+            // This will resolve to MM/DD/YYYY 00:00:00
+            var startDate = DateTime.UtcNow.Date;
+
+            // This will resolve to MM/DD+1/YYYY 00:00:00
+            var endDate = DateTime.UtcNow.Date.AddDays(1);
 
             var usersHourly = (from u in _usersRepo.Table
                                where u.CreatedAt >= startDate && u.CreatedAt <= endDate
@@ -75,8 +79,8 @@ namespace ApplicationLogic.AppUserQueries
             var hours = Enumerable.Range(0, 24).Select(offset =>
             {
 
-                var dateTime = endDate.AddHours(-offset);
-                return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, 0, 0);
+                var dateTime = startDate.AddHours(offset);
+                return dateTime;
             }).ToList();
 
             hours.ForEach(hour =>
@@ -86,7 +90,7 @@ namespace ApplicationLogic.AppUserQueries
                     usersHourlyFormated.Add(new
                     {
                         Count = 0,
-                        DateTime = new DateTime(hour.Year, hour.Month, hour.Day, hour.Hour, 0, 0)
+                        DateTime = hour
                     });
                 }
             });

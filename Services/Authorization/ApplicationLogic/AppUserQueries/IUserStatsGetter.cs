@@ -7,7 +7,7 @@ namespace ApplicationLogic.AppUserQueries
 {
     public interface IUserStatsGetter
     {
-        Task<List<int>> GetUsersCountOverMonth();
+        Task<List<UserMonthlyCountStats>> GetUsersCountOverMonth();
 
         Task<List<int>> GetUsersCountOverToday();
 
@@ -24,5 +24,12 @@ namespace ApplicationLogic.AppUserQueries
         public List<UserYearlyCountStats> CurrentYear { get; set; }
          
         public List<UserYearlyCountStats> PreviousYear { get; set; }
+    }
+
+    public class UserMonthlyCountStats
+    {
+        public int Count { get; set; }
+
+        public DateTime Day { get; set; }
     }
 }
