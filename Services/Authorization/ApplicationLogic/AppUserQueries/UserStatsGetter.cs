@@ -117,7 +117,7 @@ namespace ApplicationLogic.AppUserQueries
                                     u.CreatedAt.Year,
                                     u.CreatedAt.Month
                                 } into g
-                                select new UserYearlyCountStats
+                                select new
                                 {
                                     Count = g.Count(),
                                     MonthYear = new DateTime(g.Key.Year, g.Key.Month, 1)
@@ -129,7 +129,7 @@ namespace ApplicationLogic.AppUserQueries
             {
                 if (!usersMonthly.Any(u => u.MonthYear.Year == month.Year && u.MonthYear.Month == month.Month))
                 {
-                    usersMonthly.Add(new UserYearlyCountStats
+                    usersMonthly.Add(new
                     {
                         Count = 0,
                         MonthYear = month,
@@ -139,8 +139,8 @@ namespace ApplicationLogic.AppUserQueries
 
             return new UserYearlyCountListStats()
             {
-                CurrentYear = usersMonthly.Where(um => um.MonthYear.Year == DateTime.UtcNow.Year).OrderBy(c => c.MonthYear).ToList(),
-                PreviousYear = usersMonthly.Where(um => um.MonthYear.Year == DateTime.UtcNow.Year - 1).OrderBy(c => c.MonthYear).ToList()
+                CurrentYear = usersMonthly.Where(um => um.MonthYear.Year == DateTime.UtcNow.Year).OrderBy(c => c.MonthYear).Select(c => c.Count).ToList(),
+                PreviousYear = usersMonthly.Where(um => um.MonthYear.Year == DateTime.UtcNow.Year - 1).OrderBy(c => c.MonthYear).Select(c => c.Count).ToList()
             };
         }
     }
