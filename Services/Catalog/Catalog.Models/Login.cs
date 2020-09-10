@@ -1,4 +1,5 @@
 ﻿using CommonLibrary;
+using NetTopologySuite.Geometries;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,8 @@ namespace Catalog.Models
         public List<OfferedObject> OwnedObjects { get; set; }
 
         public List<ObjectLike> Likes { get; set; }
+
+        public Point? LoginLocation { get; set; }
 
         public Guid Id => LoginId;
     }

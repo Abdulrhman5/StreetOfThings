@@ -13,9 +13,9 @@ namespace AuthorizationService.Grpc
 
         private IDistanceCalcultaor _distanceCalcultaor;
 
-        private IUserLocationGetter _userLocationGetter;
+        private IUserLoginInformationGetter _userLocationGetter;
 
-        public UserService(IUserGetter userGetter, IDistanceCalcultaor distanceCalcultaor, IUserLocationGetter userLocationGetter)
+        public UserService(IUserGetter userGetter, IDistanceCalcultaor distanceCalcultaor, IUserLoginInformationGetter userLocationGetter)
         {
             _userGetter = userGetter;
             _distanceCalcultaor = distanceCalcultaor;
@@ -89,6 +89,26 @@ namespace AuthorizationService.Grpc
             {
                 Longitude = location.longitude,
                 Latitude = location.latitude
+            };
+        }
+
+        public override async Task<UserLoginInformationResponse> GetUserLoginInformation(UserLoginInformationRequest request, ServerCallContext context)
+        {
+            var tokenId = request.TokenId;
+            if (tokenId == null)
+            {
+                return new UserLoginInformationResponse
+                {
+                    Latitude = null,
+                    Longitude = null
+                };
+            }
+
+            var login = _userLocationGetter.GetUserLoginInformation(tokenId);
+            return new UserLoginInformationResponse
+            {
+                Longitude = login.longitude,
+                Latitude = login.latitude
             };
         }
     }

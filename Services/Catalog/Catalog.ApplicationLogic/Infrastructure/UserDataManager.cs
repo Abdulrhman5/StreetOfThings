@@ -1,11 +1,11 @@
-﻿using Catalog.DataAccessLayer;
+﻿using Catalog.ApplicationLogic.GrpcClients;
+using Catalog.DataAccessLayer;
 using Catalog.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace Catalog.ApplicationLogic.Infrastructure
 {
@@ -19,15 +19,18 @@ namespace Catalog.ApplicationLogic.Infrastructure
 
         private CurrentUserCredentialsGetter _credentialsGetter;
 
+        private UsersGrpcClient _loginInformationGetter;
         public UserDataManager(IRepository<Guid, User> userRepo,
             IRepository<Guid, Login> loginRepo,
             UserDataGetter userDataGetter,
-            CurrentUserCredentialsGetter credentialsGetter)
+            CurrentUserCredentialsGetter credentialsGetter,
+            UsersGrpcClient loginInformationGetter)
         {
             _userRepo = userRepo;
             _loginRepo = loginRepo;
             _userDataGetter = userDataGetter;
             _credentialsGetter = credentialsGetter;
+            _loginInformationGetter = loginInformationGetter;
         }
 
         public async Task<(Login, User)> AddUserIfNotExisted(string tokenId, string originUserId, string accessToken)
@@ -40,28 +43,30 @@ namespace Catalog.ApplicationLogic.Infrastructure
             {
                 var userDto = await _userDataGetter.GetUserDataByToken(accessToken);
 
-                if(userDto == null)
+                if (userDto == null)
                 {
-                    return (null,null);
+                    return (null, null);
                 }
+                var loginInformation = await _loginInformationGetter.GetLoginInformation(tokenId);
                 var userToAdd = new User
                 {
                     OriginalUserId = originUserId,
                     UserId = Guid.NewGuid(),
                     UserName = userDto.UserName,
                     Logins = new List<Login>
-                    { 
+                    {
                         new Login
                         {
                             TokenId = userDto.TokenId,
-                            LoginId = Guid.NewGuid()
-                        } 
+                            LoginId = Guid.NewGuid(),
+                            LoginLocation = new NetTopologySuite.Geometries.Point(loginInformation.Longitude.Value, loginInformation.Latitude.Value){ SRID = 4326 }
+                        }
                     }
                 };
 
                 _userRepo.Add(userToAdd);
                 await _userRepo.SaveChangesAsync();
-                return (userToAdd.Logins.FirstOrDefault(),userToAdd);
+                return (userToAdd.Logins.FirstOrDefault(), userToAdd);
             }
             else
             {
@@ -69,35 +74,37 @@ namespace Catalog.ApplicationLogic.Infrastructure
                 var theUser = usersById.FirstOrDefault();
 
                 // if The user existed but the login does not exist
-                if(!theUser.Logins.Any(t => t.TokenId == tokenId))
+                if (!theUser.Logins.Any(t => t.TokenId == tokenId))
                 {
                     // add the login 
+                    var loginInformation = await _loginInformationGetter.GetLoginInformation(tokenId);
                     var login = new Login
                     {
                         UserId = theUser.UserId,
                         TokenId = tokenId,
                         Token = accessToken,
+                        LoginLocation = new NetTopologySuite.Geometries.Point(loginInformation.Longitude.Value, loginInformation.Latitude.Value) { SRID = 4326 }
                     };
                     _loginRepo.Add(login);
                     await _loginRepo.SaveChangesAsync();
-                    return (login,theUser);
+                    return (login, theUser);
                 }
                 else
                 {
                     // the user and the login does exists 
-                    return (theUser.Logins.FirstOrDefault(),theUser);
+                    return (theUser.Logins.FirstOrDefault(), theUser);
                 }
             }
-            
+
         }
 
 
-        public async Task<(Login,User)> AddCurrentUserIfNeeded()
+        public async Task<(Login, User)> AddCurrentUserIfNeeded()
         {
             var credentials = _credentialsGetter.GetCuurentUser();
-            if(credentials is null)
+            if (credentials is null)
             {
-                return (null,null);
+                return (null, null);
             }
             else
             {

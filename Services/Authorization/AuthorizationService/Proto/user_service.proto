@@ -10,6 +10,8 @@ service UsersGrpc {
   rpc CalculateDistance(CalculateDistanceRequest) returns(DistancesResponse) {};
 
   rpc GetUserLocation(UserIdModel) returns(UserLocationResponse){};
+
+  rpc GetUserLoginInformation(UserLoginInformationRequest)returns (UserLoginInformationResponse){};
 }
 
 message UsersModel{
@@ -62,4 +64,13 @@ message CalculateDistanceRequest{
 message UserLocationResponse{
     google.protobuf.DoubleValue longitude = 1;
     google.protobuf.DoubleValue latitude = 2;
+}   
+
+message UserLoginInformationRequest{
+    string token_id=1;
+}
+
+message UserLoginInformationResponse{
+    google.protobuf.DoubleValue Longitude = 1;
+    google.protobuf.DoubleValue Latitude = 2;
 }

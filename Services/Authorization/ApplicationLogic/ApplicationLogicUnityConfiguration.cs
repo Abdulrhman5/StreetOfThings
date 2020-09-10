@@ -36,7 +36,7 @@ namespace ApplicationLogic
 
             Container.RegisterType<IUserStatsGetter, UserStatsGetter>();
             Container.RegisterType<IDistanceCalcultaor, DistanceCalculator>();
-            Container.RegisterType<IUserLocationGetter, UserLocationGetter>();
+            Container.RegisterType<IUserLoginInformationGetter, UserLoginInformationGetter>();
             new DalUnityConfiguration().ConfigUnity(container);
         }
     }

@@ -1,8 +1,10 @@
+using AuthorizationService.Grpc;
 using Catalog.ApplicationLogic.Events;
 using Catalog.ApplicationLogic.Events.EventHandlers;
 using Catalog.DataAccessLayer;
 using CatalogService.Grpc;
 using EventBus;
+using Grpc.Core;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -12,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Serilog;
+using System;
 using Unity;
 
 namespace CatalogService
@@ -38,7 +41,7 @@ namespace CatalogService
 
             services.AddDbContext<CatalogContext>(opt =>
             {
-                opt.UseSqlServer(catalogConnection);
+                opt.UseSqlServer(catalogConnection, x => x.UseNetTopologySuite());
             });
 
             services.AddSwaggerGen(c =>
@@ -81,7 +84,13 @@ namespace CatalogService
                                                   .AllowAnyMethod());
             });
 
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
 
+            // Registration of the DI service
+            services.AddGrpcClient<UsersGrpc.UsersGrpcClient>(options => {
+                options.Address = new Uri("http://localhost:21000");
+                options.ChannelOptionsActions.Add(channelOptions => channelOptions.Credentials = ChannelCredentials.Insecure);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
