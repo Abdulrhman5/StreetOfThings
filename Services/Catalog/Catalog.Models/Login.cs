@@ -31,6 +31,7 @@ namespace Catalog.Models
 
         public Point? LoginLocation { get; set; }
 
+        public DateTime LoggedAt { get; set; }
         public Guid Id => LoginId;
     }
 }

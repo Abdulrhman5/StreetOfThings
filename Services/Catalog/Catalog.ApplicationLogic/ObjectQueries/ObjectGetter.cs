@@ -3,6 +3,8 @@ using Catalog.DataAccessLayer;
 using Catalog.Models;
 using CommonLibrary;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using NetTopologySuite.Geometries;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,10 +25,14 @@ namespace Catalog.ApplicationLogic.ObjectQueries
 
         private CurrentUserCredentialsGetter _credentialsGetter;
         private Expression<Func<OfferedObject, ObjectDto>> ObjectDtoSelectExp { get; set; }
+
+        private IConfiguration _configs;
+
+        private int IncludeObjectLessThan => _configs.GetValue<int>("Settings:IncludeObjectLessThan");
         public ObjectGetter(IRepository<int, OfferedObject> repository,
             IObjectPhotoUrlConstructor photoUrlConstructor,
             IObjectImpressionsManager impressionsManager, ObjectQueryHelper queryHelper,
-            CurrentUserCredentialsGetter credentialsGetter)
+            CurrentUserCredentialsGetter credentialsGetter, IConfiguration configs)
         {
             _objectRepo = repository;
             _photoConstructor = photoUrlConstructor;
@@ -47,14 +53,18 @@ namespace Catalog.ApplicationLogic.ObjectQueries
                 Type = o.CurrentTransactionType,
             };
             _credentialsGetter = credentialsGetter;
+            _configs = configs;
         }
 
         public async Task<List<ObjectDto>> GetObjects(PagingArguments arguments)
         {
+            var userLocation = null as Point;            
             var filteredObjects = _objectRepo.Table.Where(_queryHelper.IsValidObject)
                 .Where(_queryHelper.ValidForFreeAndLendibg);
 
             var objects = from o in filteredObjects
+                          let distance = o.OwnerLogin.User.Logins.OrderByDescending(l => l.LoggedAt).FirstOrDefault().LoginLocation.Distance(userLocation)
+                          where  distance <= IncludeObjectLessThan
                           orderby o.OfferedObjectId
                           select new ObjectDto
                           {
@@ -77,12 +87,15 @@ namespace Catalog.ApplicationLogic.ObjectQueries
 
         public async Task<List<ObjectDtoV1_1>> GetObjectsV1_1(PagingArguments arguments)
         {
+            var userLocation = null as Point;
             var filteredObjects = _objectRepo.Table.Where(_queryHelper.IsValidObject)
                 .Where(_queryHelper.ValidForFreeAndLendibg);
 
             var userId = _credentialsGetter.GetCuurentUser()?.UserId;
 
             var objects = from o in filteredObjects
+                          let distance = o.OwnerLogin.User.Logins.OrderByDescending(l => l.LoggedAt).FirstOrDefault().LoginLocation.Distance(userLocation)
+                          where distance <= IncludeObjectLessThan
                           orderby o.OfferedObjectId
                           select new ObjectDtoV1_1
                           {
