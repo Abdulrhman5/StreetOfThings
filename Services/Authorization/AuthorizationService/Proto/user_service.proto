@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package AuthorizationService.Grpc;
 import "google/protobuf/wrappers.proto";
+import "google/protobuf/timestamp.proto";
 
 service UsersGrpc {
   rpc GetUsersData (UsersIdsModel) returns (UsersModel) {};
@@ -71,6 +72,12 @@ message UserLoginInformationRequest{
 }
 
 message UserLoginInformationResponse{
-    google.protobuf.DoubleValue Longitude = 1;
-    google.protobuf.DoubleValue Latitude = 2;
+    google.protobuf.DoubleValue longitude = 1;
+    google.protobuf.DoubleValue latitude = 2;
+    string user_id =3;
+    google.protobuf.StringValue username = 4;
+    google.protobuf.StringValue email = 5;
+    string token_id = 6;
+    google.protobuf.Timestamp logged_at_utc = 7;
+    
 }

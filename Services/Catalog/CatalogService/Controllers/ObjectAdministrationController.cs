@@ -13,9 +13,9 @@ namespace CatalogService.Controllers
     [Authorize("Admin")]
     public class ObjectAdministrationController : MyControllerBase
     {
-        private ObjectGetter _objectGetter;
+        private IObjectGetter _objectGetter;
 
-        public ObjectAdministrationController(ObjectGetter objectGetter)
+        public ObjectAdministrationController(IObjectGetter objectGetter)
         {
             _objectGetter = objectGetter;
         }

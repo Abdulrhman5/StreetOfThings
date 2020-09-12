@@ -11,9 +11,9 @@ namespace CatalogService.Grpc
 {
     public class ObjectService : ObjectsGrpcBase
     {
-        private ObjectGetter _objectGetter;
+        private IObjectGetter _objectGetter;
 
-        public ObjectService(ObjectGetter objectGetter)
+        public ObjectService(IObjectGetter objectGetter)
         {
             _objectGetter = objectGetter;
 

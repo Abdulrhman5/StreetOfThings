@@ -24,14 +24,14 @@ namespace Catalog.ApplicationLogic
             Container = container;
 
             Container.RegisterType<CurrentUserCredentialsGetter>();
-            Container.RegisterType<UserDataManager>();
+            Container.RegisterType<IUserDataManager, UserDataManager>();
             Container.RegisterType<UserDataGetter>();
             Container.RegisterType<IObjectAdder, ObjectAdder>();
             Container.RegisterType<IObjectDeleter, ObjectDeleter>();
 
             Container.RegisterType<IImageSaver, ImageSaver>();
 
-            Container.RegisterType<ObjectGetter>();
+            Container.RegisterType<IObjectGetter, ObjectGetter>();
             Container.RegisterType<IObjectPhotoUrlConstructor, ObjectPhotoUrlConstructor>();
 
             Container.RegisterType<IObjectImpressionsManager, ObjectImpressionsManager>();

@@ -22,14 +22,14 @@ namespace CatalogService.Controllers
 
         private PhotoAdder _photoAdder;
 
-        private ObjectGetter _objectGetter;
+        private IObjectGetter _objectGetter;
 
         private IObjectDeleter _objectDeleter;
 
         private IObjectDetailsGetter _objectDetailsGetter;
         public ObjectController(IObjectAdder objectAdder,
             PhotoAdder photoAdder,
-            ObjectGetter objectGetter,
+            IObjectGetter objectGetter,
             IObjectDeleter objectDeleter, 
             IObjectDetailsGetter objectDetaissGetter)
         {

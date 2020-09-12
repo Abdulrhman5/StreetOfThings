@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Catalog.ApplicationLogic.ObjectQueries
 {
-    public class ObjectGetter
+    class ObjectGetter : IObjectGetter
     {
         private IRepository<int, OfferedObject> _objectRepo;
 
@@ -28,11 +28,12 @@ namespace Catalog.ApplicationLogic.ObjectQueries
 
         private IConfiguration _configs;
 
-        private int IncludeObjectLessThan => _configs.GetValue<int>("Settings:IncludeObjectLessThan");
+        private IUserDataManager _userDataManager;
+        private int IncludeObjectLessThan => int.Parse(_configs["Settings:IncludeObjectLessThan"]);
         public ObjectGetter(IRepository<int, OfferedObject> repository,
             IObjectPhotoUrlConstructor photoUrlConstructor,
             IObjectImpressionsManager impressionsManager, ObjectQueryHelper queryHelper,
-            CurrentUserCredentialsGetter credentialsGetter, IConfiguration configs)
+            CurrentUserCredentialsGetter credentialsGetter, IConfiguration configs, IUserDataManager userDataManager)
         {
             _objectRepo = repository;
             _photoConstructor = photoUrlConstructor;
@@ -54,11 +55,13 @@ namespace Catalog.ApplicationLogic.ObjectQueries
             };
             _credentialsGetter = credentialsGetter;
             _configs = configs;
+            _userDataManager = userDataManager;
         }
 
         public async Task<List<ObjectDto>> GetObjects(PagingArguments arguments)
         {
-            var userLocation = null as Point;            
+            var (login, user) = await _userDataManager.AddCurrentUserIfNeeded();
+            var userLocation = login.LoginLocation;
             var filteredObjects = _objectRepo.Table.Where(_queryHelper.IsValidObject)
                 .Where(_queryHelper.ValidForFreeAndLendibg);
 

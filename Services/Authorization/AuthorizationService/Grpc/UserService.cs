@@ -1,5 +1,6 @@
 ﻿using ApplicationLogic.AppUserQueries;
 using ApplicationLogic.LoginQueries;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using System.Linq;
 using System.Threading.Tasks;
@@ -107,8 +108,13 @@ namespace AuthorizationService.Grpc
             var login = _userLocationGetter.GetUserLoginInformation(tokenId);
             return new UserLoginInformationResponse
             {
-                Longitude = login.longitude,
-                Latitude = login.latitude
+                Longitude = login.Longitude,
+                Latitude = login.Latitude,
+                Email = login.Email,
+                Username = login.Username,
+                UserId =login.UserId,
+                LoggedAtUtc = Timestamp.FromDateTime(login.LoggedAtUtc),
+                TokenId = login.TokenId
             };
         }
     }

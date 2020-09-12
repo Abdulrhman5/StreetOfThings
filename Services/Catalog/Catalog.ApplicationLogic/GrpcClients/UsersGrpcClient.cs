@@ -26,7 +26,12 @@ namespace Catalog.ApplicationLogic.GrpcClients
             var dto = new LoginInformationDto
             {
                 Longitude = result.Longitude,
-                Latitude = result.Latitude
+                Latitude = result.Latitude,
+                UserId = result.UserId,
+                Username = result.Username,
+                Email = result.Email,
+                LoggedAtUtc = result.LoggedAtUtc.ToDateTime(),
+                TokenId = result.TokenId,
             };
             return dto;
         }
@@ -37,5 +42,16 @@ namespace Catalog.ApplicationLogic.GrpcClients
         public double? Longitude { get; set; }
 
         public double? Latitude { get; set; }
+
+        public string Email { get; set; }
+
+        public string UserId { get; set; }
+
+        public string Username { get; set; }
+
+        public DateTime LoggedAtUtc { get; set; }
+
+        public string TokenId { get; set; }
+
     }
 }

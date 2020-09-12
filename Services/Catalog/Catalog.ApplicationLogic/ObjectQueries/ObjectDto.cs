@@ -36,6 +36,7 @@ namespace Catalog.ApplicationLogic.ObjectQueries
         public int LikesCount { get; set; }
 
         public bool IsLikedByMe { get; set; }
+        public double DistanceInMeters { get; set; }
     }
 
 }
