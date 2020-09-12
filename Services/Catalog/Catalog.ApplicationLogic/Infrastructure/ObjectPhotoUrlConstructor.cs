@@ -35,9 +35,11 @@ namespace Catalog.ApplicationLogic.Infrastructure
             (op) =>
              $"{_currentDomain}/Resources/Photo/Object/{HttpUtility.ParseQueryString(op.AdditionalInformation)["Name"]}";
 
-        public string Construct(TagPhoto objectPhoto)
+        public string Construct(TagPhoto tagPhoto)
         {
-            return $"{_currentDomain}/Resources/Photo/Tag/{HttpUtility.ParseQueryString(objectPhoto.AdditionalInformation)["Name"]}";
+            if (tagPhoto is null)
+                return null;
+            return $"{_currentDomain}/Resources/Photo/Tag/{HttpUtility.ParseQueryString(tagPhoto.AdditionalInformation)["Name"]}";
         }
     }
 }

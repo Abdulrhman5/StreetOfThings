@@ -1,0 +1,154 @@
+﻿@page
+@model AdministrationGateway.Pages.Documentation.V1.ListTagsModel
+@{
+    ViewData["Title"] = "List Tags";
+}
+
+<h1>List Tags</h1>
+
+<div class="container">
+    <h1>
+        Can be accessed at GET <b>http://localhost:25001/api/catalog/tag/admin/list</b>
+    </h1>
+    <hr />
+    <div class="container">
+        <div class="container">
+            <h3>
+                Url Parameters
+            </h3>
+            <table class="table">
+                <tr>
+                    <th>
+                        Key
+                    </th>
+                    <th>
+                        Type
+                    </th>
+                    <th>
+                        Value
+                    </th>
+                </tr>
+                NONE.
+            </table>
+        </div>
+        <br />
+        <div class="container">
+            <h3>
+                Header Parameters
+            </h3>
+            <table class="table">
+                <tr>
+
+                    <th>
+                        Key
+                    </th>
+                    <th>
+                        Value
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        Authorization
+                    </td>
+                    <td>
+                        bearer eyJhbGciOiJSU.zI1NiIsImtpZCI6Il.RimF1ZCI6WyJDYXRhbG9n
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <br />
+
+        <div class="container">
+            <h2>
+                The Response Scenarios
+                <br />
+            </h2>
+            <br />
+            <div class="container">
+                <h3>
+                    Scenario 1: All good.
+                </h3>
+                <br />
+                <br />
+                <div class="container">
+                    <h3>
+                        Headers parameters
+                    </h3>
+                    The most important headers are:
+                    <table class="table">
+                        <tr>
+
+                            <th>
+                                Key
+                            </th>
+                            <th>
+                                Value
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                StatusCode
+                            </td>
+                            <td>
+                                200
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <br />
+                <div class="container">
+                    <h3>
+                        Body
+                    </h3>
+
+
+                    <pre>
+{
+    "topUsed": {
+        "usedCount": 4,
+        "id": 2,
+        "name": "There",
+        "photoUrl": null
+    },
+    "leastUsed": {
+        "usedCount": 0,
+        "id": 1005,
+        "name": "Hellothere",
+        "photoUrl": "http://localhost:20001/Resources/Photo/Tag/c048502d-52ed-42f0-b232-5d7219f5f869"
+    },
+    "tagCount": 4,
+    "tags": [
+        {
+            "usedCount": 0,
+            "id": 1005,
+            "name": "Hellothere",
+            "photoUrl": "http://localhost:20001/Resources/Photo/Tag/c048502d-52ed-42f0-b232-5d7219f5f869"
+        },
+        {
+            "usedCount": 1,
+            "id": 5,
+            "name": "This is a tag name",
+            "photoUrl": null
+        },
+        {
+            "usedCount": 1,
+            "id": 6,
+            "name": "This is a tag name",
+            "photoUrl": null
+        },
+        {
+            "usedCount": 3,
+            "id": 3,
+            "name": "Elcitronic",
+            "photoUrl": null
+        }
+    ]
+}					 </pre>
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

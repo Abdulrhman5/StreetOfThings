@@ -39,5 +39,15 @@ namespace CatalogService.Controllers
             var result = await _tagAdder.AddTag(tag);
             return StatusCode(result);
         }
+
+        [Route("admin/list")]
+        [HttpGet]
+        [Authorize("Admin")]
+        public async Task<IActionResult> GetAdminTags()
+        {
+            var result = await _tagGetter.GetAdminTags();
+            return Ok(result);
+        }
+
     }
 }
