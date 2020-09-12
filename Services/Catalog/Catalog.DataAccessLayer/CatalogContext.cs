@@ -54,6 +54,14 @@ namespace Catalog.DataAccessLayer
             modelBuilder.Entity<ObjectView>().HasKey(op => new { op.ObjectId, op.LoginId, op.ViewedAtUtc });
 
             modelBuilder.Entity<Login>().HasMany(u => u.OwnedObjects).WithOne(ob => ob.OwnerLogin).OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<TagPhoto>(eb =>
+            {
+                eb.HasKey(tagPhoto => tagPhoto.TagId);
+                eb.HasOne(tagPhoto => tagPhoto.Tag)
+                    .WithOne(tag => tag.Photo)
+                    .HasForeignKey<TagPhoto>(tagPhoto => tagPhoto.TagId);
+            });
         }
     }
 }

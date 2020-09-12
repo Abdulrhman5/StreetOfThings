@@ -49,7 +49,7 @@ namespace Catalog.ApplicationLogic.Tests
             var configs = new Mock<IConfiguration>();
             configs.Setup(c => c["Settings:IncludeObjectLessThan"]).Returns("500");
 
-            var photoConstructor = new Mock<Infrastructure.IObjectPhotoUrlConstructor>();
+            var photoConstructor = new Mock<Infrastructure.IPhotoUrlConstructor>();
             photoConstructor.Setup(p => p.Construct(It.IsAny<ObjectPhoto>())).Returns("Hello there");
             var objectGetter = new ObjectGetter(repo, photoConstructor.Object,impression.Object, objectQueryHelper, null, configs.Object,userDataManager.Object);
 
@@ -179,7 +179,7 @@ namespace Catalog.ApplicationLogic.Tests
             objectsRepo.Setup(o => o.Table).Returns(objects.AsQueryable().BuildMock().Object);
 
             var loginRepo = new Mock<IRepository<Guid, Login>>();
-            var photoConstructor = new Mock<IObjectPhotoUrlConstructor>();
+            var photoConstructor = new Mock<IPhotoUrlConstructor>();
             var impression = new Mock<IObjectImpressionsManager>();
             var objectQueryHelper = new ObjectQueryHelper();
             var userDataManager = new Mock<IUserDataManager>();

@@ -13,7 +13,7 @@ namespace Catalog.ApplicationLogic.ObjectQueries
     {
         private IRepository<int, OfferedObject> _objectRepo;
 
-        private IObjectPhotoUrlConstructor _photoConstructor;
+        private IPhotoUrlConstructor _photoConstructor;
 
         private IObjectViewsManager _viewsManager;
 
@@ -22,7 +22,7 @@ namespace Catalog.ApplicationLogic.ObjectQueries
         private CurrentUserCredentialsGetter _credentialsGetter;
 
         public ObjectDetailsGetter(IRepository<int, OfferedObject> objectRepo,
-            IObjectPhotoUrlConstructor photoConstructor,
+            IPhotoUrlConstructor photoConstructor,
             IObjectViewsManager viewsManager,
             ObjectQueryHelper queryHelper,
             CurrentUserCredentialsGetter credentialsGetter)

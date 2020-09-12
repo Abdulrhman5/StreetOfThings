@@ -1,4 +1,5 @@
-﻿using Catalog.ApplicationLogic.TypeQueries;
+﻿using Catalog.ApplicationLogic.TagCommands;
+using Catalog.ApplicationLogic.TypeQueries;
 using HostingHelpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,9 +15,11 @@ namespace CatalogService.Controllers
     {
         private TagsGetter _tagGetter;
 
-        public TagController(TagsGetter tagGetter)
+        private TagAdder _tagAdder;
+        public TagController(TagsGetter tagGetter, TagAdder tagAdder)
         {
             _tagGetter = tagGetter;
+            _tagAdder = tagAdder;
         }
 
         [Route("list")]
@@ -26,6 +29,15 @@ namespace CatalogService.Controllers
         {
             var result = await _tagGetter.GetTags();
             return Ok(result);
+        }  
+        
+        [Route("add")]
+        [HttpPost]
+        [Authorize("Admin")]
+        public async Task<IActionResult> AddTag(AddTagDto tag)
+        {
+            var result = await _tagAdder.AddTag(tag);
+            return StatusCode(result);
         }
     }
 }

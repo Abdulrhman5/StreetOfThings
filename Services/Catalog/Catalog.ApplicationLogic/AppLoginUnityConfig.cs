@@ -4,6 +4,7 @@ using Catalog.ApplicationLogic.Infrastructure;
 using Catalog.ApplicationLogic.LikeCommands;
 using Catalog.ApplicationLogic.ObjectCommands;
 using Catalog.ApplicationLogic.ObjectQueries;
+using Catalog.ApplicationLogic.TagCommands;
 using Catalog.ApplicationLogic.TypeQueries;
 using Catalog.DataAccessLayer;
 using CommonLibrary;
@@ -32,7 +33,7 @@ namespace Catalog.ApplicationLogic
             Container.RegisterType<IImageSaver, ImageSaver>();
 
             Container.RegisterType<IObjectGetter, ObjectGetter>();
-            Container.RegisterType<IObjectPhotoUrlConstructor, ObjectPhotoUrlConstructor>();
+            Container.RegisterType<IPhotoUrlConstructor, PhotoUrlConstructor>();
 
             Container.RegisterType<IObjectImpressionsManager, ObjectImpressionsManager>();
             Container.RegisterType<IObjectViewsManager, ObjectViewsManager>();
@@ -44,6 +45,8 @@ namespace Catalog.ApplicationLogic
 
             Container.RegisterType<ILikeAdder, LikeAdder>();
             Container.RegisterType<ILikeDeleter, LikeDeleter>();
+
+            Container.RegisterType<TagAdder>();
 
             Container.RegisterType<LikeAdder>();
             Container.RegisterType<ObjectQueryHelper>();

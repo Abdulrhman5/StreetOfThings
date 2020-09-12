@@ -78,23 +78,9 @@ namespace Catalog.ApplicationLogic.ObjectCommands
                                      where objectDto.Tags.Any(tt => tt== t.Name)
                                      select t).ToList();
 
-            var tagsNamesToBeAdded = from t in objectDto.Tags
-                                where alreadyExistedTags.All(tt => tt.Name.EqualsIC(t))
-                                select t;
+            // No Logic for not existed tags, just discard them.
 
-            var addedTags = new List<Tag>();
-            foreach(var tagName in tagsNamesToBeAdded)
-            {
-                var addingResult = _tagRepo.Add(new Tag
-                {
-                    Name = tagName,
-                });
-                addedTags.Add(addingResult);
-            }
-
-            await _tagRepo.SaveChangesAsync();
-            addedTags.AddRange(alreadyExistedTags);
-            var objectTags = addedTags.Select(t => new ObjectTag
+            var objectTags = alreadyExistedTags.Select(t => new ObjectTag
             {
                 TagId = t.TagId
             }).ToList();

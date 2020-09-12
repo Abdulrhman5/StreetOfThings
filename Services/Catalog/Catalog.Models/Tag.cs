@@ -16,6 +16,7 @@ namespace Catalog.Models
 
         public List<ObjectTag> Objects { get; set; }
 
+        public TagPhoto Photo { get; set; }
         public int Id => TagId;
     }
 }

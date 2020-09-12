@@ -17,7 +17,7 @@ namespace Catalog.ApplicationLogic.ObjectQueries
     {
         private IRepository<int, OfferedObject> _objectRepo;
 
-        private IObjectPhotoUrlConstructor _photoConstructor;
+        private IPhotoUrlConstructor _photoConstructor;
 
         private IObjectImpressionsManager _impressionManager;
 
@@ -31,7 +31,7 @@ namespace Catalog.ApplicationLogic.ObjectQueries
         private IUserDataManager _userDataManager;
         private int IncludeObjectLessThan => int.Parse(_configs["Settings:IncludeObjectLessThan"]);
         public ObjectGetter(IRepository<int, OfferedObject> repository,
-            IObjectPhotoUrlConstructor photoUrlConstructor,
+            IPhotoUrlConstructor photoUrlConstructor,
             IObjectImpressionsManager impressionsManager, ObjectQueryHelper queryHelper,
             CurrentUserCredentialsGetter credentialsGetter, IConfiguration configs, IUserDataManager userDataManager)
         {
