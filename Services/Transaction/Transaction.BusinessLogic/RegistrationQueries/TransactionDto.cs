@@ -30,6 +30,7 @@ namespace Transaction.BusinessLogic.RegistrationQueries
 
         public TransactionStatus TransactionStatus { get; set; }
 
+        public ReturnStatus ReturnStatus { get; set; }
         public string ReceiverId { get; set; }
 
         public string OwnerId { get; set; }
@@ -50,5 +51,14 @@ namespace Transaction.BusinessLogic.RegistrationQueries
         Returned,
         Canceled,
         Deleted
+    };
+
+    public enum ReturnStatus
+    {
+        NotTakenYet,
+        NotDueYet,
+        Returned,
+        Delayed,
+        PossibleTheft
     };
 }

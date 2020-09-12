@@ -36,6 +36,8 @@ namespace AdministrationGateway.Services.TransactionServices
 
         public TransactionStatus TransactionStatus { get; set; }
 
+        public ReturnStatus ReturnStatus { get; set; }
+
         public UserDto Owner { get; set; }
 
         public UserDto Receiver { get; set; }
@@ -74,6 +76,7 @@ namespace AdministrationGateway.Services.TransactionServices
         public List<TransactionDownstreamDto> Transactions { get; set; }
     }
 
+
     public class TransactionUpstreamDto
     {
         public Guid RegistrationId { get; set; }
@@ -95,6 +98,8 @@ namespace AdministrationGateway.Services.TransactionServices
         public float? HourlyCharge { get; set; }
 
         public TransactionStatus TransactionStatus { get; set; }
+
+        public ReturnStatus ReturnStatus { get; set; }
 
         public string ReceiverId { get; set; }
 
@@ -118,5 +123,15 @@ namespace AdministrationGateway.Services.TransactionServices
         Returned,
         Canceled,
         Deleted
+    };
+
+    [JsonConverter(typeof(StringEnumConverter))]
+    public enum ReturnStatus
+    {
+        NotTakenYet,
+        NotDueYet,
+        Returned,
+        Delayed,
+        PossibleTheft
     };
 }

@@ -1,4 +1,5 @@
-﻿using CommonLibrary;
+﻿using AutoMapper;
+using CommonLibrary;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -27,7 +28,16 @@ namespace AdministrationGateway.Services.TransactionServices
 
         private ObjectService _objectService;
 
-        public TransactionService(HttpClient httpClient, IHttpContextAccessor accessor, HttpClientHelpers responseProcessor, IConfiguration configs, ILogger<TransactionService> logger, UserService userService, ObjectService objectService)
+        private IMapper _mapper;
+
+        public TransactionService(HttpClient httpClient,
+            IHttpContextAccessor accessor, 
+            HttpClientHelpers responseProcessor,
+            IConfiguration configs,
+            ILogger<TransactionService> logger,
+            UserService userService,
+            ObjectService objectService,
+            IMapper mapper)
         {
             _httpClient = httpClient;
             _httpContext = accessor.HttpContext;
@@ -36,6 +46,7 @@ namespace AdministrationGateway.Services.TransactionServices
             _logger = logger;
             _userService = userService;
             _objectService = objectService;
+            _mapper = mapper;
         }
 
         public async Task<CommandResult<TransactionForUserDownstreamListDto>> GetTransactions()
@@ -112,36 +123,18 @@ namespace AdministrationGateway.Services.TransactionServices
 
         private AllTransactionsDownstreamListDto AggregateAllTransactionWithObject8User(AllTransactionsUpstreamListDto trans, List<UserDto> users, List<TransactionObjectDto> objects)
         {
-            var downStreamTransactions = new List<TransactionDownstreamDto>();
-            foreach (var tran in trans.Transactions)
-            {
-                downStreamTransactions.Add(new TransactionDownstreamDto
-                {
-                    RegistrationId = tran.RegistrationId,
-                    ReceivingId = tran.ReceivingId,
-                    ReturnId = tran.ReturnId,
-                    RegistredAtUtc = tran.RegistredAtUtc,
-                    HourlyCharge = tran.HourlyCharge,
-                    ReceivedAtUtc = tran.ReceivedAtUtc,
-                    ReturenedAtUtc = tran.ReturenedAtUtc,
-                    ShouldReturnAfter = tran.ShouldReturnAfter,
-                    TransactionStatus = tran.TransactionStatus,
-                    TranscationType = tran.TranscationType,
-                    Object = objects.Find(o => o.Id == tran.ObjectId),
-                    Owner = users.Find(u => u.Id == tran.OwnerId || u.Id == tran.ReceiverId),
-                    Receiver = users.Find(u => u.Id == tran.OwnerId || u.Id == tran.ReceiverId),
-                });
+            var downstreamTransactions = _mapper.Map<AllTransactionsDownstreamListDto>(trans);
 
-                downStreamTransactions.RemoveAll(t => t.Owner is null || t.Receiver == null || t.Object is null);
-            }
-            var userId = _httpContext.Request.Query["userId"].GetValue();
-            return new AllTransactionsDownstreamListDto()
+            downstreamTransactions.Transactions.ForEach(t =>
             {
-                Transactions = downStreamTransactions,
-                ReservedTransactionsCount = trans.ReservedTransactionsCount,
-                DeliveredTransactionsCount = trans.DeliveredTransactionsCount,
-                ReturnedTransactionsCount = trans.ReturnedTransactionsCount
-            };
+                var upTrans = trans.Transactions.FirstOrDefault(tt => tt.RegistrationId == t.RegistrationId);
+                t.Object = objects.Find(o => o.Id == upTrans.ObjectId);
+                t.Owner = users.Find(u => u.Id == upTrans.OwnerId || u.Id == upTrans.ReceiverId);
+                t.Receiver = users.Find(u => u.Id == upTrans.OwnerId || u.Id == upTrans.ReceiverId);
+            });
+
+            return downstreamTransactions;
+
         }
 
         private TransactionForUserDownstreamListDto AggregateTransactionWithObject8User(List<TransactionUpstreamDto> trans, List<UserDto> users, List<TransactionObjectDto> objects)

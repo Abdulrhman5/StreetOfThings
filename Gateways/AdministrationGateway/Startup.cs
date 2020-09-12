@@ -17,6 +17,7 @@ using Grpc.Net.Client;
 using Grpc.Core;
 using Ocelot.Values;
 using Unity;
+using AutoMapper;
 
 namespace AdministrationGateway
 {
@@ -39,7 +40,8 @@ namespace AdministrationGateway
             services.AddRazorPages().AddRazorRuntimeCompilation();
             services.AddOcelot();
             services.AddHttpContextAccessor();
-
+            services.AddAutoMapper(typeof(Startup));
+            
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {

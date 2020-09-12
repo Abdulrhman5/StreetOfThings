@@ -73,7 +73,8 @@ namespace Transaction.BusinessLogic.RegistrationQueries
                             TranscationType = !rg.Object.ShouldReturn ? TransactionType.Free : rg.Object.HourlyCharge.HasValue ? TransactionType.Renting : TransactionType.Lending,
                             HourlyCharge = rg.Object.HourlyCharge,
                             ShouldReturnAfter = rg.ShouldReturnItAfter,
-                            TransactionStatus = rg.Status == ObjectRegistrationStatus.Canceled ? TransactionStatus.Canceled : isReturned ? TransactionStatus.Returned : isReceived ? TransactionStatus.Received : TransactionStatus.RegisteredOnly
+                            TransactionStatus = rg.Status == ObjectRegistrationStatus.Canceled ? TransactionStatus.Canceled : isReturned ? TransactionStatus.Returned : isReceived ? TransactionStatus.Received : TransactionStatus.RegisteredOnly,
+                            ReturnStatus = GetReturnStatus(rg)
                         };
 
             var transactions = await trans.ToListAsync();
@@ -163,6 +164,47 @@ namespace Transaction.BusinessLogic.RegistrationQueries
                             TransactionStatus = rg.Status == ObjectRegistrationStatus.Canceled ? TransactionStatus.Canceled : isReturned ? TransactionStatus.Returned : isReceived ? TransactionStatus.Received : TransactionStatus.RegisteredOnly
                         };
             return await trans.SkipTakeAsync(pagingArguments);
+        }
+
+        public static ReturnStatus GetReturnStatus(ObjectRegistration registration)
+        {
+            if (registration.Status == ObjectRegistrationStatus.Canceled)
+            {
+                return ReturnStatus.NotTakenYet;
+            }
+
+            if (registration.ObjectReceiving is null)
+            {
+                return ReturnStatus.NotTakenYet;
+            }
+
+            if(registration.ObjectReceiving.ObjectReturning is object)
+            {
+                return ReturnStatus.Returned;
+            }
+
+            // it is free object
+            if (!registration.ShouldReturnItAfter.HasValue)
+            {
+                return ReturnStatus.NotDueYet;
+            }
+
+            if(registration.ObjectReceiving.ReceivedAtUtc.Add(registration.ShouldReturnItAfter.Value) <= DateTime.UtcNow)
+            {
+                return ReturnStatus.NotDueYet;
+            } 
+            
+            if(registration.ObjectReceiving.ReceivedAtUtc.Add(registration.ShouldReturnItAfter.Value) > DateTime.UtcNow.AddHours(24))
+            {
+                return ReturnStatus.PossibleTheft;
+            }    
+            
+            if(registration.ObjectReceiving.ReceivedAtUtc.Add(registration.ShouldReturnItAfter.Value) > DateTime.UtcNow)
+            {
+                return ReturnStatus.Delayed;
+            }
+
+            return ReturnStatus.Returned;
         }
     }
 }
