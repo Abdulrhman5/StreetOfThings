@@ -13,9 +13,11 @@ namespace Transaction.Service.Controllers
     {
         private ITransactionGetter _transactionGetter;
 
-        public TransactionController(ITransactionGetter transactionGetter)
+        private TransactionStatisticsGetter _statsGetter;
+        public TransactionController(ITransactionGetter transactionGetter, TransactionStatisticsGetter statsGetter)
         {
             _transactionGetter = transactionGetter;
+            _statsGetter = statsGetter;
         }
 
 
@@ -35,6 +37,33 @@ namespace Transaction.Service.Controllers
         {
             var trans = await _transactionGetter.GetAllTransactions();
             return Ok(trans);
+        }
+
+        [Route("stats/today")]
+        [Authorize(Policy = "Admin")]
+        [HttpGet]
+        public async Task<IActionResult> StatsToday()
+        {
+            var stats = await _statsGetter.GetTransactionsCountOverToday();
+            return Ok(stats);
+        }
+
+        [Route("stats/lastMonth")]
+        [Authorize(Policy = "Admin")]
+        [HttpGet]
+        public async Task<IActionResult> StatsOverMonth()
+        {
+            var stats = await _statsGetter.GetTransactionsCountOverMonth();
+            return Ok(stats);
+        }
+
+        [Route("stats/lastYear")]
+        [Authorize(Policy = "Admin")]
+        [HttpGet]
+        public async Task<IActionResult> StatsYear()
+        {
+            var stats = await _statsGetter.GetTransactionsCountOverYear();
+            return Ok(stats);
         }
     }
 }

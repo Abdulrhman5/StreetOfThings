@@ -65,6 +65,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdministrationGateway", "Ga
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authorization.ApplicationLogic.Test", "..\Authorization.ApplicationLogic.Test\Authorization.ApplicationLogic.Test.csproj", "{8B1FB14A-A7E1-4BD6-BCC9-01FB29558EAB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{427D152C-1DE4-46A6-9960-01455EFB2C57}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Transaction.BusinessLogic.Test", "Services\Transaction\tests\Transaction.BusinessLogic.Test\Transaction.BusinessLogic.Test.csproj", "{9FA4D8F9-5611-4D5A-89A2-43945DD39FFE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -163,6 +167,10 @@ Global
 		{8B1FB14A-A7E1-4BD6-BCC9-01FB29558EAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B1FB14A-A7E1-4BD6-BCC9-01FB29558EAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B1FB14A-A7E1-4BD6-BCC9-01FB29558EAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FA4D8F9-5611-4D5A-89A2-43945DD39FFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FA4D8F9-5611-4D5A-89A2-43945DD39FFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FA4D8F9-5611-4D5A-89A2-43945DD39FFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FA4D8F9-5611-4D5A-89A2-43945DD39FFE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -195,6 +203,8 @@ Global
 		{D6A0E7D9-9F4B-4C75-9615-B49E8ECA4C0C} = {CA2874AD-E03D-4CC7-A17F-F1977EA8CBAA}
 		{E1ED045D-A5B6-41DA-A16F-CBFDAD091A48} = {30F5E1AF-76FF-438E-9F20-BBC1B8A0C430}
 		{8B1FB14A-A7E1-4BD6-BCC9-01FB29558EAB} = {03793596-348D-421B-A785-6DC8FCAC039C}
+		{427D152C-1DE4-46A6-9960-01455EFB2C57} = {CA2874AD-E03D-4CC7-A17F-F1977EA8CBAA}
+		{9FA4D8F9-5611-4D5A-89A2-43945DD39FFE} = {427D152C-1DE4-46A6-9960-01455EFB2C57}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {99BE5EE1-5AB0-4039-AC24-5B59F42DCD30}
