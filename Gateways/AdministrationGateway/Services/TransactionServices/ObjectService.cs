@@ -34,7 +34,8 @@ namespace AdministrationGateway.Services.TransactionServices
             {
                 Description = om.Description,
                 Id = om.Id,
-                Name = om.Name
+                Name = om.Name,
+                PhotoUrl = om.PhotoUrl
             }).ToList();
 
             return objects;

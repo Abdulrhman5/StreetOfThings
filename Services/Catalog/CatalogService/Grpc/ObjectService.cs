@@ -29,7 +29,8 @@ namespace CatalogService.Grpc
             {
                 Id = o.Id,
                 Description = o.Description,
-                Name = o.Name
+                Name = o.Name,
+                PhotoUrl = o.Photos.FirstOrDefault()
             }));
 
             return objectsModel;

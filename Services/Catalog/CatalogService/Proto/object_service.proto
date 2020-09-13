@@ -16,7 +16,8 @@ message ObjectsModel{
 message ObjectModel {
   int32 id = 1;
   google.protobuf.StringValue name = 2;
-  google.protobuf.StringValue description = 3;   
+  google.protobuf.StringValue description = 3;      
+  google.protobuf.StringValue photo_url = 4;
 }
 
 message ObjectsIdsModel {

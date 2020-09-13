@@ -57,10 +57,10 @@ namespace CatalogService
                     OwnerLogin = new Login
                     {
                         LoginId = Guid.NewGuid(),
-                        TokenId = "5b9be4be-bac2-4677-8d3b-cfd9b749cde0",
+                        TokenId = "b1590daf-7004-48f0-8af5-bc6ba97d5bed",
                         User = new User
                         {
-                            OriginalUserId = "cc0eb95f-52a0-4131-b8f6-b79ab5e7728f",
+                            OriginalUserId = "9b4210dc-49b9-4031-9a7a-dcc769a0cac8",
                             UserId = Guid.NewGuid(),
                             Status = UserStatus.Available,
                             UserName = "TestUser@Auth.com"
