@@ -27,7 +27,7 @@ namespace CatalogService.Controllers
         [Route("Photo/{type}/{name}")]
         public async Task<IActionResult> Photo([FromRoute]string type, [FromRoute]string name)
         {
-            if (type.EqualsIC("Object"))
+            if (type.EqualsIC("Tag") || type.EqualsIC("Object"))
             {
                 var profilePhotoPath = $@"{_contentRoot}\Assets\Images\Profile\";
                 var files = Directory.GetFiles(profilePhotoPath, $"{name}.*");

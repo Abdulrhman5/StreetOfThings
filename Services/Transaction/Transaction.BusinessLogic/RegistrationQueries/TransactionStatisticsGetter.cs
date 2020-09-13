@@ -5,6 +5,7 @@ using System.Text;
 using Transaction.DataAccessLayer;
 using Transaction.Models;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Transaction.BusinessLogic.RegistrationQueries
 {
@@ -20,7 +21,17 @@ namespace Transaction.BusinessLogic.RegistrationQueries
             _receivingsRepo = receivingsRepo;
         }
 
-        public async Task<List<int>> GetTransactionsCountOverToday()
+        public class TransactionStatsDto
+        {
+            public List<int> TransactionsOverToday { get; set; }
+
+            public int LateReturn { get; set; }
+
+            public int OnTimeReturn { get; set; }
+
+            public int NotReturnedYet { get; set; }
+        }
+        public async Task<TransactionStatsDto> GetTransactionsCountOverToday()
         {
             // This will resolve to MM/DD/YYYY 00:00:00
             var startDate = DateTime.UtcNow.Date;
@@ -68,7 +79,30 @@ namespace Transaction.BusinessLogic.RegistrationQueries
 
             transesHourlyFormated = transesHourlyFormated.OrderBy(t => t.DateTime).ToList();
             var stats = transesHourlyFormated.Select(t => t.Count).ToList();
-            return stats;
+
+            var transactions = from r in _registrationsRepo.Table
+                               where r.ShouldReturnItAfter.HasValue && r.Status == ObjectRegistrationStatus.OK
+                               select r;
+            var functions = Microsoft.EntityFrameworkCore.EF.Functions;
+            var late = transactions
+                .AsEnumerable()
+                .Count(r => r.ObjectReceiving != null &&
+                    r.ObjectReceiving.ObjectReturning != null && 
+                    (r.ObjectReceiving.ReceivedAtUtc + r.ShouldReturnItAfter.Value) > r.ObjectReceiving.ObjectReturning.ReturnedAtUtc.AddMinutes(30));
+            var notReturned = transactions.Count(r => r.ObjectReceiving != null && r.ObjectReceiving.ObjectReturning == null);
+            var onTime = transactions
+                .AsEnumerable()
+                .Count(r => r.ObjectReceiving != null && 
+                    r.ObjectReceiving.ObjectReturning != null &&
+                    r.ObjectReceiving.ReceivedAtUtc.Add(r.ShouldReturnItAfter.Value) <= r.ObjectReceiving.ObjectReturning.ReturnedAtUtc.AddMinutes(30));
+
+            return new TransactionStatsDto
+            {
+                LateReturn = late,
+                NotReturnedYet = notReturned,
+                OnTimeReturn = onTime,
+                TransactionsOverToday = stats
+            };
         }
 
         public async Task<List<TransactionsMonthlyCountStats>> GetTransactionsCountOverMonth()
