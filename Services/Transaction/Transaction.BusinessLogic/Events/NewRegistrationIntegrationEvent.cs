@@ -15,6 +15,8 @@ namespace Transaction.BusinessLogic.Events
 
         public string RecipiantId { get; set; }
 
+        public DateTime RegisteredAt { get; set; }
+
         public bool ShouldReturn { get; set; }
     }
 }

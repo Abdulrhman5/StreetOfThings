@@ -1,6 +1,7 @@
 ﻿using AuthorizationService.Grpc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -34,6 +35,15 @@ namespace Catalog.ApplicationLogic.GrpcClients
                 TokenId = result.TokenId,
             };
             return dto;
+        }
+
+        public async Task<UserModelV1_1> GetUser(string userId)
+        {
+            var idsModel = new UsersIdsModel();
+            idsModel.UsersIds.Add(userId);
+
+            var result = await _grpcClient.GetUsersDataV1_1Async(idsModel);
+            return result.Users.FirstOrDefault();
         }
     }
 

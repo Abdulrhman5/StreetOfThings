@@ -101,5 +101,31 @@ namespace Catalog.ApplicationLogic.Infrastructure
                 return await AddUserIfNotExisted(credentials.TokenId, credentials.UserId, credentials.AccessToken);
             }
         }
+
+        public async Task<User> AddUserIfNeeded(string userId)
+        {
+            var usersById = (from u in _userRepo.Table
+                            where u.OriginalUserId == userId
+                            select u).FirstOrDefault();
+
+            if(usersById is object)
+            {
+                return usersById;
+            }
+
+            var user = await _loginInformationGetter.GetUser(userId);
+            var userToBeAdded = new User
+            {
+                UserId = Guid.NewGuid(),
+                OriginalUserId = userId,
+                Status = UserStatus.Available,
+                UserName = user.Username,
+            };
+
+            _userRepo.Add(userToBeAdded);
+            await _userRepo.SaveChangesAsync();
+
+            return userToBeAdded;
+        }
     }
 }

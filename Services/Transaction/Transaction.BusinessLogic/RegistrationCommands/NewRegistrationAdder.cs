@@ -175,7 +175,9 @@ namespace Transaction.BusinessLogic.RegistrationCommands
                 OccuredAt = registrationModel.RegisteredAtUtc,
                 ObjectId = @object.OriginalObjectId,
                 RecipiantId = user.User.OriginalUserId,
-                ShouldReturn = @object.ShouldReturn
+                ShouldReturn = @object.ShouldReturn,
+                RegisteredAt = registrationModel.RegisteredAtUtc,
+                RegistrationId = registrationModel.ObjectRegistrationId
             };
 
             // Broadcast an event;

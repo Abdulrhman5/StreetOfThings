@@ -11,7 +11,7 @@ namespace Catalog.ApplicationLogic.ObjectQueries
     {
         public Expression<Func<OfferedObject, bool>> ValidForFreeAndLendibg => (o) =>
             // The object is actually is at the owner
-            o.Transactions.All(t => t.ReturnId is object);
+            o.Transactions.All(t => t.ReturnId != null || (t.ReceivingId == null && t.ReturnId == null && t.Status == TransactionStatus.Cancelled));
 
 
         public Expression<Func<OfferedObject, bool>> IsValidObject => (o) =>

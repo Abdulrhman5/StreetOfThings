@@ -1,5 +1,7 @@
 ﻿using Catalog.ApplicationLogic.CommentsCommands;
 using Catalog.ApplicationLogic.CommentsQueries;
+using Catalog.ApplicationLogic.Events;
+using Catalog.ApplicationLogic.Events.EventHandlers;
 using Catalog.ApplicationLogic.Infrastructure;
 using Catalog.ApplicationLogic.LikeCommands;
 using Catalog.ApplicationLogic.ObjectCommands;
@@ -8,6 +10,7 @@ using Catalog.ApplicationLogic.TagCommands;
 using Catalog.ApplicationLogic.TypeQueries;
 using Catalog.DataAccessLayer;
 using CommonLibrary;
+using EventBus;
 using HostingHelpers;
 using System;
 using System.Collections.Generic;
@@ -51,6 +54,8 @@ namespace Catalog.ApplicationLogic
             Container.RegisterType<LikeAdder>();
             Container.RegisterType<ObjectQueryHelper>();
             Container.RegisterType(typeof(OwnershipAuthorization<,>));
+
+            Container.RegisterType<IIntegrationEventHandler<NewRegistrationIntegrationEvent>,NewRegistrationIntegrationEventHandler>();
             new DalUnityConfig().ConfigUnity(container);
         }
     }
