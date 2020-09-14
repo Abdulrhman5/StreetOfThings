@@ -122,6 +122,7 @@ namespace CatalogService
             ConfigDatabases.SeedUsersDatabase(app);
 
             app.ApplicationServices.AddIntegrationEvent<NewRegistrationIntegrationEvent, NewRegistrationIntegrationEventHandler>();
+            app.ApplicationServices.AddIntegrationEvent<TransactionCancelledIntegrationEvent,TransactionCancelledIntegrationEventHandler>();
         }
 
         public void ConfigureContainer(IUnityContainer container)

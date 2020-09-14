@@ -8,6 +8,7 @@ using Transaction.DataAccessLayer;
 using Transaction.Models;
 using System.Linq;
 using System.Threading.Tasks;
+using Transaction.BusinessLogic.Events;
 
 namespace Transaction.BusinessLogic.RegistrationCommands
 {
@@ -20,7 +21,9 @@ namespace Transaction.BusinessLogic.RegistrationCommands
         private OwnershipAuthorization<Guid, ObjectRegistration> _ownershipAuth;
 
         private readonly IRepository<int, OfferedObject> _objectRepo;
-        public ObjectRegistrationCanceller(IRepository<Guid, ObjectRegistration> registrationsRepo, IEventBus eventBus, OwnershipAuthorization<Guid, ObjectRegistration> ownershipAuth)
+        public ObjectRegistrationCanceller(IRepository<Guid, ObjectRegistration> registrationsRepo,
+            IEventBus eventBus,
+            OwnershipAuthorization<Guid, ObjectRegistration> ownershipAuth)
         {
             _registrationsRepo = registrationsRepo;
             _eventBus = eventBus;
@@ -81,7 +84,13 @@ namespace Transaction.BusinessLogic.RegistrationCommands
             var theRegistration = _registrationsRepo.Get(registrationIdGuid);
             theRegistration.Status = ObjectRegistrationStatus.Canceled;
             await _registrationsRepo.SaveChangesAsync();
-
+            _eventBus.Publish(new TransactionCancelledIntegrationEvent
+            {
+                Id = Guid.NewGuid(),
+                OccuredAt = DateTime.UtcNow,
+                RegistrationId = theRegistration.ObjectRegistrationId,
+                CancelledAtUtc = DateTime.UtcNow,
+            });
             return new CommandResult();
         }
     }
