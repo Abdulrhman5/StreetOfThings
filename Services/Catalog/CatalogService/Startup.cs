@@ -123,6 +123,7 @@ namespace CatalogService
 
             app.ApplicationServices.AddIntegrationEvent<NewRegistrationIntegrationEvent, NewRegistrationIntegrationEventHandler>();
             app.ApplicationServices.AddIntegrationEvent<TransactionCancelledIntegrationEvent,TransactionCancelledIntegrationEventHandler>();
+            app.ApplicationServices.AddIntegrationEvent<TransactionReceivedIntegrationEvent,TransactionReceivedIntegrationEventHandler>();
         }
 
         public void ConfigureContainer(IUnityContainer container)

@@ -9,6 +9,8 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
+using EventBus;
+using Transaction.BusinessLogic.Events;
 
 namespace Transaction.BusinessLogic.ReceivingCommands
 {
@@ -28,13 +30,16 @@ namespace Transaction.BusinessLogic.ReceivingCommands
 
         private UserDataManager userDataManager;
 
+        private IEventBus _eventBus;
+
         public ObjectReceivingAdder(IRepository<Guid, ObjectReceiving> receivingsRepo,
             IRepository<Guid, ObjectRegistration> registrationsRepo,
             IRepository<Guid, TransactionToken> tokensRepo,
             OwnershipAuthorization<Guid, TransactionToken> ownershipAuthorization,
             TransactionContext transactionContext,
-            UserDataManager userDataManager, 
-            IRepository<int, OfferedObject> objectRepo)
+            UserDataManager userDataManager,
+            IRepository<int, OfferedObject> objectRepo, 
+            IEventBus eventBus)
         {
             _receivingsRepo = receivingsRepo;
             _registrationsRepo = registrationsRepo;
@@ -43,6 +48,7 @@ namespace Transaction.BusinessLogic.ReceivingCommands
             _transactionContext = transactionContext;
             this.userDataManager = userDataManager;
             _objectRepo = objectRepo;
+            _eventBus = eventBus;
         }
 
         public async Task<CommandResult<ObjectReceivingResultDto>> AddReceiving(AddReceivingDto addReceivingDto)
@@ -170,6 +176,16 @@ namespace Transaction.BusinessLogic.ReceivingCommands
             _receivingsRepo.Add(receiving);
             // this will save theToken.Status also
             await _receivingsRepo.SaveChangesAsync();
+
+            var evnt = new TransactionReceivedIntegrationEvent
+            {
+                Id = Guid.NewGuid(),
+                OccuredAt = DateTime.UtcNow,     
+                ReceivedAtUtc = receiving.ReceivedAtUtc,
+                ReceivingId = receiving.ObjectReceivingId,
+                RegistrationId = receiving.ObjectRegistrationId,
+            };
+            _eventBus.Publish(evnt);
 
             // Publish the event
             return new CommandResult<ObjectReceivingResultDto>(new ObjectReceivingResultDto
