@@ -18,6 +18,7 @@ namespace Catalog.Models
 
         public List<Login> Logins { get; set; }
 
+        public List<Transaction> MeAsReceipient { get; set; }
         public Guid Id => UserId;
     }
 

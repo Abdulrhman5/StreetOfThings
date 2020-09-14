@@ -13,19 +13,27 @@ namespace Catalog.Models
 
         public Guid? ReceivingId { get; set; }
 
-        public DateTime ReceivedAtUtc { get; set; }
+        public DateTime? ReceivedAtUtc { get; set; }
 
         public Guid? ReturnId { get; set; }
-        public DateTime ReturnedAtUtc { get; set; }
+        public DateTime? ReturnedAtUtc { get; set; }
 
         public float? Rating { get; set; }
+
+        public TransactionStatus Status { get; set; }
 
         public Guid ReceipientId { get; set; }
         public User Receipient { get; set; }
 
         public int ObjectId { get; set; }
         public OfferedObject Object { get; set; }
+              
 
         public Guid Id => TransactionId;
+    }
+
+    public enum TransactionStatus
+    {
+        Ok, Cancelled
     }
 }
