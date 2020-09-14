@@ -91,6 +91,8 @@ namespace Transaction.Service
 
             });
 
+            app.ApplicationServices.AddIntegrationEvent<DummyEvent, DummyHandler>();
+
             ConfigDatabases.SeedUsersDatabase(app);
         }
 
@@ -98,6 +100,18 @@ namespace Transaction.Service
         {
             new BusinessUnityConfig().ConfigUnity(container);
         }
+    }
 
+    public class DummyEvent : IntegrationEvent
+    {
+        public string X { get; set; }
+    }
+
+    public class DummyHandler : IIntegrationEventHandler<DummyEvent>
+    {
+        public async Task HandleEvent(DummyEvent integrationEvent)
+        {
+            Console.WriteLine(integrationEvent.X);
+        }
     }
 }

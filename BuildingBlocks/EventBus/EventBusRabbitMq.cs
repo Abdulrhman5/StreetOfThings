@@ -1,13 +1,11 @@
 ﻿using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Polly;
 using Polly.Retry;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RabbitMQ.Client.Exceptions;
 using System;
-using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -97,7 +95,7 @@ namespace EventBus
                     var properties = channel.CreateBasicProperties();
                     properties.DeliveryMode = 2; // persistent
 
-                    _logger.LogTrace("Publishing event to RabbitMQ: {EventId}", @event.Id);
+                    _logger.LogTrace("Publishing event to RabbitMQ: {EventId}, Body: {body}", @event.Id, body);
 
                     channel.BasicPublish(
                         exchange: BROKER_NAME,

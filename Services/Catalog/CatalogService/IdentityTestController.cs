@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Catalog.ApplicationLogic.Infrastructure;
+using EventBus;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,12 +13,16 @@ using Microsoft.Extensions.Configuration;
 
 namespace CatalogService
 {
+    [Route("Test")]
     public class IdentityTestController : Controller
     {
         private IConfiguration _configs;
-        public IdentityTestController(IConfiguration configs)
+
+        private IEventBus _eventBus;
+        public IdentityTestController(IConfiguration configs, IEventBus eventBus)
         {
             _configs = configs;
+            _eventBus = eventBus;
         }
 
         // GET: /<controller>/
@@ -28,5 +33,25 @@ namespace CatalogService
             var userData = await userGetter.GetUserDataByToken(Request.Headers["Authorization"]);
             return new JsonResult(new { Result = "Hello there" });
         }
+
+        [HttpGet]
+        [Route("publish")]
+        public async Task<IActionResult> PublishEvent()
+        {
+            var evnt = new DummyEvent()
+            {
+                Id = Guid.NewGuid(),
+                OccuredAt = DateTime.UtcNow,
+                X = "Here we are"
+            };
+
+            _eventBus.Publish(evnt);
+            return Ok();
+        }
+    }
+
+    public class DummyEvent : IntegrationEvent
+    {
+        public string X { get; set; }
     }
 }
