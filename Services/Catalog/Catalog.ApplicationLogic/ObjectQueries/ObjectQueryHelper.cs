@@ -10,15 +10,8 @@ namespace Catalog.ApplicationLogic.ObjectQueries
     public class ObjectQueryHelper
     {
         public Expression<Func<OfferedObject, bool>> ValidForFreeAndLendibg => (o) =>
-            // if object is free
-            (o.CurrentTransactionType == TransactionType.Free &&
-            // if object has not been taken
-            !o.ObjectFreeProperties.TakenAtUtc.HasValue) ||
-
-            // is object lending?
-            (o.CurrentTransactionType == TransactionType.Lending &&
-            // is object valid?
-            o.ObjectLoanProperties.ObjectLoans.All(ol => ol.LoanEndAt < DateTime.UtcNow));
+            // The object is actually is at the owner
+            o.Transactions.All(t => t.ReturnId is object);
 
 
         public Expression<Func<OfferedObject, bool>> IsValidObject => (o) =>

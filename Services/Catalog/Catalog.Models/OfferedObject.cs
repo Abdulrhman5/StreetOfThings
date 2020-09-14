@@ -27,10 +27,7 @@ namespace Catalog.Models
 
         public List<ObjectTag> Tags { get; set; }
 
-        public ObjectLoanProperties ObjectLoanProperties { get; set; }
-
-        public ObjectFreeProperties ObjectFreeProperties { get; set; }
-
+        public List<Transaction> Transactions { get; set; }
         public List<ObjectPhoto> Photos { get; set; }
 
         public List<ObjectImpression> Impressions { get; set; }

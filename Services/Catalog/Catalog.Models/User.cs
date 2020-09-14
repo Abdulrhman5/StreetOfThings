@@ -18,8 +18,6 @@ namespace Catalog.Models
 
         public List<Login> Logins { get; set; }
 
-        public List<ObjectFreeProperties> TakenObjects { get; set; }
-
         public Guid Id => UserId;
     }
 

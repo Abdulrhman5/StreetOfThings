@@ -18,7 +18,7 @@ namespace Catalog.Models
         public Guid UserId { get; set; }
         public User User { get; set; }
 
-        public List<ObjectLoan> Loans { get; set; }
+        public List<Transaction> MeAsReceipient { get; set; }
 
         public List<ObjectImpression> Impressions { get; set; }
         public List<ObjectView> Views { get; set; }

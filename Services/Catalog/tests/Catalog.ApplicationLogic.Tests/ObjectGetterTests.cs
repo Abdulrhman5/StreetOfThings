@@ -27,10 +27,7 @@ namespace Catalog.ApplicationLogic.Tests
             repo.Add(new OfferedObject
             {
                 CurrentTransactionType = TransactionType.Free,
-                ObjectFreeProperties = new ObjectFreeProperties
-                {
-                    OfferedFreeAtUtc = DateTime.UtcNow,
-                },
+
                 PublishedAt = DateTime.UtcNow,
                 Photos = new System.Collections.Generic.List<ObjectPhoto> { new ObjectPhoto { AddedAtUtc = DateTime.UtcNow } },
             });
@@ -129,7 +126,6 @@ namespace Catalog.ApplicationLogic.Tests
                     ObjectStatus = ObjectStatus.Available,
                     OwnerLogin = logins[0],
                     CurrentTransactionType = TransactionType.Free,
-                    ObjectFreeProperties = new ObjectFreeProperties(),
                     Photos = new List<ObjectPhoto>(),
                      Tags = new List<ObjectTag>(),
                      Impressions = new List<ObjectImpression>()
@@ -142,7 +138,6 @@ namespace Catalog.ApplicationLogic.Tests
                     ObjectStatus = ObjectStatus.Available,
                     OwnerLogin = logins[1],
                     CurrentTransactionType = TransactionType.Free,
-                    ObjectFreeProperties = new ObjectFreeProperties(),
                     Photos = new List<ObjectPhoto>(),
                     Tags = new List<ObjectTag>(),
                     Impressions = new List<ObjectImpression>()
@@ -155,7 +150,6 @@ namespace Catalog.ApplicationLogic.Tests
                     ObjectStatus = ObjectStatus.Available,
                     OwnerLogin = logins[2],
                     CurrentTransactionType = TransactionType.Free,
-                    ObjectFreeProperties = new ObjectFreeProperties(),
                     Photos = new List<ObjectPhoto>(),
                     Tags = new List<ObjectTag>(),
                     Impressions = new List<ObjectImpression>()
@@ -167,7 +161,6 @@ namespace Catalog.ApplicationLogic.Tests
                     ObjectStatus = ObjectStatus.Available,
                     OwnerLogin = logins[2],
                     CurrentTransactionType = TransactionType.Free,
-                    ObjectFreeProperties = new ObjectFreeProperties(),
                     Photos = new List<ObjectPhoto>(),
                     Tags = new List<ObjectTag>(),
                     Impressions = new List<ObjectImpression>()
