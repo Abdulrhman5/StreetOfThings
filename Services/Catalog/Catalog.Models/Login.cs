@@ -12,9 +12,6 @@ namespace Catalog.Models
         public Guid LoginId { get; set; }
 
         public string Token { get; set; }
-
-        public string TokenId { get; set; }
-
         public Guid UserId { get; set; }
         public User User { get; set; }
 

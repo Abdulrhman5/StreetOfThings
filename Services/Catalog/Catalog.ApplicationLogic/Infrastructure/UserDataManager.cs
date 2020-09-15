@@ -33,15 +33,15 @@ namespace Catalog.ApplicationLogic.Infrastructure
             _loginInformationGetter = loginInformationGetter;
         }
 
-        public virtual async Task<(Login, User)> AddUserIfNotExisted(string tokenId, string originUserId, string accessToken)
+        public virtual async Task<(Login, User)> AddUserIfNotExisted(Guid tokenId, string originUserId, string accessToken)
         {
 
             // if The user existed but the login does not exist
-            var login = _loginRepo.Table.Include(login => login.User).SingleOrDefault(t => t.TokenId == tokenId);
+            var login = _loginRepo.Table.Include(login => login.User).SingleOrDefault(t => t.LoginId == tokenId);
             if (login is null)
             {
                 // add the login 
-                var loginInformation = await _loginInformationGetter.GetLoginInformation(tokenId);
+                var loginInformation = await _loginInformationGetter.GetLoginInformation(tokenId.ToString());
                 var userIdGuid = Guid.Parse(loginInformation.UserId);
                 var theUser = _userRepo.Table.SingleOrDefault(u => u.UserId == userIdGuid);
                 if (theUser is null)
@@ -56,8 +56,7 @@ namespace Catalog.ApplicationLogic.Infrastructure
                             new Login
                             {
                                 LoggedAt = loginInformation.LoggedAtUtc,
-                                LoginId = Guid.NewGuid(),
-                                TokenId = loginInformation.TokenId,
+                                LoginId = Guid.Parse(loginInformation.TokenId),
                             }
                         }
                     };
@@ -72,8 +71,7 @@ namespace Catalog.ApplicationLogic.Infrastructure
                     var loginToBeAdded = new Login
                     {
                         LoggedAt = loginInformation.LoggedAtUtc,
-                        LoginId = Guid.NewGuid(),
-                        TokenId = loginInformation.TokenId,
+                        LoginId = Guid.Parse(loginInformation.TokenId),
                         UserId = theUser.UserId,
                     };
 
@@ -97,7 +95,7 @@ namespace Catalog.ApplicationLogic.Infrastructure
             }
             else
             {
-                return await AddUserIfNotExisted(credentials.TokenId, credentials.UserId, credentials.AccessToken);
+                return await AddUserIfNotExisted(Guid.Parse(credentials.TokenId), credentials.UserId, credentials.AccessToken);
             }
         }
 

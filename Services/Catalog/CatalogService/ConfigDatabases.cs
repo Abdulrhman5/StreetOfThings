@@ -56,8 +56,7 @@ namespace CatalogService
                     },
                     OwnerLogin = new Login
                     {
-                        LoginId = Guid.NewGuid(),
-                        TokenId = "b1590daf-7004-48f0-8af5-bc6ba97d5bed",
+                        LoginId = Guid.Parse("b1590daf-7004-48f0-8af5-bc6ba97d5bed"),
                         User = new User
                         {
                             UserId = Guid.Parse("9b4210dc-49b9-4031-9a7a-dcc769a0cac8"),
@@ -86,8 +85,7 @@ namespace CatalogService
                     },
                     OwnerLogin = new Login
                     {
-                        LoginId = Guid.NewGuid(),
-                        TokenId = "25291904-86a0-4b1d-b24b-fab3c332c59d",
+                        LoginId = Guid.Parse("25291904-86a0-4b1d-b24b-fab3c332c59d"),
                         User = new User
                         {
                             UserId = Guid.Parse("dd6cafb3-b154-475e-a309-610f3d2d91bf"),
