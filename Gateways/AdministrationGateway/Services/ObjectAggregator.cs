@@ -40,7 +40,8 @@ namespace AdministrationGateway.Services
 
         public async Task<CommandResult<DownstreamObjectsListDto>> AggregateObjects()
         {
-            var request = await _responseProcessor.CreateAsync(_httpContext, HttpMethod.Get, $"{_configs["Services:Catalog"]}/api/object/allObjects", true, true, changeBody: null);
+            var request = await _responseProcessor.CreateAsync(_httpContext, HttpMethod.Get,
+                $"{_configs["Services:Catalog"]}/api/object/allObjects", true, true, changeBody: null);
             try
             {
                 var response = await _httpClient.SendAsync(request);

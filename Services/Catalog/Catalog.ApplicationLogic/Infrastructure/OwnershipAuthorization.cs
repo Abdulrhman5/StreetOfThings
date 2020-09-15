@@ -28,7 +28,7 @@ namespace Catalog.ApplicationLogic.Infrastructure
             var currentUser = _credentialsGetter.GetCuurentUser();
             if (currentUser is null) return false;
 
-            var entity = _repo.Table.Where(identifiengEntityExpression).Select(toUser).Where(u => u.OriginalUserId == currentUser.UserId);
+            var entity = _repo.Table.Where(identifiengEntityExpression).Select(toUser).Where(u => u.UserId.ToString() == currentUser.UserId);
             if (entity.Any())
             {
                 return true;

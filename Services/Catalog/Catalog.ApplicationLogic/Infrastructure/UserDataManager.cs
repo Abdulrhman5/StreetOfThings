@@ -42,16 +42,15 @@ namespace Catalog.ApplicationLogic.Infrastructure
             {
                 // add the login 
                 var loginInformation = await _loginInformationGetter.GetLoginInformation(tokenId);
-
-                var theUser = _userRepo.Table.SingleOrDefault(u => u.OriginalUserId == loginInformation.UserId);
+                var userIdGuid = Guid.Parse(loginInformation.UserId);
+                var theUser = _userRepo.Table.SingleOrDefault(u => u.UserId == userIdGuid);
                 if (theUser is null)
                 {
                     var userToBeAdded = new User
                     {
-                        UserId = Guid.NewGuid(),
-                        OriginalUserId = loginInformation.UserId,
+                        UserId = userIdGuid,
                         Status = UserStatus.Available,
-                        UserName = theUser.UserName,
+                        UserName = loginInformation.Username,
                         Logins = new List<Login>
                         {
                             new Login
@@ -105,7 +104,7 @@ namespace Catalog.ApplicationLogic.Infrastructure
         public async Task<User> AddUserIfNeeded(string userId)
         {
             var usersById = (from u in _userRepo.Table
-                            where u.OriginalUserId == userId
+                            where u.UserId.ToString() == userId
                             select u).FirstOrDefault();
 
             if(usersById is object)
@@ -116,8 +115,7 @@ namespace Catalog.ApplicationLogic.Infrastructure
             var user = await _loginInformationGetter.GetUser(userId);
             var userToBeAdded = new User
             {
-                UserId = Guid.NewGuid(),
-                OriginalUserId = userId,
+                UserId = Guid.Parse(userId),
                 Status = UserStatus.Available,
                 UserName = user.Username,
             };

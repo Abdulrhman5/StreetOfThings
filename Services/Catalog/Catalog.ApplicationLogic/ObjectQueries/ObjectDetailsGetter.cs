@@ -53,19 +53,19 @@ namespace Catalog.ApplicationLogic.ObjectQueries
                               Description = o.Description,
                               Name = o.Name,
                               Rating = null,
-                              OwnerId = o.OwnerLogin.User.OriginalUserId,
+                              OwnerId = o.OwnerLogin.User.UserId.ToString(),
                               Photos = o.Photos.Select(op => _photoConstructor.Construct(op)).ToList(),
                               Tags = o.Tags.Select(ot => ot.Tag.Name).ToList(),
                               Type = o.CurrentTransactionType,
                               CommentsCount = o.Comments.Count,
                               LikesCount = o.Likes.Count,
-                              IsLikedByMe = o.Likes.Any(like => like.Login.User.OriginalUserId == userId),
+                              IsLikedByMe = o.Likes.Any(like => like.Login.UserId.ToString() == userId),
                               Comments = (from comment in o.Comments
                                           orderby comment.AddedAtUtc
                                           descending
                                           select new CommentDto
                                           {
-                                              UserId = comment.Login.User.OriginalUserId,
+                                              UserId = comment.Login.UserId.ToString(),
                                               ObjectId = comment.ObjectId,
                                               Comment = comment.Comment,
                                               CommentedAtUtc = comment.AddedAtUtc,

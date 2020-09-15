@@ -65,7 +65,7 @@ namespace Catalog.ApplicationLogic.LikeCommands
                 });
             }
 
-            var previousLikes = _likesRepository.Table.Where(ol => ol.Login.User.OriginalUserId == user.OriginalUserId && ol.ObjectId == addLikeDto.ObjectId).ToList();
+            var previousLikes = _likesRepository.Table.Where(ol => ol.Login.UserId == user.UserId && ol.ObjectId == addLikeDto.ObjectId).ToList();
             if (!previousLikes.IsNullOrEmpty())
             {
                 return new CommandResult(new ErrorMessage

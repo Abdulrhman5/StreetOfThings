@@ -60,8 +60,7 @@ namespace CatalogService
                         TokenId = "b1590daf-7004-48f0-8af5-bc6ba97d5bed",
                         User = new User
                         {
-                            OriginalUserId = "9b4210dc-49b9-4031-9a7a-dcc769a0cac8",
-                            UserId = Guid.NewGuid(),
+                            UserId = Guid.Parse("9b4210dc-49b9-4031-9a7a-dcc769a0cac8"),
                             Status = UserStatus.Available,
                             UserName = "TestUser@Auth.com"
                         }
@@ -91,8 +90,7 @@ namespace CatalogService
                         TokenId = "25291904-86a0-4b1d-b24b-fab3c332c59d",
                         User = new User
                         {
-                            OriginalUserId = "dd6cafb3-b154-475e-a309-610f3d2d91bf",
-                            UserId = Guid.NewGuid(),
+                            UserId = Guid.Parse("dd6cafb3-b154-475e-a309-610f3d2d91bf"),
                             Status = UserStatus.Available,
                             UserName = "SecondUser@Street.com",
                         }

@@ -12,8 +12,6 @@ namespace Catalog.Models
 
         public string UserName { get; set; }
 
-        public string OriginalUserId { get; set; }
-
         public UserStatus Status { get; set; }
 
         public List<Login> Logins { get; set; }

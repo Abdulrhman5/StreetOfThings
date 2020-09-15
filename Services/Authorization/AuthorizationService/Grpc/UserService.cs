@@ -2,6 +2,7 @@
 using ApplicationLogic.LoginQueries;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using static AuthorizationService.Grpc.UsersGrpc;
@@ -113,7 +114,7 @@ namespace AuthorizationService.Grpc
                 Email = login.Email,
                 Username = login.Username,
                 UserId =login.UserId,
-                LoggedAtUtc = Timestamp.FromDateTime(login.LoggedAtUtc),
+                LoggedAtUtc = Timestamp.FromDateTime(DateTime.SpecifyKind(login.LoggedAtUtc,DateTimeKind.Utc)),
                 TokenId = login.TokenId
             };
         }

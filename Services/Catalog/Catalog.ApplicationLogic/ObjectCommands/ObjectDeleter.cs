@@ -43,7 +43,7 @@ namespace Catalog.ApplicationLogic.ObjectCommands
                               select o.OwnerLogin.User;
 
             var currentUser = _credentialsGetter.GetCuurentUser();
-            if (currentUser is null || currentUser.UserId != objectOwner.FirstOrDefault()?.OriginalUserId)
+            if (currentUser is null || currentUser.UserId != objectOwner.FirstOrDefault()?.UserId.ToString())
             {
                 return new CommandResult(new ErrorMessage
                 {

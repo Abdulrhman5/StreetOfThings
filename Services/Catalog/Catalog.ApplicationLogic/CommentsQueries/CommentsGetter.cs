@@ -26,7 +26,7 @@ namespace Catalog.ApplicationLogic.CommentsQueries
                            orderby comment.AddedAtUtc descending
                            select new CommentDto
                            {
-                               UserId = comment.Login.User.OriginalUserId,
+                               UserId = comment.Login.UserId.ToString(),
                                ObjectId = comment.ObjectId,
                                Comment = comment.Comment,
                                CommentedAtUtc = comment.AddedAtUtc,
@@ -48,7 +48,7 @@ namespace Catalog.ApplicationLogic.CommentsQueries
                            orderby comment.AddedAtUtc descending
                            select new CommentDto
                            {
-                               UserId = comment.Login.User.OriginalUserId,
+                               UserId = comment.Login.UserId.ToString(),
                                ObjectId = comment.ObjectId,
                                Comment = comment.Comment,
                                CommentedAtUtc = comment.AddedAtUtc,
