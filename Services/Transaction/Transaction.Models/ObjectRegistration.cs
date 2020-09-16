@@ -1,6 +1,7 @@
 ﻿using CommonLibrary;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Transaction.Models
@@ -20,7 +21,7 @@ namespace Transaction.Models
         public Guid RecipientLoginId { get; set; }
         public Login RecipientLogin { get; set; }
 
-        public Guid? ObjectReceivingId { get; set; }
+        public Guid? ObjectReceivingId { get; set; }        
         public ObjectReceiving ObjectReceiving { get; set; }
 
         public int ObjectId { get; set; }

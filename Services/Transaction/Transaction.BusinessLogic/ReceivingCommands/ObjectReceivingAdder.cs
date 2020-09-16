@@ -162,7 +162,7 @@ namespace Transaction.BusinessLogic.ReceivingCommands
 
             theToken.Status = TokenStatus.Used;
 
-            var receiving = new ObjectReceiving
+            var receiving = new ObjectReceiving 
             {
                 ReceivedAtUtc = DateTime.UtcNow,
                 GiverLoginId = login.LoginId,

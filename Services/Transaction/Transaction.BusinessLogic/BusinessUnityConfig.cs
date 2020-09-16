@@ -6,6 +6,7 @@ using Transaction.BusinessLogic.Infrastructure;
 using Transaction.BusinessLogic.ReceivingCommands;
 using Transaction.BusinessLogic.RegistrationCommands;
 using Transaction.BusinessLogic.RegistrationQueries;
+using Transaction.BusinessLogic.ReturningCommands;
 using Transaction.DataAccessLayer;
 using Unity;
 
@@ -30,6 +31,8 @@ namespace Transaction.BusinessLogic
             Container.RegisterType<IObjectReceivingAdder, ObjectReceivingAdder>();
 
             Container.RegisterType<ITransactionGetter, TransactionGetter>();
+            Container.RegisterType<ReturnTokenGenerator>();
+            Container.RegisterType<IReturningAdder, ReturningAdder>();
 
             Container.RegisterType(typeof(OwnershipAuthorization<,>));
             new DalUnityConfig().ConfigUnity(Container);
