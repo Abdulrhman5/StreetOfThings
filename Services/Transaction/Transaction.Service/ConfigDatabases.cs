@@ -44,8 +44,7 @@ namespace Transaction.Service
                         ShouldReturn = false,
                         OwnerUser = new User
                         {
-                            OriginalUserId = "cc0eb95f-52a0-4131-b8f6-b79ab5e7728f",
-                            UserId = Guid.NewGuid(),
+                            UserId = Guid.Parse("cc0eb95f-52a0-4131-b8f6-b79ab5e7728f"),
                             Status = UserStatus.Available,
                             UserName = "TestUser@Auth.com",
                             Logins = new List<Login>
@@ -64,10 +63,9 @@ namespace Transaction.Service
                         LoginId = Guid.Parse("4b7cfdfe-2f34-4b76-8064-acc6b4e53371"),
                         User = new User
                         {
-                            UserId = Guid.Parse("5205b056-85ed-444f-8485-c3135b7dc3b8"),
+                            UserId = Guid.Parse("dd6cafb3-b154-475e-a309-610f3d2d91bf"),
                             UserName = "SecondUser@Street.com",
                             Status = UserStatus.Available,
-                            OriginalUserId = "dd6cafb3-b154-475e-a309-610f3d2d91bf"
                         }
                     },
                     RegisteredAtUtc = DateTime.UtcNow,
@@ -83,18 +81,18 @@ namespace Transaction.Service
                             ReturnedAtUtc = DateTime.UtcNow,
                         }
                     }
-                },      
-                
+                },
+
                 new ObjectRegistration
                 {
                     ObjectRegistrationId = Guid.Parse("41bf852e-d77e-4c8c-9ac2-cd461138a67d"),
                     Status = ObjectRegistrationStatus.OK,
-                    ExpiresAtUtc = DateTime.UtcNow.AddDays(365),    
+                    ExpiresAtUtc = DateTime.UtcNow.AddDays(365),
                     Object = new OfferedObject
                     {
                         OriginalObjectId = 2,
                         ShouldReturn = false,
-                        OwnerUserId = Guid.Parse("5205b056-85ed-444f-8485-c3135b7dc3b8")
+                        OwnerUserId = Guid.Parse("dd6cafb3-b154-475e-a309-610f3d2d91bf"),
                     },
                     RecipientLogin = new Login
                     {
@@ -102,10 +100,9 @@ namespace Transaction.Service
                         LoginId = Guid.Parse("6459c68f-0b1b-447d-9cfc-19b13b013494"),
                         User = new User
                         {
-                            UserId = Guid.NewGuid(),
+                            UserId = Guid.Parse("9b4210dc-49b9-4031-9a7a-dcc769a0cac8"),
                             UserName = "ThirdUser@Street.com",
                             Status = UserStatus.Available,
-                            OriginalUserId = "9b4210dc-49b9-4031-9a7a-dcc769a0cac8"
                         }
                     },
                     RegisteredAtUtc = DateTime.UtcNow,

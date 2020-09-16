@@ -174,7 +174,7 @@ namespace Transaction.BusinessLogic.RegistrationCommands
                 Id = Guid.NewGuid(),
                 OccuredAt = registrationModel.RegisteredAtUtc,
                 ObjectId = @object.OriginalObjectId,
-                RecipiantId = user.User.OriginalUserId,
+                RecipiantId = user.User.UserId.ToString(),
                 ShouldReturn = @object.ShouldReturn,
                 RegisteredAt = registrationModel.RegisteredAtUtc,
                 RegistrationId = registrationModel.ObjectRegistrationId

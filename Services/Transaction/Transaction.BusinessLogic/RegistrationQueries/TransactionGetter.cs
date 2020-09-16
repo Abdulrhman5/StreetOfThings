@@ -32,15 +32,15 @@ namespace Transaction.BusinessLogic.RegistrationQueries
             }
 
             var trans = from rg in _registrationsRepo.Table
-                        where rg.RecipientLogin.User.OriginalUserId == userId || rg.Object.OwnerUser.OriginalUserId == userId
+                        where rg.RecipientLogin.UserId == Guid.Parse(userId) || rg.Object.OwnerUserId == Guid.Parse(userId)
                         let isReceived = rg.ObjectReceiving is object
                         let isReturned = rg.ObjectReceiving is object && rg.ObjectReceiving.ObjectReturning is object
                         select new TransactionDto
                         {
                             RegistrationId = rg.ObjectRegistrationId,
                             ObjectId = rg.Object.OriginalObjectId,
-                            OwnerId = rg.Object.OwnerUser.OriginalUserId,
-                            ReceiverId = rg.RecipientLogin.User.OriginalUserId,
+                            OwnerId = rg.Object.OwnerUserId.ToString(),
+                            ReceiverId = rg.RecipientLogin.UserId.ToString(),
                             ReceivingId = rg.ObjectReceivingId,
                             ReturnId = isReturned ? rg.ObjectReceiving.ObjectReturning.ObjectReturningId : (Guid?)null,
                             RegistredAtUtc = rg.RegisteredAtUtc,
@@ -63,8 +63,8 @@ namespace Transaction.BusinessLogic.RegistrationQueries
                         {
                             RegistrationId = rg.ObjectRegistrationId,
                             ObjectId = rg.Object.OriginalObjectId,
-                            OwnerId = rg.Object.OwnerUser.OriginalUserId,
-                            ReceiverId = rg.RecipientLogin.User.OriginalUserId,
+                            OwnerId = rg.Object.OwnerUserId.ToString(),
+                            ReceiverId = rg.RecipientLogin.UserId.ToString(),
                             ReceivingId = rg.ObjectReceivingId,
                             ReturnId = isReturned ? rg.ObjectReceiving.ObjectReturning.ObjectReturningId : (Guid?)null,
                             RegistredAtUtc = rg.RegisteredAtUtc,
@@ -104,7 +104,7 @@ namespace Transaction.BusinessLogic.RegistrationQueries
             var userId = currentUser.UserId;
 
             var trans = from rg in _registrationsRepo.Table
-                        where rg.Object.OwnerUser.OriginalUserId == userId
+                        where rg.Object.OwnerUser.UserId == Guid.Parse(userId)
                         let isReceived = rg.ObjectReceiving is object
                         let isReturned = rg.ObjectReceiving is object && rg.ObjectReceiving.ObjectReturning is object
                         orderby rg.RegisteredAtUtc descending
@@ -112,8 +112,8 @@ namespace Transaction.BusinessLogic.RegistrationQueries
                         {
                             RegistrationId = rg.ObjectRegistrationId,
                             ObjectId = rg.Object.OriginalObjectId,
-                            OwnerId = rg.Object.OwnerUser.OriginalUserId,
-                            ReceiverId = rg.RecipientLogin.User.OriginalUserId,
+                            OwnerId = rg.Object.OwnerUserId.ToString(),
+                            ReceiverId = rg.RecipientLogin.UserId.ToString(),
                             ReceivingId = rg.ObjectReceivingId,
                             ReturnId = isReturned ? rg.ObjectReceiving.ObjectReturning.ObjectReturningId : (Guid?)null,
                             RegistredAtUtc = rg.RegisteredAtUtc,
@@ -143,7 +143,7 @@ namespace Transaction.BusinessLogic.RegistrationQueries
             var userId = currentUser.UserId;
 
             var trans = from rg in _registrationsRepo.Table
-                        where rg.RecipientLogin.User.OriginalUserId == userId
+                        where rg.RecipientLogin.UserId == Guid.Parse(userId)
                         let isReceived = rg.ObjectReceiving is object
                         let isReturned = rg.ObjectReceiving is object && rg.ObjectReceiving.ObjectReturning is object
                         orderby rg.RegisteredAtUtc descending
@@ -151,8 +151,8 @@ namespace Transaction.BusinessLogic.RegistrationQueries
                         {
                             RegistrationId = rg.ObjectRegistrationId,
                             ObjectId = rg.Object.OriginalObjectId,
-                            OwnerId = rg.Object.OwnerUser.OriginalUserId,
-                            ReceiverId = rg.RecipientLogin.User.OriginalUserId,
+                            OwnerId = rg.Object.OwnerUserId.ToString(),
+                            ReceiverId = rg.RecipientLogin.UserId.ToString(),
                             ReceivingId = rg.ObjectReceivingId,
                             ReturnId = isReturned ? rg.ObjectReceiving.ObjectReturning.ObjectReturningId : (Guid?)null,
                             RegistredAtUtc = rg.RegisteredAtUtc,

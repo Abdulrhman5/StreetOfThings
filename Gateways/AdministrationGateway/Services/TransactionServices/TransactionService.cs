@@ -129,8 +129,8 @@ namespace AdministrationGateway.Services.TransactionServices
             {
                 var upTrans = trans.Transactions.FirstOrDefault(tt => tt.RegistrationId == t.RegistrationId);
                 t.Object = objects.Find(o => o.Id == upTrans.ObjectId);
-                t.Owner = users.Find(u => u.Id == upTrans.OwnerId || u.Id == upTrans.ReceiverId);
-                t.Receiver = users.Find(u => u.Id == upTrans.OwnerId || u.Id == upTrans.ReceiverId);
+                t.Owner = users.Find(u => u.Id.EqualsIC(upTrans.OwnerId) || u.Id.EqualsIC(upTrans.ReceiverId));
+                t.Receiver = users.Find(u => u.Id.EqualsIC(upTrans.OwnerId) || u.Id.EqualsIC(upTrans.ReceiverId));
             });
 
             return downstreamTransactions;
@@ -155,9 +155,9 @@ namespace AdministrationGateway.Services.TransactionServices
                     TransactionStatus = tran.TransactionStatus,
                     TranscationType = tran.TranscationType,
                     Object = objects.Find(o => o.Id == tran.ObjectId),
-                    Owner = users.Find(u => u.Id == tran.OwnerId || u.Id == tran.ReceiverId),
-                    Receiver = users.Find(u => u.Id == tran.OwnerId || u.Id == tran.ReceiverId),
-                });
+                    Owner = users.Find(u => u.Id.EqualsIC(tran.OwnerId) || u.Id.EqualsIC(tran.ReceiverId)),
+                    Receiver = users.Find(u => u.Id.EqualsIC(tran.OwnerId) || u.Id.EqualsIC(tran.ReceiverId))
+            });
 
                 downStreamTransactions.RemoveAll(t => t.Owner is null || t.Receiver == null || t.Object is null);
             }

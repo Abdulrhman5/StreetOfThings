@@ -29,7 +29,7 @@ namespace Transaction.BusinessLogic.Infrastructure
             var currentUser = _credentialsGetter.GetCuurentUser();
             if (currentUser is null) return false;
 
-            var entity = _repo.Table.Where(identifiengEntityExpression).Select(toUser).Where(u => u.OriginalUserId == currentUser.UserId);
+            var entity = _repo.Table.Where(identifiengEntityExpression).Select(toUser).Where(u => u.UserId == Guid.Parse(currentUser.UserId));
             if (entity.Any())
             {
                 return true;

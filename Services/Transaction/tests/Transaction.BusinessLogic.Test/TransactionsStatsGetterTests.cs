@@ -47,7 +47,7 @@ namespace Transaction.BusinessLogic.Test
             var statsGetter = new TransactionStatisticsGetter(null, receivingsRepo.Object);
 
             var result = await statsGetter.GetTransactionsCountOverToday();
-            Assert.IsTrue(result.Count == 24 && result[1] == 3 && result[23] == 2);
+            Assert.IsTrue(result.TransactionsOverToday.Count == 24 && result.TransactionsOverToday[1] == 3 && result.TransactionsOverToday[23] == 2);
         }
 
         [TestMethod]
@@ -84,8 +84,8 @@ namespace Transaction.BusinessLogic.Test
 
             var result = await statsGetter.GetTransactionsCountOverMonth();
             Assert.IsTrue(result.Count == 31 && result[0].Count == 2 && result[29].Count == 3);
-        }    
-        
+        }
+
         [TestMethod]
         public async Task GetTransactionStatsOverYear()
         {

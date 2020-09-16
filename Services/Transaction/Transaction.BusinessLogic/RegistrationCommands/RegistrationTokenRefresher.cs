@@ -44,7 +44,7 @@ namespace Transaction.BusinessLogic.RegistrationCommands
                 }.ToCommand<RegistrationTokenResultDto>();
             }
             var registrations = from r in _registrationsRepo.Table
-                                where r.Object.OriginalObjectId == objectId && r.RecipientLogin.User.OriginalUserId == user.UserId &&
+                                where r.Object.OriginalObjectId == objectId && r.RecipientLogin.UserId == Guid.Parse(user.UserId) &&
                                 r.Status == ObjectRegistrationStatus.OK && r.ExpiresAtUtc > DateTime.UtcNow && r.ObjectReceiving == null
                                 select r;
 

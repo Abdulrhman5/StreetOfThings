@@ -33,7 +33,7 @@ namespace Transaction.BusinessLogic.Infrastructure
         public async Task<(Login, User)> AddUserIfNotExisted(string tokenId, string originUserId, string accessToken)
         {
             var usersById = from u in _userRepo.Table
-                            where u.OriginalUserId == originUserId
+                            where u.UserId == Guid.Parse(originUserId)
                             select u;
 
             if (!usersById.Any())
@@ -46,8 +46,7 @@ namespace Transaction.BusinessLogic.Infrastructure
                 }
                 var userToAdd = new User
                 {
-                    OriginalUserId = originUserId,
-                    UserId = Guid.NewGuid(),
+                    UserId = Guid.Parse(originUserId),
                     UserName = userDto.UserName,
                     Logins = new List<Login>
                     {
@@ -94,7 +93,7 @@ namespace Transaction.BusinessLogic.Infrastructure
         public async Task<User> AddUserIfNotExisted(string originUserId)
         {
             var usersById = from u in _userRepo.Table
-                            where u.OriginalUserId == originUserId
+                            where u.UserId == Guid.Parse(originUserId)
                             select u;
 
             if (!usersById.Any())
@@ -107,8 +106,8 @@ namespace Transaction.BusinessLogic.Infrastructure
                 }
                 var userToAdd = new User
                 {
-                    OriginalUserId = originUserId,
-                    UserId = Guid.NewGuid(),
+
+                    UserId = Guid.Parse(originUserId),
                     UserName = userDto.UserName,
                     Logins = new List<Login>
                     {
