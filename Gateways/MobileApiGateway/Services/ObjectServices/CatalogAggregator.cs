@@ -114,7 +114,7 @@ namespace MobileApiGateway.Services.ObjectServices
             downstreamObjects.ForEach(downObject =>
             {
                 var upObject = objects.Find(o => o.Id == downObject.Id);
-                downObject.Owner = users.FirstOrDefault(u => u.Id == upObject.OwnerId);
+                downObject.Owner = users.FirstOrDefault(u => u.Id.EqualsIC(upObject.OwnerId));
             });
             downstreamObjects.RemoveAll(o => o.Owner is null);
             return downstreamObjects;
@@ -126,7 +126,7 @@ namespace MobileApiGateway.Services.ObjectServices
             downstreamObjects.ForEach(downObject =>
             {
                 var upObject = objects.Find(o => o.Id == downObject.Id);
-                downObject.Owner = users.FirstOrDefault(u => u.Id == upObject.OwnerId);
+                downObject.Owner = users.FirstOrDefault(u => u.Id.EqualsIC(upObject.OwnerId));
             });
             downstreamObjects.RemoveAll(o => o.Owner is null);
             return downstreamObjects;

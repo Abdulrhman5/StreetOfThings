@@ -51,7 +51,7 @@ namespace MobileApiGateway.Services.ObjectCommentServices
             downComments.Comments.ForEach(downComment =>
             {
                 var upComment = comments.Comments.FirstOrDefault(c => downComment.CommentId == c.CommentId);
-                downComment.Commenter = users.FirstOrDefault(u => u.Id == upComment.UserId);
+                downComment.Commenter = users.FirstOrDefault(u => u.Id.EqualsIC(upComment.UserId));
             });
             return downComments;
         }

@@ -75,7 +75,7 @@ namespace AdministrationGateway.Services
                     CommentId=comment.CommentId,
                     Comment = comment.Comment,
                     CommentedAtUtc = comment.CommentedAtUtc,
-                    Commenter = users.Find(u => u.Id == comment.UserId),
+                    Commenter = users.Find(u => u.Id.EqualsIC(comment.UserId)),
                      ObjectId = comment.ObjectId
                 });
                 downstreamComments.RemoveAll(o => o.Commenter is null);

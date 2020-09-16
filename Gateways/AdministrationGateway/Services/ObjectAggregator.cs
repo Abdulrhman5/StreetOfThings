@@ -79,7 +79,7 @@ namespace AdministrationGateway.Services
                     Description = @object.Description,
                     Id = @object.Id,
                     Name = @object.Name,
-                    Owner = users?.FirstOrDefault(u => u.Id == @object.OwnerId),
+                    Owner = users?.FirstOrDefault(u => u.Id.EqualsIC(@object.OwnerId)),
                     Photos = @object.Photos,
                     Rating = @object.Rating,
                     Tags = @object.Tags,

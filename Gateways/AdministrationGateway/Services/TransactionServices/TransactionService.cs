@@ -165,8 +165,8 @@ namespace AdministrationGateway.Services.TransactionServices
             return new TransactionForUserDownstreamListDto()
             {
                 Transactions = downStreamTransactions,
-                OtherUsersReservationsCount = downStreamTransactions.Count(t => t.Owner.Id == userId),
-                TheUserReservationsCount = downStreamTransactions.Count(t => t.Receiver.Id == userId)
+                OtherUsersReservationsCount = downStreamTransactions.Count(t => t.Owner.Id.EqualsIC(userId)),
+                TheUserReservationsCount = downStreamTransactions.Count(t => t.Receiver.Id.EqualsIC(userId))
             };
         }
     }
