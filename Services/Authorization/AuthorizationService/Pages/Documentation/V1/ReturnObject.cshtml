@@ -1,0 +1,281 @@
+﻿@page
+@model AuthorizationService.Pages.Documentation.V1.ReturnObjectModel
+@{
+    ViewData["Title"] = "Add Returning (Loaner return object to owner)";
+}
+
+<h1>Add Returning (Loaner return object to owner)</h1>
+
+<div class="container">
+    <h1>
+        Can be accessed at POST <b>http://localhost:25000/api/transaction/return/return</b>
+    </h1>
+    <hr />
+    <div class="container">
+        <div class="container">
+            <h3>
+                Url Parameters
+            </h3>
+            <table class="table">
+                <tr>
+                    <th>
+                        Key
+                    </th>
+                    <th>
+                        Type
+                    </th>
+                    <th>
+                        Value
+                    </th>
+                </tr>
+            </table>
+            NONE.
+        </div>
+        <br />
+        <div class="container">
+            <h3>
+                Header Parameters
+            </h3>
+            <table class="table">
+                <tr>
+
+                    <th>
+                        Key
+                    </th>
+                    <th>
+                        Value
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        Authoriztion
+                    </td>
+                    <td>
+                        Bearer "Token of an owner"
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <br />
+
+        <div class="container">
+            <h3>
+                Body as JSON Object
+            </h3>
+            <pre>
+{
+    "ReturningToken":"14bEPgTS-RBUrwpWEjhOfpKiaDonnUfU4AEaNfE5CyJo5q0gRKCopsOUGoz7CmwCQ2ZFge-yuouQN_M7yEgbNNFttGJun_vmMogd"
+}
+</pre>
+            <br />
+            <br />
+        </div>
+
+        <div class="container">
+            <h2>
+                The Response Scenarios
+                <br />
+            </h2>
+            <br />
+            <div class="container">
+                <h3>
+                    Scenario 1: All good.
+                </h3>
+                <br />
+                <br />
+                <div class="container">
+                    <h3>
+                        Headers parameters
+                    </h3>
+                    The most important headers are:
+                    <table class="table">
+                        <tr>
+
+                            <th>
+                                Key
+                            </th>
+                            <th>
+                                Value
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                StatusCode
+                            </td>
+                            <td>
+                                200
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <br />
+                <div class="container">
+                    <h3>
+                        Body
+                    </h3>
+
+
+                    <pre>
+{
+    "registrationId": "bd4b32b4-93b5-41ea-b514-802b0a6251a2",
+    "receivingId": "6cbcb4b8-046a-422b-af76-693856f61f5a",
+    "returningId": "41f66f90-444e-46b3-bfc7-9fc54b1bc601",
+    "registeredAtUtc": "2020-09-17T12:33:47.6309076",
+    "receivedAtUtc": "2020-09-17T12:36:26.7306758",
+    "shouldBeReturnedAtUtc": "2020-09-17T12:36:27.7306758",
+    "returnedAtUtc": "2020-09-17T13:15:47.9225602Z",
+    "returnedAfter": "00:39:21.7806384",
+    "late": "00:39:20.7809510",
+    "shouldPay": 0.0
+}					 </pre>
+                    <br />
+                </div>
+            </div>
+            <div>
+                <hr />
+                <h3>
+                    Scenario 2: The token is faulty.
+                </h3>
+                <br />
+                <div class="container">
+                    <h3>
+                        Headers parameters
+                    </h3>
+                    The most important headers are:
+                    <table class="table">
+                        <tr>
+
+                            <th>
+                                Key
+                            </th>
+                            <th>
+                                Value
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                StatusCode
+                            </td>
+                            <td>
+                                401
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <br />
+                <div class="container">
+                    <h3>
+                        Body
+                    </h3>
+                    <pre>
+{
+    "errorCode": "TRANSACTION.RETURNING.ADD.UNAUTHOROIZED",
+    "message": "You are not authorized to make this request",
+    "statusCode": 401
+}</pre>
+
+                    <br />
+                </div>
+            </div>
+
+            <div>
+                <hr />
+                <h3>
+                    Scenario 3: The return token been already used, Or it is too old.
+                </h3>
+                <br />
+                <div class="container">
+                    <h3>
+                        Headers parameters
+                    </h3>
+                    The most important headers are:
+                    <table class="table">
+                        <tr>
+
+                            <th>
+                                Key
+                            </th>
+                            <th>
+                                Value
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                StatusCode
+                            </td>
+                            <td>
+                                400
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <br />
+                <div class="container">
+                    <h3>
+                        Body
+                    </h3>
+                    <pre>
+{
+    "errorCode": "TRANSACTION.RETURNING.ADD.TOKEN.USED",
+    "message": "The QR code provided is already used",
+    "statusCode": 400
+}</pre>
+
+                    <br />
+                </div>
+            </div>
+            <div>
+                <hr />
+                <h3>
+                    Scenario 4: The object is not received.
+                </h3>
+                <br />
+                <div class="container">
+                    <h3>
+                        Headers parameters
+                    </h3>
+                    The most important headers are:
+                    <table class="table">
+                        <tr>
+
+                            <th>
+                                Key
+                            </th>
+                            <th>
+                                Value
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                StatusCode
+                            </td>
+                            <td>
+                                400
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <br />
+                <div class="container">
+                    <h3>
+                        Body
+                    </h3>
+                    <pre>
+{
+    "errorCode" : "TRANSACTION.RETURNING.ADD.NOT.EXISTS",
+    "message" : "The QR provided is faulty",
+    "statusCode" : 400
+}</pre>
+
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

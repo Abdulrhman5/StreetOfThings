@@ -111,8 +111,8 @@ namespace Transaction.BusinessLogic.ReturningCommands
             {
                 return new ErrorMessage
                 {
-                    ErrorCode = "TRANSACTION.RETURNING.ADD.TOKEN.INVALID",
-                    Message = "The QR code provided is too old",
+                    ErrorCode = "TRANSACTION.RETURNING.ADD.TOKEN.USED",
+                    Message = "The QR code provided is already used",
                     StatusCode = System.Net.HttpStatusCode.BadRequest
                 }.ToCommand<ObjectReturningResultDto>();
             }
