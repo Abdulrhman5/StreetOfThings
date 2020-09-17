@@ -49,7 +49,7 @@ namespace Transaction.BusinessLogic.Infrastructure
                     HourlyCharge = null,
                     OriginalObjectId = deserialized.Id,
                     OwnerUserId = user.UserId,
-                    ShouldReturn = deserialized.Type == TransactionType.Free
+                    ShouldReturn = deserialized.Type != TransactionType.Free
                 };
             }
             else

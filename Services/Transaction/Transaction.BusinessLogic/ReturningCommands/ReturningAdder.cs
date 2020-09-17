@@ -157,8 +157,23 @@ namespace Transaction.BusinessLogic.ReturningCommands
             await _returningRepo.SaveChangesAsync();
 
             var returnedAfter = DateTime.UtcNow - theReceiving.ReceivedAtUtc;
-            var late = theReceiving.ReceivedAtUtc.Add(theReceiving.ObjectRegistration.ShouldReturnItAfter ?? new TimeSpan()) - DateTime.UtcNow;
+
+            TimeSpan late = new TimeSpan();
+            if (theReceiving.ObjectRegistration.ShouldReturnItAfter.HasValue)
+            {
+                late = DateTime.UtcNow - theReceiving.ReceivedAtUtc.Add(theReceiving.ObjectRegistration.ShouldReturnItAfter.Value);
+
+                // if the value is nigative (not late)
+                if(late.TotalSeconds < 0)
+                {
+                    late = new TimeSpan(0);
+                }
+            }
             var charge = theReceiving.HourlyCharge is null ? null : (float?)(theReceiving.HourlyCharge * returnedAfter.TotalHours);
+            DateTime? shouldBeReturnedAtUtc = null;
+            if(theReceiving.ObjectRegistration.ShouldReturnItAfter.HasValue)
+                shouldBeReturnedAtUtc = theReceiving.ReceivedAtUtc.Add(theReceiving.ObjectRegistration.ShouldReturnItAfter.Value);
+            
             return new CommandResult<ObjectReturningResultDto>(new ObjectReturningResultDto
             {
                 RegistrationId = theReceiving.ObjectRegistrationId,
@@ -167,6 +182,10 @@ namespace Transaction.BusinessLogic.ReturningCommands
                 Late = late,
                 ReturnedAfter = returnedAfter,
                 ShouldPay = charge,
+                RegisteredAtUtc = theReceiving.ObjectRegistration.RegisteredAtUtc,
+                ReceivedAtUtc = theReceiving.ReceivedAtUtc,
+                ReturnedAtUtc = returning.ReturnedAtUtc,
+                ShouldBeReturnedAtUtc = shouldBeReturnedAtUtc
             });
         }
     }

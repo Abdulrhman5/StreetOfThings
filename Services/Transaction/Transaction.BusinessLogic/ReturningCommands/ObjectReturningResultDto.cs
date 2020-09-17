@@ -12,6 +12,14 @@ namespace Transaction.BusinessLogic.ReturningCommands
 
         public Guid ReturningId { get; set; }
 
+        public DateTime RegisteredAtUtc { get; set; }
+
+        public DateTime ReceivedAtUtc { get; set; }
+
+        public DateTime? ShouldBeReturnedAtUtc { get; set; }
+
+        public DateTime ReturnedAtUtc { get; set; }
+
         public TimeSpan ReturnedAfter { get; set; }
 
         public TimeSpan Late { get; set; }

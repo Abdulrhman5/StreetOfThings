@@ -60,6 +60,7 @@ namespace Transaction.BusinessLogic.ReturningCommands
                                 select r)
                                 .Include(r => r.ObjectReceiving)
                                 .ThenInclude(r => r.ObjectReturning)
+                                .Include(r => r.Object)
                                 .FirstOrDefault();
 
             if (registration is null || registration.Status == ObjectRegistrationStatus.Canceled)
@@ -71,6 +72,16 @@ namespace Transaction.BusinessLogic.ReturningCommands
                     StatusCode = System.Net.HttpStatusCode.BadRequest
                 }.ToCommand<GenerateReturnTokenResultDto>();
             }
+
+            //if (!registration.Object.ShouldReturn)
+            //{
+            //    return new ErrorMessage
+            //    {
+            //        ErrorCode = "TRANSACTION.TOKEN.GENERATE.RETURN.FREE.OBJECT",
+            //        Message = "The Object now is yours, you don't have to return it",
+            //        StatusCode = System.Net.HttpStatusCode.BadRequest
+            //    }.ToCommand<GenerateReturnTokenResultDto>();
+            //}
 
             if (!_authorizer.IsAuthorized(or => or.ObjectRegistrationId == guidRegistrationId, or => or.RecipientLogin.User))
             {
