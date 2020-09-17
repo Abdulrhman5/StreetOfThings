@@ -118,7 +118,7 @@ namespace Transaction.BusinessLogic.ReturningCommands
             {
                 CreatedAtUtc = token.IssuedAtUtc,
                 UseBeforeUtc = token.UseBeforeUtc,
-                RegistrationToken = token.Token
+                ReturnToken = token.Token
             });
         }
     }

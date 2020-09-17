@@ -11,7 +11,7 @@ namespace Transaction.BusinessLogic.ReturningCommands
 
     public class GenerateReturnTokenResultDto
     {
-        public string RegistrationToken { get; set; }
+        public string ReturnToken { get; set; }
 
         public DateTime CreatedAtUtc { get; set; }
 
