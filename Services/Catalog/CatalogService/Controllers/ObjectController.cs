@@ -27,6 +27,8 @@ namespace CatalogService.Controllers
         private IObjectDeleter _objectDeleter;
 
         private IObjectDetailsGetter _objectDetailsGetter;
+
+        private IObjectsOrderedGetter _objectsOrderedGetter;
         public ObjectController(IObjectAdder objectAdder,
             PhotoAdder photoAdder,
             IObjectGetter objectGetter,
@@ -110,6 +112,29 @@ namespace CatalogService.Controllers
         {
             var result = await _objectDetailsGetter.GetObjectDetails(objectId);
             return StatusCode(result);
+        }
+
+        [Route("ordered/{orderType:string}")]
+        public async Task<IActionResult> GetObjectsOrdered(string orderType, PagingArguments pagingArguments)
+        {
+            OrderByType type;
+            if(orderType == null)
+            {
+                type = OrderByType.Default;
+            }
+
+            if(!Enum.TryParse<OrderByType>(orderType,true,out type))
+            {
+                return BadRequest(new ErrorMessage
+                {
+                    ErrorCode = "CATALOG.OBJECT.LIST.ORDER.NOT.DEFINED",
+                    Message = "The order type is not recognized",
+                    StatusCode = System.Net.HttpStatusCode.BadRequest
+                });
+            }
+
+            var result = await _objectsOrderedGetter.GetObjects(type, pagingArguments);
+            return Ok(result);
         }
     }
 }
