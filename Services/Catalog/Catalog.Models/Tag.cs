@@ -14,9 +14,16 @@ namespace Catalog.Models
 
         public string Description { get; set; }
 
+        public TagStatus TagStatus { get; set; }
         public List<ObjectTag> Objects { get; set; }
 
         public TagPhoto Photo { get; set; }
         public int Id => TagId;
+    }
+
+    public enum TagStatus
+    {
+        Ok,
+        Deleted
     }
 }
