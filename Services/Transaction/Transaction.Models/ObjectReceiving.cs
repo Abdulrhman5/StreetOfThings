@@ -18,8 +18,6 @@ namespace Transaction.Models
         public Guid GiverLoginId { get; set; }
         public Login GiverLogin { get; set; }
 
-        public Guid? ObjectReturningId { get; set; }
-
         public ObjectReturning ObjectReturning { get; set; }
 
         public DateTime ReceivedAtUtc { get; set; }

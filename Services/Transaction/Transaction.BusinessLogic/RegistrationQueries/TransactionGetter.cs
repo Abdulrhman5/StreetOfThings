@@ -33,15 +33,15 @@ namespace Transaction.BusinessLogic.RegistrationQueries
 
             var trans = from rg in _registrationsRepo.Table
                         where rg.RecipientLogin.UserId == Guid.Parse(userId) || rg.Object.OwnerUserId == Guid.Parse(userId)
-                        let isReceived = rg.ObjectReceiving is object
-                        let isReturned = rg.ObjectReceiving is object && rg.ObjectReceiving.ObjectReturning is object
+                        let isReceived = rg.ObjectReceiving != null
+                        let isReturned = rg.ObjectReceiving != null && rg.ObjectReceiving.ObjectReturning != null
                         select new TransactionDto
                         {
                             RegistrationId = rg.ObjectRegistrationId,
                             ObjectId = rg.Object.OriginalObjectId,
                             OwnerId = rg.Object.OwnerUserId.ToString(),
                             ReceiverId = rg.RecipientLogin.UserId.ToString(),
-                            ReceivingId = rg.ObjectReceivingId,
+                            ReceivingId = rg.ObjectReceiving.ObjectReceivingId,
                             ReturnId = isReturned ? rg.ObjectReceiving.ObjectReturning.ObjectReturningId : (Guid?)null,
                             RegistredAtUtc = rg.RegisteredAtUtc,
                             ReceivedAtUtc = isReceived ? rg.ObjectReceiving.ReceivedAtUtc : (DateTime?)null,
@@ -49,7 +49,10 @@ namespace Transaction.BusinessLogic.RegistrationQueries
                             TranscationType = !rg.Object.ShouldReturn ? TransactionType.Free : rg.Object.HourlyCharge.HasValue ? TransactionType.Renting : TransactionType.Lending,
                             HourlyCharge = rg.Object.HourlyCharge,
                             ShouldReturnAfter = rg.ShouldReturnItAfter,
-                            TransactionStatus = rg.Status == ObjectRegistrationStatus.Canceled ? TransactionStatus.Canceled : isReturned ? TransactionStatus.Returned : isReceived ? TransactionStatus.Received : TransactionStatus.RegisteredOnly
+                            TransactionStatus = rg.Status == ObjectRegistrationStatus.Canceled ? 
+                            TransactionStatus.Canceled : isReturned ? 
+                            TransactionStatus.Returned : isReceived ? 
+                            TransactionStatus.Received : TransactionStatus.RegisteredOnly
                         };
             return await trans.ToListAsync();
         }
@@ -57,15 +60,15 @@ namespace Transaction.BusinessLogic.RegistrationQueries
         public async Task<AllTransactionsListDto> GetAllTransactions()
         {
             var trans = from rg in _registrationsRepo.Table
-                        let isReceived = rg.ObjectReceiving is object
-                        let isReturned = rg.ObjectReceiving is object && rg.ObjectReceiving.ObjectReturning is object
+                        let isReceived = rg.ObjectReceiving != null
+                        let isReturned = rg.ObjectReceiving != null && rg.ObjectReceiving.ObjectReturning != null
                         select new TransactionDto
                         {
                             RegistrationId = rg.ObjectRegistrationId,
                             ObjectId = rg.Object.OriginalObjectId,
                             OwnerId = rg.Object.OwnerUserId.ToString(),
                             ReceiverId = rg.RecipientLogin.UserId.ToString(),
-                            ReceivingId = rg.ObjectReceivingId,
+                            ReceivingId = rg.ObjectReceiving.ObjectReceivingId,
                             ReturnId = isReturned ? rg.ObjectReceiving.ObjectReturning.ObjectReturningId : (Guid?)null,
                             RegistredAtUtc = rg.RegisteredAtUtc,
                             ReceivedAtUtc = isReceived ? rg.ObjectReceiving.ReceivedAtUtc : (DateTime?)null,
@@ -73,7 +76,10 @@ namespace Transaction.BusinessLogic.RegistrationQueries
                             TranscationType = !rg.Object.ShouldReturn ? TransactionType.Free : rg.Object.HourlyCharge.HasValue ? TransactionType.Renting : TransactionType.Lending,
                             HourlyCharge = rg.Object.HourlyCharge,
                             ShouldReturnAfter = rg.ShouldReturnItAfter,
-                            TransactionStatus = rg.Status == ObjectRegistrationStatus.Canceled ? TransactionStatus.Canceled : isReturned ? TransactionStatus.Returned : isReceived ? TransactionStatus.Received : TransactionStatus.RegisteredOnly,
+                            TransactionStatus = rg.Status == ObjectRegistrationStatus.Canceled ?
+                            TransactionStatus.Canceled : isReturned ?
+                            TransactionStatus.Returned : isReceived ?
+                            TransactionStatus.Received : TransactionStatus.RegisteredOnly,
                             ReturnStatus = GetReturnStatus(rg)
                         };
 
@@ -105,8 +111,8 @@ namespace Transaction.BusinessLogic.RegistrationQueries
 
             var trans = from rg in _registrationsRepo.Table
                         where rg.Object.OwnerUser.UserId == Guid.Parse(userId)
-                        let isReceived = rg.ObjectReceiving is object
-                        let isReturned = rg.ObjectReceiving is object && rg.ObjectReceiving.ObjectReturning is object
+                        let isReceived = rg.ObjectReceiving != null
+                        let isReturned = rg.ObjectReceiving != null && rg.ObjectReceiving.ObjectReturning != null
                         orderby rg.RegisteredAtUtc descending
                         select new TransactionDto
                         {
@@ -114,7 +120,7 @@ namespace Transaction.BusinessLogic.RegistrationQueries
                             ObjectId = rg.Object.OriginalObjectId,
                             OwnerId = rg.Object.OwnerUserId.ToString(),
                             ReceiverId = rg.RecipientLogin.UserId.ToString(),
-                            ReceivingId = rg.ObjectReceivingId,
+                            ReceivingId = rg.ObjectReceiving.ObjectReceivingId,
                             ReturnId = isReturned ? rg.ObjectReceiving.ObjectReturning.ObjectReturningId : (Guid?)null,
                             RegistredAtUtc = rg.RegisteredAtUtc,
                             ReceivedAtUtc = isReceived ? rg.ObjectReceiving.ReceivedAtUtc : (DateTime?)null,
@@ -122,7 +128,10 @@ namespace Transaction.BusinessLogic.RegistrationQueries
                             TranscationType = !rg.Object.ShouldReturn ? TransactionType.Free : rg.Object.HourlyCharge.HasValue ? TransactionType.Renting : TransactionType.Lending,
                             HourlyCharge = rg.Object.HourlyCharge,
                             ShouldReturnAfter = rg.ShouldReturnItAfter,
-                            TransactionStatus = rg.Status == ObjectRegistrationStatus.Canceled ? TransactionStatus.Canceled : isReturned ? TransactionStatus.Returned : isReceived ? TransactionStatus.Received : TransactionStatus.RegisteredOnly
+                            TransactionStatus = rg.Status == ObjectRegistrationStatus.Canceled ?
+                            TransactionStatus.Canceled : isReturned ?
+                            TransactionStatus.Returned : isReceived ? 
+                            TransactionStatus.Received : TransactionStatus.RegisteredOnly
                         };
             return await trans.SkipTakeAsync(pagingArguments);
         }
@@ -144,8 +153,8 @@ namespace Transaction.BusinessLogic.RegistrationQueries
 
             var trans = from rg in _registrationsRepo.Table
                         where rg.RecipientLogin.UserId == Guid.Parse(userId)
-                        let isReceived = rg.ObjectReceiving is object
-                        let isReturned = rg.ObjectReceiving is object && rg.ObjectReceiving.ObjectReturning is object
+                        let isReceived = rg.ObjectReceiving != null
+                        let isReturned = rg.ObjectReceiving != null && rg.ObjectReceiving.ObjectReturning != null
                         orderby rg.RegisteredAtUtc descending
                         select new TransactionDto
                         {
@@ -153,7 +162,7 @@ namespace Transaction.BusinessLogic.RegistrationQueries
                             ObjectId = rg.Object.OriginalObjectId,
                             OwnerId = rg.Object.OwnerUserId.ToString(),
                             ReceiverId = rg.RecipientLogin.UserId.ToString(),
-                            ReceivingId = rg.ObjectReceivingId,
+                            ReceivingId = rg.ObjectReceiving.ObjectReceivingId,
                             ReturnId = isReturned ? rg.ObjectReceiving.ObjectReturning.ObjectReturningId : (Guid?)null,
                             RegistredAtUtc = rg.RegisteredAtUtc,
                             ReceivedAtUtc = isReceived ? rg.ObjectReceiving.ReceivedAtUtc : (DateTime?)null,
@@ -161,8 +170,13 @@ namespace Transaction.BusinessLogic.RegistrationQueries
                             TranscationType = !rg.Object.ShouldReturn ? TransactionType.Free : rg.Object.HourlyCharge.HasValue ? TransactionType.Renting : TransactionType.Lending,
                             HourlyCharge = rg.Object.HourlyCharge,
                             ShouldReturnAfter = rg.ShouldReturnItAfter,
-                            TransactionStatus = rg.Status == ObjectRegistrationStatus.Canceled ? TransactionStatus.Canceled : isReturned ? TransactionStatus.Returned : isReceived ? TransactionStatus.Received : TransactionStatus.RegisteredOnly
+                            TransactionStatus = rg.Status == ObjectRegistrationStatus.Canceled ? TransactionStatus.Canceled:
+                                isReturned ? TransactionStatus.Returned :
+                                isReceived ? TransactionStatus.Received :
+                                TransactionStatus.RegisteredOnly,
                         };
+
+
             return await trans.SkipTakeAsync(pagingArguments);
         }
 

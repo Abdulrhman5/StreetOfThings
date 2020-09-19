@@ -21,7 +21,6 @@ namespace Transaction.Models
         public Guid RecipientLoginId { get; set; }
         public Login RecipientLogin { get; set; }
 
-        public Guid? ObjectReceivingId { get; set; }        
         public ObjectReceiving ObjectReceiving { get; set; }
 
         public int ObjectId { get; set; }

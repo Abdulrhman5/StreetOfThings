@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -16,6 +18,7 @@ namespace Transaction.BusinessLogic.RegistrationQueries
 
         public Guid? ReturnId { get; set; }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public TransactionType TranscationType { get; set; }
 
         public DateTime RegistredAtUtc { get; set; }
@@ -28,8 +31,10 @@ namespace Transaction.BusinessLogic.RegistrationQueries
 
         public float? HourlyCharge { get; set; }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public TransactionStatus TransactionStatus { get; set; }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public ReturnStatus ReturnStatus { get; set; }
         public string ReceiverId { get; set; }
 

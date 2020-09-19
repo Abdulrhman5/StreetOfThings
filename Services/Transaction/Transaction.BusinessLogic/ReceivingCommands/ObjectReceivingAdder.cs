@@ -170,7 +170,6 @@ namespace Transaction.BusinessLogic.ReceivingCommands
                 HourlyCharge = 0f,
                 ObjectRegistrationId = theRegistration.ObjectRegistrationId,
                 ObjectReceivingId = Guid.NewGuid(),
-                ObjectReturningId = null,
             };
 
             _receivingsRepo.Add(receiving);

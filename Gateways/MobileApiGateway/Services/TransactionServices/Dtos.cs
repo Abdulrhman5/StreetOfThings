@@ -14,6 +14,7 @@ namespace MobileApiGateway.Services.TransactionServices
 
         public Guid? ReturnId { get; set; }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public TransactionType TranscationType { get; set; }
 
         public DateTime RegistredAtUtc { get; set; }
@@ -26,6 +27,7 @@ namespace MobileApiGateway.Services.TransactionServices
 
         public float? HourlyCharge { get; set; }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public TransactionStatus TransactionStatus { get; set; }
 
         public UserDto Owner { get; set; }
@@ -53,6 +55,7 @@ namespace MobileApiGateway.Services.TransactionServices
 
         public Guid? ReturnId { get; set; }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public TransactionType TranscationType { get; set; }
 
         public DateTime RegistredAtUtc { get; set; }
@@ -65,6 +68,7 @@ namespace MobileApiGateway.Services.TransactionServices
 
         public float? HourlyCharge { get; set; }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public TransactionStatus TransactionStatus { get; set; }
 
         public string ReceiverId { get; set; }
