@@ -2,6 +2,7 @@
 using Catalog.DataAccessLayer;
 using Catalog.Models;
 using CommonLibrary;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using NetTopologySuite.Geometries;
 using System;
@@ -24,31 +25,43 @@ namespace Catalog.ApplicationLogic.ObjectQueries
 
         private int IncludeObjectLessThan;
 
+        private IUserDataManager _userDataManager;
+
         public ObjectsOrderedGetter(IObjectQueryHelper queryHelper,
             CurrentUserCredentialsGetter credentialsGetter,
             IRepository<int, OfferedObject> objectRepo,
             IPhotoUrlConstructor photoUrlConstructor,
-            IConfiguration configs)
+            IConfiguration configs, IUserDataManager userDataManager)
         {
             _queryHelper = queryHelper;
             _credentialsGetter = credentialsGetter;
             _objectRepo = objectRepo;
             _photoUrlConstructor = photoUrlConstructor;
             IncludeObjectLessThan = int.Parse(configs["Settings:IncludeObjectLessThan"]);
+            _userDataManager = userDataManager;
         }
 
         public async Task<List<ObjectDtoV1_1>> GetObjects(OrderByType orderBy, PagingArguments pagingArgs)
         {
-            var userLocation = null as Point;
+            var (login, user) = await _userDataManager.AddCurrentUserIfNeeded();
+            var userId = user.UserId;
+            var userLocation = login.LoginLocation;
 
-            var userId = _credentialsGetter.GetCuurentUser()?.UserId;
-
-            var selectExp = _queryHelper.ObjectDtoSelectExpV1_1(_photoUrlConstructor, userId, userLocation);
+            var selectExp = _queryHelper.ObjectDtoSelectExpV1_1(_photoUrlConstructor, userId.ToString(), userLocation);
 
             var filteredObjects = _objectRepo.Table.Where(_queryHelper.IsValidObject)
                 .Where(_queryHelper.ValidForFreeAndLendibg)
                 .Where(_queryHelper.DistanceFilter(userLocation, IncludeObjectLessThan));
-
+            var DbF = Microsoft.EntityFrameworkCore.EF.Functions;
+            var x = (from o in _objectRepo.Table 
+                     select new
+                     {
+                         dd = o.Views.Count / (double) (DbF.DateDiffSecond(o.PublishedAt,DateTime.UtcNow) + 1),
+                         c = o.Views.Count,
+                         diff = (DbF.DateDiffSecond(o.PublishedAt, DateTime.UtcNow) + 1),
+                         id = o.OfferedObjectId
+                     })
+                .ToList();
             var orderResult = _queryHelper.OrderObject(filteredObjects, userLocation, orderBy);
             var objectList = await orderResult
                 .Select(selectExp)

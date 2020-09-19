@@ -32,14 +32,15 @@ namespace CatalogService.Controllers
         public ObjectController(IObjectAdder objectAdder,
             PhotoAdder photoAdder,
             IObjectGetter objectGetter,
-            IObjectDeleter objectDeleter, 
-            IObjectDetailsGetter objectDetaissGetter)
+            IObjectDeleter objectDeleter,
+            IObjectDetailsGetter objectDetaissGetter, IObjectsOrderedGetter objectsOrderedGetter)
         {
             _objectAdder = objectAdder;
             _photoAdder = photoAdder;
             _objectGetter = objectGetter;
             _objectDeleter = objectDeleter;
             _objectDetailsGetter = objectDetaissGetter;
+            _objectsOrderedGetter = objectsOrderedGetter;
         }
 
         [Route("create")]
@@ -114,7 +115,7 @@ namespace CatalogService.Controllers
             return StatusCode(result);
         }
 
-        [Route("ordered/{orderType:string}")]
+        [Route("ordered")]
         public async Task<IActionResult> GetObjectsOrdered(string orderType, PagingArguments pagingArguments)
         {
             OrderByType type;

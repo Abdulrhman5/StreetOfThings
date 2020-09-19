@@ -92,8 +92,37 @@ namespace MobileApiGateway.Services.ObjectServices
                 var originalUserIds = objectResult.Result.Select(o => o.OwnerId).ToList();
                 var users = await _userService.GetUsersAsync(originalUserIds);
                 var callerUserId = _credentialsGetter.GetCuurentUser().UserId;
-                var distances = await _userService.CalculateUsersDistances(callerUserId, users.Select(u => u.Id).ToList());
-                return new CommandResult<List<DownstreamObjectDtoV1_1>>(ReplaceUserIdWithUserV1_1(objectResult.Result, users, distances));
+                return new CommandResult<List<DownstreamObjectDtoV1_1>>(ReplaceUserIdWithUserV1_1(objectResult.Result, users));
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Error When getting list of objects");
+                var message = new ErrorMessage
+                {
+                    ErrorCode = "CATALOG.OBJECT.LIST.ERROR",
+                    Message = "there were an error while trying to execute your request",
+                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
+                };
+                return new CommandResult<List<DownstreamObjectDtoV1_1>>(message);
+            }
+        }
+        
+        public async Task<CommandResult<List<DownstreamObjectDtoV1_1>>> AggregateOrderingObjects()
+        {
+            var request = await _responseProcessor.CreateAsync(HttpMethod.Get, $"{_configs["Servers:Catalog"]}/api/object/ordered", true, true, null);
+            try
+            {
+                var response = await _httpClient.SendAsync(request);
+                var objectResult = await _responseProcessor.Process<List<UpstreamObjectDtoV1_1>>(response);
+                if (!objectResult.IsSuccessful)
+                {
+                    return new CommandResult<List<DownstreamObjectDtoV1_1>>(objectResult.Error);
+                }
+
+                var originalUserIds = objectResult.Result.Select(o => o.OwnerId).ToList();
+                var users = await _userService.GetUsersAsync(originalUserIds);
+                var callerUserId = _credentialsGetter.GetCuurentUser().UserId;
+                return new CommandResult<List<DownstreamObjectDtoV1_1>>(ReplaceUserIdWithUserV1_1(objectResult.Result, users));
             }
             catch (Exception e)
             {
@@ -120,7 +149,7 @@ namespace MobileApiGateway.Services.ObjectServices
             return downstreamObjects;
         }
 
-        private List<DownstreamObjectDtoV1_1> ReplaceUserIdWithUserV1_1(List<UpstreamObjectDtoV1_1> objects, List<UserDto> users, List<(double? distance, string userId)> distances)
+        private List<DownstreamObjectDtoV1_1> ReplaceUserIdWithUserV1_1(List<UpstreamObjectDtoV1_1> objects, List<UserDto> users)
         {
             var downstreamObjects = _mapper.Map<List<DownstreamObjectDtoV1_1>>(objects);
             downstreamObjects.ForEach(downObject =>

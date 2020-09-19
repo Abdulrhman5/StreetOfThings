@@ -43,6 +43,13 @@ namespace MobileApiGateway.Controllers
         public async Task<IActionResult> GetObjectDetails()
         {
             return StatusCode(await _catalogAggregator.GetAndAggregateObjectDetails());
+        }  
+        
+        [Route("object/ordered")]
+        [HttpGet]
+        public async Task<IActionResult> OrderObjects()
+        {
+            return StatusCode(await _catalogAggregator.AggregateOrderingObjects());
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Catalog.ApplicationLogic.Infrastructure;
 using Catalog.Models;
+using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
 using System;
 using System.Collections.Generic;
@@ -43,7 +44,7 @@ namespace Catalog.ApplicationLogic.ObjectQueries
         {
             Id = o.OfferedObjectId,
             CountOfImpressions = o.Impressions.Count,
-            CountOfViews = 0,
+            CountOfViews = o.Views.Count,
             Description = o.Description,
             Name = o.Name,
             Rating = null,
@@ -65,15 +66,18 @@ namespace Catalog.ApplicationLogic.ObjectQueries
             }
             else if (orderType == OrderByType.MostBorrowed)
             {
-                return objects.OrderByDescending(o => o.Transactions.Count / (DateTime.UtcNow - o.PublishedAt).TotalSeconds + 1);
+                var DbF = Microsoft.EntityFrameworkCore.EF.Functions;
+                return objects.OrderByDescending(o => o.Transactions.Count /(double) (DbF.DateDiffSecond(o.PublishedAt, DateTime.UtcNow) + 1) );
             }
             else if (orderType == OrderByType.MostLiked)
             {
-                return objects.OrderByDescending(o => o.Likes.Count / (DateTime.UtcNow - o.PublishedAt).TotalSeconds + 1);
+                var DbF = Microsoft.EntityFrameworkCore.EF.Functions;
+                return objects.OrderByDescending(o => o.Likes.Count / (double) (DbF.DateDiffSecond(o.PublishedAt, DateTime.UtcNow) + 1));
             }
             else if (orderType == OrderByType.Trending)
             {
-                return objects.OrderByDescending(o => o.Views.Count / (DateTime.UtcNow - o.PublishedAt).TotalSeconds + 1);
+                var DbF = Microsoft.EntityFrameworkCore.EF.Functions;
+                return objects.OrderBy(o => o.Views.Count / (double) (DbF.DateDiffSecond(o.PublishedAt, DateTime.UtcNow) + 1));
             }
             else if (orderType == OrderByType.Nearest)
             {

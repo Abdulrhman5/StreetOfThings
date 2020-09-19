@@ -32,7 +32,8 @@ namespace Catalog.ApplicationLogic
             Container.RegisterType<UserDataGetter>();
             Container.RegisterType<IObjectAdder, ObjectAdder>();
             Container.RegisterType<IObjectDeleter, ObjectDeleter>();
-
+            Container.RegisterType<IObjectQueryHelper, ObjectQueryHelper>();
+            Container.RegisterType<IObjectsOrderedGetter, ObjectsOrderedGetter>();
             Container.RegisterType<IImageSaver, ImageSaver>();
 
             Container.RegisterType<IObjectGetter, ObjectGetter>();

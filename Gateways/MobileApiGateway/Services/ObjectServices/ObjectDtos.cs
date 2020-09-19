@@ -35,6 +35,8 @@ namespace MobileApiGateway.Services
         public int LikesCount { get; set; }
 
         public bool IsLikedByMe { get; set; }
+
+        public double? DistanceInMeters { get; set; }
     }
 
     public class DownstreamObjectDto

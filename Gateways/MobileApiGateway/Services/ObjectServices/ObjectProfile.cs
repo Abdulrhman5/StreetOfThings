@@ -14,7 +14,8 @@ namespace MobileApiGateway
         public ObjectProfile()
         {
             CreateMap<UpstreamObjectDto, DownstreamObjectDto>();
-            CreateMap<UpstreamObjectDtoV1_1, DownstreamObjectDtoV1_1>();
+            CreateMap<UpstreamObjectDtoV1_1, DownstreamObjectDtoV1_1>()
+                .ForMember(dest => dest.DistanceInMeters, opt => opt.MapFrom(src => src.DistanceInMeters));
             CreateMap<UpstreamObjectDetailsDto, DownstreamObjectDetailsDto>();
         }
     }

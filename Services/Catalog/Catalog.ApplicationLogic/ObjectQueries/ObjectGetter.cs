@@ -89,11 +89,13 @@ namespace Catalog.ApplicationLogic.ObjectQueries
 
         public async Task<List<ObjectDtoV1_1>> GetObjectsV1_1(PagingArguments arguments)
         {
-            var userLocation = null as Point;
+            var (login, user) = await _userDataManager.AddCurrentUserIfNeeded();
+            var userId = user.UserId;
+            var userLocation = login.LoginLocation;
+
             var filteredObjects = _objectRepo.Table.Where(_queryHelper.IsValidObject)
                 .Where(_queryHelper.ValidForFreeAndLendibg);
 
-            var userId = _credentialsGetter.GetCuurentUser()?.UserId;
 
             var objects = from o in filteredObjects
                           let distance = o.OwnerLogin.User.Logins.OrderByDescending(l => l.LoggedAt).FirstOrDefault().LoginLocation.Distance(userLocation)
@@ -113,7 +115,8 @@ namespace Catalog.ApplicationLogic.ObjectQueries
                               Type = o.CurrentTransactionType,
                               CommentsCount = o.Comments.Count,
                               LikesCount = o.Likes.Count,
-                              IsLikedByMe = o.Likes.Any(like => like.Login.UserId.ToString() == userId)
+                              IsLikedByMe = o.Likes.Any(like => like.Login.UserId == userId),
+                              DistanceInMeters = distance
                           };
 
             var objectsList = await objects.SkipTakeAsync(arguments);

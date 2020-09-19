@@ -2,6 +2,7 @@
 using Catalog.DataAccessLayer;
 using Catalog.Models;
 using Microsoft.EntityFrameworkCore;
+using NetTopologySuite.Geometries;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,6 +58,7 @@ namespace Catalog.ApplicationLogic.Infrastructure
                             {
                                 LoggedAt = loginInformation.LoggedAtUtc,
                                 LoginId = Guid.Parse(loginInformation.TokenId),
+                                LoginLocation = loginInformation.Longitude is null ? null : new Point(loginInformation.Longitude.Value, loginInformation.Latitude.Value){SRID =4326 }
                             }
                         }
                     };
@@ -73,6 +75,7 @@ namespace Catalog.ApplicationLogic.Infrastructure
                         LoggedAt = loginInformation.LoggedAtUtc,
                         LoginId = Guid.Parse(loginInformation.TokenId),
                         UserId = theUser.UserId,
+                        LoginLocation = loginInformation.Longitude is null ? null : new Point(loginInformation.Longitude.Value, loginInformation.Latitude.Value) { SRID = 4326}
                     };
 
                     _loginRepo.Add(loginToBeAdded);
@@ -102,10 +105,10 @@ namespace Catalog.ApplicationLogic.Infrastructure
         public async Task<User> AddUserIfNeeded(string userId)
         {
             var usersById = (from u in _userRepo.Table
-                            where u.UserId.ToString() == userId
-                            select u).FirstOrDefault();
+                             where u.UserId.ToString() == userId
+                             select u).FirstOrDefault();
 
-            if(usersById is object)
+            if (usersById is object)
             {
                 return usersById;
             }
