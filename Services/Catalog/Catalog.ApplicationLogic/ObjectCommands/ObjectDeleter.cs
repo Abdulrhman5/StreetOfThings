@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.Extensions.Logging;
+using Catalog.ApplicationLogic.Events;
+using EventBus;
 
 namespace Catalog.ApplicationLogic.ObjectCommands
 {
@@ -18,13 +20,17 @@ namespace Catalog.ApplicationLogic.ObjectCommands
         private IRepository<int, OfferedObject> _objectRepository;
 
         private ILogger<ObjectDeleter> _logger;
+
+        private IEventBus _eventBus;
         public ObjectDeleter(CurrentUserCredentialsGetter credentialsGetter,
             IRepository<int, OfferedObject> objectsRepo,
-            ILogger<ObjectDeleter> logger)
+            ILogger<ObjectDeleter> logger,
+            IEventBus eventBus)
         {
             _credentialsGetter = credentialsGetter;
             _objectRepository = objectsRepo;
             _logger = logger;
+            _eventBus = eventBus;
         }
 
         public async Task<CommandResult> DeleteObject(DeleteObjectDto objectDto)
@@ -52,16 +58,34 @@ namespace Catalog.ApplicationLogic.ObjectCommands
                     StatusCode = System.Net.HttpStatusCode.Unauthorized
                 });
             }
-
-            // Ask if there is a need to check the object is currently loaned
+            
 
             var objectToDelete = _objectRepository.Get(objectDto.ObjectId);
 
+            if(objectToDelete is null || objectToDelete.ObjectStatus != ObjectStatus.Available)
+            {
+                return new CommandResult(new ErrorMessage
+                {
+                    ErrorCode = "CATALOG.OBJECT.DELETE.NOTFOUND",
+                    Message = "The obect you are trying to delete does not exists",
+                    StatusCode = System.Net.HttpStatusCode.BadRequest
+                });
+            }
+
+            
             objectToDelete.ObjectStatus = ObjectStatus.Deleted;
 
             try
             {
                 await _objectRepository.SaveChangesAsync();
+                var integrationEvent = new ObjectDeletedIntegrationEvent
+                {
+                    Id = Guid.NewGuid(),
+                    ObjectId = objectToDelete.OfferedObjectId,
+                    DeletedAtUtc = DateTime.UtcNow,
+                    OccuredAt = DateTime.UtcNow
+                };
+                _eventBus.Publish(integrationEvent);
                 return new CommandResult();
             }
             catch (Exception e)
