@@ -8,6 +8,7 @@ namespace Catalog.ApplicationLogic.ObjectCommands
 {
     public interface IObjectDeleter
     {
+        Task<CommandResult> AuthorizedDelete(DeleteObjectDto objectDto);
         public Task<CommandResult> DeleteObject(DeleteObjectDto objectDto);
     }
 }

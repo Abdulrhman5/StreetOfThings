@@ -33,9 +33,9 @@ namespace Catalog.ApplicationLogic.ObjectCommands
             _eventBus = eventBus;
         }
 
-        public async Task<CommandResult> DeleteObject(DeleteObjectDto objectDto)
+        public async Task<CommandResult> AuthorizedDelete(DeleteObjectDto objectDto)
         {
-            if(objectDto is null)
+            if (objectDto is null)
             {
                 return new CommandResult(new ErrorMessage
                 {
@@ -44,25 +44,10 @@ namespace Catalog.ApplicationLogic.ObjectCommands
                     StatusCode = System.Net.HttpStatusCode.BadRequest
                 });
             }
-            var objectOwner = from o in _objectRepository.Table
-                              where o.OfferedObjectId == objectDto.ObjectId
-                              select o.OwnerLogin.User;
-
-            var currentUser = _credentialsGetter.GetCuurentUser();
-            if (currentUser is null || currentUser.UserId != objectOwner.FirstOrDefault()?.UserId.ToString())
-            {
-                return new CommandResult(new ErrorMessage
-                {
-                    ErrorCode = "CATALOG.OBJECT.DELETE.UNAUTHORIZED",
-                    Message = "You are unauthorized to delete this object",
-                    StatusCode = System.Net.HttpStatusCode.Unauthorized
-                });
-            }
-            
 
             var objectToDelete = _objectRepository.Get(objectDto.ObjectId);
 
-            if(objectToDelete is null || objectToDelete.ObjectStatus != ObjectStatus.Available)
+            if (objectToDelete is null || objectToDelete.ObjectStatus != ObjectStatus.Available)
             {
                 return new CommandResult(new ErrorMessage
                 {
@@ -72,7 +57,7 @@ namespace Catalog.ApplicationLogic.ObjectCommands
                 });
             }
 
-            
+
             objectToDelete.ObjectStatus = ObjectStatus.Deleted;
 
             try
@@ -98,6 +83,36 @@ namespace Catalog.ApplicationLogic.ObjectCommands
                     StatusCode = System.Net.HttpStatusCode.InternalServerError
                 });
             }
+
+        }
+
+
+        public async Task<CommandResult> DeleteObject(DeleteObjectDto objectDto)
+        {
+            if(objectDto is null)
+            {
+                return new CommandResult(new ErrorMessage
+                {
+                    ErrorCode = "CATALOG.OBJECT.DELETE.NULL",
+                    Message = "Please send a valid data",
+                    StatusCode = System.Net.HttpStatusCode.BadRequest
+                });
+            }
+            var objectOwner = from o in _objectRepository.Table
+                              where o.OfferedObjectId == objectDto.ObjectId
+                              select o.OwnerLogin.User;
+
+            var currentUser = _credentialsGetter.GetCuurentUser();
+            if (currentUser is null || currentUser.UserId != objectOwner.FirstOrDefault()?.UserId.ToString())
+            {
+                return new CommandResult(new ErrorMessage
+                {
+                    ErrorCode = "CATALOG.OBJECT.DELETE.UNAUTHORIZED",
+                    Message = "You are unauthorized to delete this object",
+                    StatusCode = System.Net.HttpStatusCode.Unauthorized
+                });
+            }
+            return await AuthorizedDelete(objectDto);
         }
     }
 }

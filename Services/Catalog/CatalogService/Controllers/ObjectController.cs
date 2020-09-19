@@ -89,6 +89,7 @@ namespace CatalogService.Controllers
 
         [Route("byId/{objectId:int}")]
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetObjects(int objectId)
         {
             var objects = await _objectGetter.GetObjectById(objectId);
@@ -109,6 +110,7 @@ namespace CatalogService.Controllers
         }
 
         [Route("details")]
+        [Authorize]
         public async Task<IActionResult> GetObjectDetails(int objectId)
         {
             var result = await _objectDetailsGetter.GetObjectDetails(objectId);
@@ -116,6 +118,7 @@ namespace CatalogService.Controllers
         }
 
         [Route("ordered")]
+        [Authorize]
         public async Task<IActionResult> GetObjectsOrdered(string orderType, PagingArguments pagingArguments)
         {
             OrderByType type;
