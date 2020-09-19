@@ -43,6 +43,7 @@ namespace Catalog.ApplicationLogic
             Container.RegisterType<IObjectViewsManager, ObjectViewsManager>();
             Container.RegisterType<IObjectCommentAdder, ObjectCommentAdder>();
             Container.RegisterType<ICommentsGetter, CommentsGetter>();
+            Container.RegisterType<IObjectCommentDeleter, ObjectCommentDeleter>();
             Container.RegisterType<TagsGetter>();
 
             Container.RegisterType<IObjectDetailsGetter, ObjectDetailsGetter>();

@@ -18,10 +18,12 @@ namespace CatalogService.Controllers
 
         private ICommentsGetter _commentsGetter;
 
-        public ObjectCommentController(IObjectCommentAdder commentAdder, ICommentsGetter commentsGetter)
+        private IObjectCommentDeleter _commentDeleter;
+        public ObjectCommentController(IObjectCommentAdder commentAdder, ICommentsGetter commentsGetter, IObjectCommentDeleter commentDeleter)
         {
             _commentAdder = commentAdder;
             _commentsGetter = commentsGetter;
+            _commentDeleter = commentDeleter;
         }
 
         [Route("add")]
@@ -51,6 +53,18 @@ namespace CatalogService.Controllers
                 var result = await _commentsGetter.GetCommentsForObject(objectId, pagingArguments);
                 return Ok(result);
             }
+        }
+
+        [Route("admin/delete")]
+        [Authorize("Admin")]
+        [HttpPost]
+        public async Task<IActionResult> DeleteObjectComment([FromBody] DeleteCommentDto deleteCommentDto)
+        {
+            var result = await _commentDeleter.AuthorizedDeleteComment(deleteCommentDto);
+            return StatusCode(result, new
+            {
+                Message = "The comment has been deleted"
+            });
         }
     }
 }
