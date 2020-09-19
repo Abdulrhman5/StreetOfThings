@@ -1,12 +1,10 @@
-﻿using Catalog.DataAccessLayer;
+﻿using Catalog.ApplicationLogic.Infrastructure;
+using Catalog.DataAccessLayer;
 using Catalog.Models;
-using System;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Catalog.ApplicationLogic.Infrastructure;
 
 namespace Catalog.ApplicationLogic.TypeQueries
 {
@@ -24,6 +22,7 @@ namespace Catalog.ApplicationLogic.TypeQueries
         public async Task<List<TagDto>> GetTags()
         {
             var tags = from t in _tagsRepo.Table
+                       where t.TagStatus == TagStatus.Ok
                        select new TagDto
                        {
                            Id = t.TagId,
@@ -36,15 +35,16 @@ namespace Catalog.ApplicationLogic.TypeQueries
         public async Task<TagListDto> GetAdminTags()
         {
             var tags = await (from t in _tagsRepo.Table
-                       let objectCount = t.Objects.Count
-                       orderby objectCount
-                       select new AdminTagDto
-                       {
-                           Id = t.TagId,
-                           Name = t.Name,
-                           PhotoUrl = _urlConstructor.Construct(t.Photo),
-                           UsedCount = objectCount
-                       }).ToListAsync();
+                              where t.TagStatus == TagStatus.Ok
+                              let objectCount = t.Objects.Count
+                              orderby objectCount
+                              select new AdminTagDto
+                              {
+                                  Id = t.TagId,
+                                  Name = t.Name,
+                                  PhotoUrl = _urlConstructor.Construct(t.Photo),
+                                  UsedCount = objectCount
+                              }).ToListAsync();
 
             var listDto = new TagListDto
             {
