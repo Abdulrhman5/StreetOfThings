@@ -60,7 +60,7 @@ namespace Catalog.ApplicationLogic.ObjectCommands
             }
 
             var invalidTags = from t in objectDto.Tags
-                              where t.IsNullOrEmpty() || t.Length < 4
+                              where t.IsNullOrEmpty() || t.Length < 4 
                               select t;
 
             if (invalidTags.Any())
@@ -75,7 +75,7 @@ namespace Catalog.ApplicationLogic.ObjectCommands
 
 
             var alreadyExistedTags = (from t in _tagRepo.Table
-                                     where objectDto.Tags.Any(tt => tt== t.Name)
+                                     where objectDto.Tags.Any(tt => tt== t.Name) && t.TagStatus == TagStatus.Ok
                                      select t).ToList();
 
             // No Logic for not existed tags, just discard them.

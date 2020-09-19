@@ -45,6 +45,7 @@ namespace Catalog.ApplicationLogic
             Container.RegisterType<ICommentsGetter, CommentsGetter>();
             Container.RegisterType<IObjectCommentDeleter, ObjectCommentDeleter>();
             Container.RegisterType<TagsGetter>();
+            Container.RegisterType<TagDeleter>();
 
             Container.RegisterType<IObjectDetailsGetter, ObjectDetailsGetter>();
 

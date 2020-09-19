@@ -16,10 +16,13 @@ namespace CatalogService.Controllers
         private TagsGetter _tagGetter;
 
         private TagAdder _tagAdder;
-        public TagController(TagsGetter tagGetter, TagAdder tagAdder)
+
+        private TagDeleter _tagDeleter;
+        public TagController(TagsGetter tagGetter, TagAdder tagAdder, TagDeleter tagDeleter)
         {
             _tagGetter = tagGetter;
             _tagAdder = tagAdder;
+            _tagDeleter = tagDeleter;
         }
 
         [Route("list")]
@@ -47,6 +50,18 @@ namespace CatalogService.Controllers
         {
             var result = await _tagGetter.GetAdminTags();
             return Ok(result);
+        }  
+        
+        [Route("admin/delete")]
+        [HttpPost]
+        [Authorize("Admin")]
+        public async Task<IActionResult> DeleteTag([FromBody] DeleteTagDto deleteTag)
+        {
+            var result = await _tagDeleter.DeleteTag(deleteTag);
+            return StatusCode(result, new
+            {
+                Message = "The tag has been deleted"
+            });
         }
 
     }
