@@ -36,8 +36,7 @@ namespace Catalog.ApplicationLogic.ObjectQueries
 
         public async Task<CommandResult<ObjectDetailsDto>> GetObjectDetails(int objectId)
         {
-            var filteredObjects = _objectRepo.Table.Where(_queryHelper.IsValidObject)
-                .Where(_queryHelper.ValidForFreeAndLendibg);
+            var filteredObjects = _objectRepo.Table.Where(_queryHelper.IsValidObject);
 
             var userId = _credentialsGetter.GetCuurentUser()?.UserId;
 

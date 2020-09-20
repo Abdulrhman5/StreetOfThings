@@ -1,9 +1,10 @@
-﻿using CommonLibrary;
+﻿ using CommonLibrary;
 using EventBus;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Transaction.BusinessLogic.Events;
 using Transaction.BusinessLogic.Infrastructure;
 using Transaction.DataAccessLayer;
 using Transaction.Models;
@@ -34,7 +35,11 @@ namespace Transaction.BusinessLogic.ReturningCommands
 
         private IEventBus _eventBus;
 
-        public ReturningAdder(IRepository<Guid, ObjectReceiving> receivingsRepo, IRepository<Guid, ObjectRegistration> registrationsRepo, IRepository<Guid, ObjectReturning> returningRepo, IRepository<Guid, TransactionToken> tokensRepo, IRepository<int, OfferedObject> objectRepo, OwnershipAuthorization<Guid, TransactionToken> ownershipAuthorization, TransactionContext transactionContext, UserDataManager userDataManager, IEventBus eventBus)
+        public ReturningAdder(IRepository<Guid, ObjectReceiving> receivingsRepo,
+            IRepository<Guid, ObjectRegistration> registrationsRepo, IRepository<Guid, ObjectReturning> returningRepo,
+            IRepository<Guid, TransactionToken> tokensRepo, IRepository<int, OfferedObject> objectRepo, 
+            OwnershipAuthorization<Guid, TransactionToken> ownershipAuthorization, TransactionContext transactionContext, 
+            UserDataManager userDataManager, IEventBus eventBus)
         {
             _receivingsRepo = receivingsRepo;
             _registrationsRepo = registrationsRepo;
@@ -157,6 +162,17 @@ namespace Transaction.BusinessLogic.ReturningCommands
             await _returningRepo.SaveChangesAsync();
 
             var returnedAfter = DateTime.UtcNow - theReceiving.ReceivedAtUtc;
+
+            var evnt = new TransactionReturnedIntegrationEvent()
+            {
+                Id = Guid.NewGuid(),
+                OccuredAt = DateTime.UtcNow,
+                RegistrationId = theReceiving.ObjectRegistrationId,
+                ReturnedAtUtc = DateTime.UtcNow,
+                ReturnIdId = returning.ObjectReturningId,
+            };
+
+            _eventBus.Publish(evnt);
 
             TimeSpan late = new TimeSpan();
             if (theReceiving.ObjectRegistration.ShouldReturnItAfter.HasValue)

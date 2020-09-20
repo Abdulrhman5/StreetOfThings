@@ -124,6 +124,7 @@ namespace CatalogService
             app.ApplicationServices.AddIntegrationEvent<NewRegistrationIntegrationEvent, NewRegistrationIntegrationEventHandler>();
             app.ApplicationServices.AddIntegrationEvent<TransactionCancelledIntegrationEvent,TransactionCancelledIntegrationEventHandler>();
             app.ApplicationServices.AddIntegrationEvent<TransactionReceivedIntegrationEvent,TransactionReceivedIntegrationEventHandler>();
+            app.ApplicationServices.AddIntegrationEvent<TransactionReturnedIntegrationEvent,TransactionReturnedIntegrationEventHandler>();
         }
 
         public void ConfigureContainer(IUnityContainer container)
