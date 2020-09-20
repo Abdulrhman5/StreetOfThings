@@ -120,6 +120,213 @@ namespace AuthorizationService
                             Token = "This is dummy token, this token is generated during seeding data.",
                         }
                     }
+                },
+                new AppUser
+                {
+                    Id = Guid.Parse("9b4210dc-49b9-4031-9a7a-dcc769a0c001").ToString(),
+                    Email = "AbdulrhmanAlrifai@Street.com",
+                    UserName = "AbdulrhmanAlrifai@Street.com",
+                    NormalizedName = "Abdulrhman Alrifai",
+                    NormalizedUserName = "Abdulrhman Alrifai",
+                    LockoutEnabled = false,
+                    EmailConfirmed = true,
+                    PhoneNumberConfirmed = true,
+                    CreatedAt = DateTime.UtcNow,
+                    Gender = Gender.Male,
+                    Logins = new List<Login>
+                    {
+                        new Login
+                        {
+                            IsValid = true,
+                            LoggedAt = DateTime.UtcNow,
+                            LoginId = Guid.Parse("b1590daf-7004-48f0-8af5-bc6ba97d0001"),
+                            Token = "This is dummy token, this token is generated during seeding data.",
+                        }
+                    }
+                },
+                new AppUser
+                {
+                    Id = Guid.Parse("9b4210dc-49b9-4031-9a7a-dcc769a0c002").ToString(),
+                    Email = "WaelAlzain@Street.com",
+                    UserName = "WaelAlzain@Street.com",
+                    NormalizedName = "Wael Alzain",
+                    NormalizedUserName = "Wael Alzain",
+                    LockoutEnabled = false,
+                    EmailConfirmed = true,
+                    PhoneNumberConfirmed = true,
+                    CreatedAt = DateTime.UtcNow,
+                    Gender = Gender.Male,
+                    Logins = new List<Login>
+                    {
+                        new Login
+                        {
+                            IsValid = true,
+                            LoggedAt = DateTime.UtcNow,
+                            LoginId = Guid.Parse("b1590daf-7004-48f0-8af5-bc6ba97d0002"),
+                            Token = "This is dummy token, this token is generated during seeding data.",
+                        }
+                    }
+                },
+                new AppUser
+                {
+                    Id = Guid.Parse("9b4210dc-49b9-4031-9a7a-dcc769a0c003").ToString(),
+                    Email = "MohammedAlkhalil@Street.com",
+                    UserName = "MohammedAlkhalil@Street.com",
+                    NormalizedName = "Mohammed Alkhalil",
+                    NormalizedUserName = "Mohammed Alkalil",
+                    LockoutEnabled = false,
+                    EmailConfirmed = true,
+                    PhoneNumberConfirmed = true,
+                    CreatedAt = DateTime.UtcNow,
+                    Gender = Gender.Male,
+                    Logins = new List<Login>
+                    {
+                        new Login
+                        {
+                            IsValid = true,
+                            LoggedAt = DateTime.UtcNow,
+                            LoginId = Guid.Parse("b1590daf-7004-48f0-8af5-bc6ba97d0003"),
+                            Token = "This is dummy token, this token is generated during seeding data.",
+                        }
+                    }
+                },
+                new AppUser
+                {
+                    Id = Guid.Parse("9b4210dc-49b9-4031-9a7a-dcc769a0c004").ToString(),
+                    Email = "QusaiAlhallaq@Street.com",
+                    UserName = "QusaiAlhallaq@Street.com",
+                    NormalizedName = "Qusai Alhallaq",
+                    NormalizedUserName = "Qusai Alhallaq",
+                    LockoutEnabled = false,
+                    EmailConfirmed = true,
+                    PhoneNumberConfirmed = true,
+                    CreatedAt = DateTime.UtcNow,
+                    Gender = Gender.Male,
+                    Logins = new List<Login>
+                    {
+                        new Login
+                        {
+                            IsValid = true,
+                            LoggedAt = DateTime.UtcNow,
+                            LoginId = Guid.Parse("b1590daf-7004-48f0-8af5-bc6ba97d0004"),
+                            Token = "This is dummy token, this token is generated during seeding data.",
+                        }
+                    }
+                },
+                new AppUser
+                {
+                    Id = Guid.Parse("9b4210dc-49b9-4031-9a7a-dcc769a0c005").ToString(),
+                    Email = "SmeerAlhosni@Street.com",
+                    UserName = "SmeerAlhosni@Street.com",
+                    NormalizedName = "Smeer Alhosni",
+                    NormalizedUserName = "Smeer Alhosni",
+                    LockoutEnabled = false,
+                    EmailConfirmed = true,
+                    PhoneNumberConfirmed = true,
+                    CreatedAt = DateTime.UtcNow,
+                    Gender = Gender.Male,
+                    Logins = new List<Login>
+                    {
+                        new Login
+                        {
+                            IsValid = true,
+                            LoggedAt = DateTime.UtcNow,
+                            LoginId = Guid.Parse("b1590daf-7004-48f0-8af5-bc6ba97d5bed"),
+                            Token = "This is dummy token, this token is generated during seeding data.",
+                        }
+                    }
+                },
+                new AppUser
+                {
+                    Id = Guid.Parse("9b4210dc-49b9-4031-9a7a-dcc769a0c006").ToString(),
+                    Email = "AkramAlhassan@Street.com",
+                    UserName = "AkramAlhassan@Street.com",
+                    NormalizedName = "Akram Alhassan",
+                    NormalizedUserName = "Akram Alhassan",
+                    LockoutEnabled = false,
+                    EmailConfirmed = true,
+                    PhoneNumberConfirmed = true,
+                    CreatedAt = DateTime.UtcNow,
+                    Gender = Gender.Male,
+                    Logins = new List<Login>
+                    {
+                        new Login
+                        {
+                            IsValid = true,
+                            LoggedAt = DateTime.UtcNow,
+                            LoginId = Guid.Parse("b1590daf-7004-48f0-8af5-bc6ba97d5bed"),
+                            Token = "This is dummy token, this token is generated during seeding data.",
+                        }
+                    }
+                },
+                new AppUser
+                {
+                    Id = Guid.Parse("9b4210dc-49b9-4031-9a7a-dcc769a0c007").ToString(),
+                    Email = "AhmedKatza@Street.com",
+                    UserName = "AhmedKatza@Street.com",
+                    NormalizedName = "Ahmed Katza",
+                    NormalizedUserName = "Ahmed Katza",
+                    LockoutEnabled = false,
+                    EmailConfirmed = true,
+                    PhoneNumberConfirmed = true,
+                    CreatedAt = DateTime.UtcNow,
+                    Gender = Gender.Male,
+                    Logins = new List<Login>
+                    {
+                        new Login
+                        {
+                            IsValid = true,
+                            LoggedAt = DateTime.UtcNow,
+                            LoginId = Guid.Parse("b1590daf-7004-48f0-8af5-bc6ba97d5bed"),
+                            Token = "This is dummy token, this token is generated during seeding data.",
+                        }
+                    }
+                },
+                new AppUser
+                {
+                    Id = Guid.Parse("9b4210dc-49b9-4031-9a7a-dcc769a0c008").ToString(),
+                    Email = "AbdullahAlissa@Street.com",
+                    UserName = "AbdullahAlissa@Street.com",
+                    NormalizedName = "Abdullah Alissa",
+                    NormalizedUserName = "Abdullah Alissa",
+                    LockoutEnabled = false,
+                    EmailConfirmed = true,
+                    PhoneNumberConfirmed = true,
+                    CreatedAt = DateTime.UtcNow,
+                    Gender = Gender.Male,
+                    Logins = new List<Login>
+                    {
+                        new Login
+                        {
+                            IsValid = true,
+                            LoggedAt = DateTime.UtcNow,
+                            LoginId = Guid.Parse("b1590daf-7004-48f0-8af5-bc6ba97d5bed"),
+                            Token = "This is dummy token, this token is generated during seeding data.",
+                        }
+                    }
+                },
+                new AppUser
+                {
+                    Id = Guid.Parse("9b4210dc-49b9-4031-9a7a-dcc769a0c009").ToString(),
+                    Email = "MahmmodAlabd@Street.com",
+                    UserName = "MahmmodAlabd@Street.com",
+                    NormalizedName = "Mahmmod Alabd",
+                    NormalizedUserName = "Mahmmod Alabd",
+                    LockoutEnabled = false,
+                    EmailConfirmed = true,
+                    PhoneNumberConfirmed = true,
+                    CreatedAt = DateTime.UtcNow,
+                    Gender = Gender.Male,
+                    Logins = new List<Login>
+                    {
+                        new Login
+                        {
+                            IsValid = true,
+                            LoggedAt = DateTime.UtcNow,
+                            LoginId = Guid.Parse("b1590daf-7004-48f0-8af5-bc6ba97d5bed"),
+                            Token = "This is dummy token, this token is generated during seeding data.",
+                        }
+                    }
                 }
             };
 
