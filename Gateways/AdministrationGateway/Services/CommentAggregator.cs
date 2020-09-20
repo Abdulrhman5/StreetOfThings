@@ -78,7 +78,6 @@ namespace AdministrationGateway.Services
                     Commenter = users.Find(u => u.Id.EqualsIC(comment.UserId)),
                      ObjectId = comment.ObjectId
                 });
-                downstreamComments.RemoveAll(o => o.Commenter is null);
             }
 
             return new DownstreamCommentListDto()

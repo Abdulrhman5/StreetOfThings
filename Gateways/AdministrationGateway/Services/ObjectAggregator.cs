@@ -85,7 +85,6 @@ namespace AdministrationGateway.Services
                     Tags = @object.Tags,
                     Type = @object.Type
                 });
-                downStreamObjects.RemoveAll(o => o.Owner is null);
             }
 
             return new DownstreamObjectsListDto

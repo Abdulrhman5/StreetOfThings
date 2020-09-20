@@ -158,8 +158,6 @@ namespace AdministrationGateway.Services.TransactionServices
                     Owner = users.Find(u => u.Id.EqualsIC(tran.OwnerId) || u.Id.EqualsIC(tran.ReceiverId)),
                     Receiver = users.Find(u => u.Id.EqualsIC(tran.OwnerId) || u.Id.EqualsIC(tran.ReceiverId))
             });
-
-                downStreamTransactions.RemoveAll(t => t.Owner is null || t.Receiver == null || t.Object is null);
             }
             var userId = _httpContext.Request.Query["userId"].GetValue();
             return new TransactionForUserDownstreamListDto()
