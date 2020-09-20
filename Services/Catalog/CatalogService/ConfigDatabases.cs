@@ -142,7 +142,7 @@ namespace CatalogService
                 LoginId = Guid.Parse("5b9be4be-bac2-4677-8d3b-cfd9b749cde0"),
                 Token = "This is dummy token, this token is generated during seeding data.",
                 UserId = Guid.Parse("cc0eb95f-52a0-4131-b8f6-b79ab5e7728f"),
-                LoginLocation = new Point(34.721620, 36.716978) { SRID = 4326 }
+                LoginLocation = new Point(36.716978, 34.721620) { SRID = 4326 }
             },
             new Login
             {
@@ -150,7 +150,7 @@ namespace CatalogService
                 LoginId = Guid.Parse("25291904-86a0-4b1d-b24b-fab3c332c59d"),
                 Token = "This is dummy token, this token is generated during seeding data.",
                 UserId = Guid.Parse("dd6cafb3-b154-475e-a309-610f3d2d91bf"),
-                LoginLocation = new Point(34.716170, 36.706356) { SRID = 4326 },
+                LoginLocation = new Point(36.706356, 34.716170) { SRID = 4326 },
             },
             new Login
             {
@@ -158,7 +158,7 @@ namespace CatalogService
                 LoginId = Guid.Parse("b1590daf-7004-48f0-8af5-bc6ba97d5bed"),
                 Token = "This is dummy token, this token is generated during seeding data.",
                 UserId = Guid.Parse("9b4210dc-49b9-4031-9a7a-dcc769a0cac8"),
-                LoginLocation = new Point(34.713824, 36.713309) { SRID = 4326 },
+                LoginLocation = new Point(36.713309,34.713824) { SRID = 4326 },
             },
             new Login
             {
@@ -166,7 +166,7 @@ namespace CatalogService
                 LoginId = Guid.Parse("b1590daf-7004-48f0-8af5-bc6ba97d0001"),
                 Token = "This is dummy token, this token is generated during seeding data.",
                 UserId = Guid.Parse("9b4210dc-49b9-4031-9a7a-dcc769a0c001"),
-                LoginLocation = new Point(34.738445, 36.718879) { SRID = 4326 },
+                LoginLocation = new Point(36.718879, 34.738445) { SRID = 4326 },
             },
             new Login
             {
@@ -174,7 +174,7 @@ namespace CatalogService
                 LoginId = Guid.Parse("b1590daf-7004-48f0-8af5-bc6ba97d0002"),
                 Token = "This is dummy token, this token is generated during seeding data.",
                 UserId = Guid.Parse("9b4210dc-49b9-4031-9a7a-dcc769a0c002"),
-                LoginLocation = new Point(34.730167, 36.704941) { SRID = 4326 },
+                LoginLocation = new Point(36.704941, 34.730167) { SRID = 4326 },
             },
             new Login
             {
@@ -182,7 +182,7 @@ namespace CatalogService
                 LoginId = Guid.Parse("b1590daf-7004-48f0-8af5-bc6ba97d0003"),
                 Token = "This is dummy token, this token is generated during seeding data.",
                 UserId = Guid.Parse("9b4210dc-49b9-4031-9a7a-dcc769a0c003"),
-                LoginLocation = new Point(34.722637, 36.701851) { SRID = 4326 },
+                LoginLocation = new Point(36.701851, 34.722637) { SRID = 4326 },
             },
             new Login
             {
@@ -190,7 +190,7 @@ namespace CatalogService
                 LoginId = Guid.Parse("b1590daf-7004-48f0-8af5-bc6ba97d0004"),
                 Token = "This is dummy token, this token is generated during seeding data.",
                 UserId = Guid.Parse("9b4210dc-49b9-4031-9a7a-dcc769a0c004"),
-                LoginLocation = new Point(34.726623, 36.698740) { SRID = 4326 },
+                LoginLocation = new Point(36.698740, 34.726623) { SRID = 4326 },
             },
             new Login
             {
@@ -198,7 +198,7 @@ namespace CatalogService
                 LoginId = Guid.Parse("b1590daf-7004-48f0-8af5-bc6ba97d0005"),
                 Token = "This is dummy token, this token is generated during seeding data.",
                 UserId = Guid.Parse("9b4210dc-49b9-4031-9a7a-dcc769a0c005"),
-                LoginLocation = new Point(34.728351, 36.704598) { SRID = 4326 },
+                LoginLocation = new Point(36.704598, 34.728351) { SRID = 4326 },
             },
             new Login
             {
@@ -206,7 +206,7 @@ namespace CatalogService
                 LoginId = Guid.Parse("b1590daf-7004-48f0-8af5-bc6ba97d0006"),
                 Token = "This is dummy token, this token is generated during seeding data.",
                 UserId = Guid.Parse("9b4210dc-49b9-4031-9a7a-dcc769a0c006"),
-                LoginLocation = new Point(34.734901, 36.709947) { SRID = 4326 },
+                LoginLocation = new Point(36.709947, 34.734901) { SRID = 4326 },
             },
             new Login
             {
@@ -214,7 +214,7 @@ namespace CatalogService
                 LoginId = Guid.Parse("b1590daf-7004-48f0-8af5-bc6ba97d0007"),
                 Token = "This is dummy token, this token is generated during seeding data.",
                 UserId = Guid.Parse("9b4210dc-49b9-4031-9a7a-dcc769a0c007"),
-                LoginLocation = new Point(34.738260, 36.712098) { SRID = 4326 },
+                LoginLocation = new Point(36.712098, 34.738260) { SRID = 4326 },
             },
             new Login
             {
@@ -222,7 +222,7 @@ namespace CatalogService
                 LoginId = Guid.Parse("b1590daf-7004-48f0-8af5-bc6ba97d0008"),
                 Token = "This is dummy token, this token is generated during seeding data.",
                 UserId = Guid.Parse("9b4210dc-49b9-4031-9a7a-dcc769a0c008"),
-                LoginLocation = new Point(34.736100, 36.713396) { SRID = 4326 },
+                LoginLocation = new Point(36.713396, 34.736100) { SRID = 4326 },
             },
             new Login
             {
@@ -230,7 +230,7 @@ namespace CatalogService
                 LoginId = Guid.Parse("b1590daf-7004-48f0-8af5-bc6ba97d0009"),
                 Token = "This is dummy token, this token is generated during seeding data.",
                 UserId = Guid.Parse("9b4210dc-49b9-4031-9a7a-dcc769a0c009"),
-                LoginLocation = new Point(34.735972, 36.715579) { SRID = 4326 },
+                LoginLocation = new Point(36.715579, 34.735972) { SRID = 4326 },
             },
         };
 
