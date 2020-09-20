@@ -309,6 +309,33 @@ namespace CatalogService
                             FilePath = @"\Assets\Images\Profile\o1p3.jpg",
                             AdditionalInformation = "?Name=o1p3&Version=1",
                         },
+                    },
+                    Comments = new List<ObjectComment>
+                    {
+                        new ObjectComment
+                        {
+                                AddedAtUtc = DateTime.UtcNow,
+                               Comment = "Helloo there how are you?",
+                               LoginId= Logins[4].LoginId,
+                        },                       
+                        new ObjectComment
+                        {
+                                AddedAtUtc = DateTime.UtcNow,
+                               Comment = "Hi There?",
+                               LoginId= Logins[5].LoginId,
+                        },                      
+                        new ObjectComment
+                        {
+                                AddedAtUtc = DateTime.UtcNow,
+                               Comment = "Hello World",
+                               LoginId= Logins[9].LoginId,
+                        },                      
+                        new ObjectComment
+                        {
+                                AddedAtUtc = DateTime.UtcNow,
+                               Comment = "Hiii",
+                               LoginId= Logins[8].LoginId,
+                        },
                     }
                 },
                 new OfferedObject
@@ -343,6 +370,33 @@ namespace CatalogService
                             AddedAtUtc = DateTime.UtcNow,
                             FilePath = @"\Assets\Images\Profile\o2p2.jpg",
                             AdditionalInformation = "?Name=o2p2&Version=1",
+                        },
+                    },
+                    Comments = new List<ObjectComment>
+                    {
+                        new ObjectComment
+                        {
+                                AddedAtUtc = DateTime.UtcNow,
+                               Comment = "Helloo there how are you?",
+                               LoginId= Logins[4].LoginId,
+                        },
+                        new ObjectComment
+                        {
+                                AddedAtUtc = DateTime.UtcNow,
+                               Comment = "Hi There?",
+                               LoginId= Logins[5].LoginId,
+                        },
+                        new ObjectComment
+                        {
+                                AddedAtUtc = DateTime.UtcNow,
+                               Comment = "Hello World",
+                               LoginId= Logins[9].LoginId,
+                        },
+                        new ObjectComment
+                        {
+                                AddedAtUtc = DateTime.UtcNow,
+                               Comment = "Hiii",
+                               LoginId= Logins[8].LoginId,
                         },
                     }
                 },
@@ -385,8 +439,34 @@ namespace CatalogService
                             FilePath = @"\Assets\Images\Profile\o3p2.jpg",
                             AdditionalInformation = "?Name=o3p2&Version=1",
                         },                    
+                    },
+                    Comments = new List<ObjectComment>
+                    {
+                        new ObjectComment
+                        {
+                                AddedAtUtc = DateTime.UtcNow,
+                               Comment = "Helloo there how are you?",
+                               LoginId= Logins[4].LoginId,
+                        },
+                        new ObjectComment
+                        {
+                                AddedAtUtc = DateTime.UtcNow,
+                               Comment = "Hi There?",
+                               LoginId= Logins[5].LoginId,
+                        },
+                        new ObjectComment
+                        {
+                                AddedAtUtc = DateTime.UtcNow,
+                               Comment = "Hello World",
+                               LoginId= Logins[9].LoginId,
+                        },
+                        new ObjectComment
+                        {
+                                AddedAtUtc = DateTime.UtcNow,
+                               Comment = "Hiii",
+                               LoginId= Logins[8].LoginId,
+                        },
                     }
-
                 },
                 new OfferedObject
                 {
@@ -435,7 +515,7 @@ namespace CatalogService
                     Description = "Cold Steel All-Purpose Axe with Hickory Handle, Great for Camping, Survival, Outdoors, Wood Cutting and Splitting",
                     CurrentTransactionType = TransactionType.Free,
                     ObjectStatus = ObjectStatus.Available,
-                    PublishedAt = DateTime.UtcNow,
+                    PublishedAt = DateTime.UtcNow.AddHours(-2),
                     Tags = new List<ObjectTag>
                     {
                         new ObjectTag
@@ -479,7 +559,7 @@ namespace CatalogService
                         Holds up to a pint of paint ",
                     CurrentTransactionType = TransactionType.Free,
                     ObjectStatus = ObjectStatus.Available,
-                    PublishedAt = DateTime.UtcNow,
+                    PublishedAt = DateTime.UtcNow.AddHours(-1),
                     Tags = new List<ObjectTag>
                     {
                         new ObjectTag
@@ -519,7 +599,7 @@ namespace CatalogService
                     Description = "Wooster Brush R017-9 Roller Frame, 9-Inch",
                     CurrentTransactionType = TransactionType.Free,
                     ObjectStatus = ObjectStatus.Available,
-                    PublishedAt = DateTime.UtcNow,
+                    PublishedAt = DateTime.UtcNow.AddHours(-2),
                     Tags = new List<ObjectTag>
                     {
                         new ObjectTag
@@ -553,7 +633,7 @@ namespace CatalogService
                     Description = "Magimate Large Paint Brush, 8 Inch, Wide Stain Brush for Floors, Doors, Wallpaper Paste and Decks, Soft Synthetic Filament with Ergonomic Handle",
                     CurrentTransactionType = TransactionType.Free,
                     ObjectStatus = ObjectStatus.Available,
-                    PublishedAt = DateTime.UtcNow,
+                    PublishedAt = DateTime.UtcNow.AddHours(-3),
                     Tags = new List<ObjectTag>
                     {
                         new ObjectTag
@@ -594,7 +674,7 @@ namespace CatalogService
                         Stainless steel ferrules ",
                     CurrentTransactionType = TransactionType.Free,
                     ObjectStatus = ObjectStatus.Available,
-                    PublishedAt = DateTime.UtcNow,
+                    PublishedAt = DateTime.UtcNow.AddHours(-7),
                     Tags = new List<ObjectTag>
                     {
                         new ObjectTag
@@ -633,7 +713,7 @@ namespace CatalogService
                     Description = "Corona RS 7245 Razor Tooth Folding Saw, 7-Inch Curved Blade",
                     CurrentTransactionType = TransactionType.Free,
                     ObjectStatus = ObjectStatus.Available,
-                    PublishedAt = DateTime.UtcNow,
+                    PublishedAt = DateTime.UtcNow.AddHours(-3),
                     Tags = new List<ObjectTag>
                     {
                         new ObjectTag
@@ -675,7 +755,7 @@ namespace CatalogService
                     Description = "Hiware Solid Stainless Steel Spider Strainer Skimmer Ladle for Cooking and Frying, 5.4 Inch ",
                     CurrentTransactionType = TransactionType.Free,
                     ObjectStatus = ObjectStatus.Available,
-                    PublishedAt = DateTime.UtcNow,
+                    PublishedAt = DateTime.UtcNow.AddDays(-1),
                     Tags = new List<ObjectTag>
                     {
                         new ObjectTag
@@ -712,7 +792,7 @@ namespace CatalogService
                     Description = @"Lodge Pre-Seasoned Cast Iron Skillet With Assist Handle, 10.25"", Black",
                     CurrentTransactionType = TransactionType.Free,
                     ObjectStatus = ObjectStatus.Available,
-                    PublishedAt = DateTime.UtcNow,
+                    PublishedAt = DateTime.UtcNow.AddDays(-2),
                     Tags = new List<ObjectTag>
                     {
                         new ObjectTag
@@ -748,7 +828,7 @@ namespace CatalogService
                     Description = "WUSTHOF Kitchen Cook's Tools, One Size, Black ",
                     CurrentTransactionType = TransactionType.Free,
                     ObjectStatus = ObjectStatus.Available,
-                    PublishedAt = DateTime.UtcNow,
+                    PublishedAt = DateTime.UtcNow.AddDays(-5),
                     Tags = new List<ObjectTag>
                     {
                         new ObjectTag
@@ -778,7 +858,7 @@ namespace CatalogService
                     Description = "Used BKE Brayden jeans mens 29x32‏",
                     CurrentTransactionType = TransactionType.Free,
                     ObjectStatus = ObjectStatus.Available,
-                    PublishedAt = DateTime.UtcNow,
+                    PublishedAt = DateTime.UtcNow.AddDays(-15),
                     Tags = new List<ObjectTag>
                     {
                         new ObjectTag
@@ -809,7 +889,7 @@ namespace CatalogService
                     Description = "",
                     CurrentTransactionType = TransactionType.Free,
                     ObjectStatus = ObjectStatus.Available,
-                    PublishedAt = DateTime.UtcNow,
+                    PublishedAt = DateTime.UtcNow.AddDays(-15),
                     Tags = new List<ObjectTag>
                     {
                         new ObjectTag
@@ -846,7 +926,7 @@ namespace CatalogService
                     Description = "",
                     CurrentTransactionType = TransactionType.Free,
                     ObjectStatus = ObjectStatus.Available,
-                    PublishedAt = DateTime.UtcNow,
+                    PublishedAt = DateTime.UtcNow.AddDays(-23),
                     Tags = new List<ObjectTag>
                     {
                         new ObjectTag
@@ -878,7 +958,7 @@ namespace CatalogService
                     Description = @"",
                     CurrentTransactionType = TransactionType.Free,
                     ObjectStatus = ObjectStatus.Available,
-                    PublishedAt = DateTime.UtcNow,
+                    PublishedAt = DateTime.UtcNow.AddDays(-23),
                     Tags = new List<ObjectTag>
                     {
                         new ObjectTag
@@ -891,7 +971,7 @@ namespace CatalogService
                     {
                         new ObjectPhoto
                         {
-                            AddedAtUtc = DateTime.UtcNow,
+                            AddedAtUtc = DateTime.UtcNow.AddDays(27),
                             FilePath = @"\Assets\Images\Profile\o17p1.jpg",
                             AdditionalInformation = "?Name=o17p1&Version=1",
                         },new ObjectPhoto
@@ -908,7 +988,7 @@ namespace CatalogService
                     Description = "Also this is the object description",
                     CurrentTransactionType = TransactionType.Free,
                     ObjectStatus = ObjectStatus.Available,
-                    PublishedAt = DateTime.UtcNow,
+                    PublishedAt = DateTime.UtcNow.AddDays(-28),
                     Tags = new List<ObjectTag>
                     {
                         new ObjectTag
@@ -942,7 +1022,7 @@ namespace CatalogService
                         GOOD HOUSEKEEPING’S 50 BEST BOOKS OF 2019",
                     CurrentTransactionType = TransactionType.Free,
                     ObjectStatus = ObjectStatus.Available,
-                    PublishedAt = DateTime.UtcNow,
+                    PublishedAt = DateTime.UtcNow.AddDays(-28),
                     Tags = new List<ObjectTag>
                     {
                         new ObjectTag
