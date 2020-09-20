@@ -128,8 +128,8 @@ namespace MobileApiGateway.Services.TransactionServices
                     TransactionStatus = tran.TransactionStatus,
                     TranscationType = tran.TranscationType,
                     Object = objects.Find(o => o.Id == tran.ObjectId),
-                    Owner = users.Find(u => u.Id.EqualsIC(tran.OwnerId) || u.Id .EqualsIC(tran.ReceiverId)),
-                    Receiver = users.Find(u => u.Id.EqualsIC(tran.OwnerId) || u.Id.EqualsIC(tran.ReceiverId)),
+                    Owner = users.Find(u => u.Id.EqualsIC(tran.OwnerId)),
+                    Receiver = users.Find(u => u.Id.EqualsIC(tran.ReceiverId)),
                 });
             }
             return downStreamTransactions;

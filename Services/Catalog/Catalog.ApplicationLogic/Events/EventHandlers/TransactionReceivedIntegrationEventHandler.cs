@@ -39,7 +39,7 @@ namespace Catalog.ApplicationLogic.Events.EventHandlers
             {
                 _logger.LogError(e, "There were an error while trying to handle TransactionReceivedIntegrationEventHandler");
             }
-            throw new NotImplementedException();
+
         }
     }
 }

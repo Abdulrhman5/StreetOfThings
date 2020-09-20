@@ -85,7 +85,7 @@ namespace AuthorizationService
                         new ProfilePhoto
                         {
                             AddedAtUtc = DateTime.UtcNow,
-                            FilePath = @"\Asserts\Images\Profile\user4F.jpg",
+                            FilePath = @"\Assets\Images\Profile\user4F.jpg",
                             AdditionalInformation = "?Name=user4F&Version=1",
                         }
                     }
@@ -119,7 +119,7 @@ namespace AuthorizationService
                         new ProfilePhoto
                         {
                             AddedAtUtc = DateTime.UtcNow,
-                            FilePath = @"\Asserts\Images\Profile\user10.jpg",
+                            FilePath = @"\Assets\Images\Profile\user10.jpg",
                             AdditionalInformation = "?Name=user10&Version=1",
                         }
                     }
@@ -153,7 +153,7 @@ namespace AuthorizationService
                         new ProfilePhoto
                         {
                             AddedAtUtc = DateTime.UtcNow,
-                            FilePath = @"\Asserts\Images\Profile\user1F.jpg",
+                            FilePath = @"\Assets\Images\Profile\user1F.jpg",
                             AdditionalInformation = "?Name=user10&Version=1",
                         }
                     }
@@ -187,7 +187,7 @@ namespace AuthorizationService
                         new ProfilePhoto
                         {
                             AddedAtUtc = DateTime.UtcNow,
-                            FilePath = @"\Asserts\Images\Profile\user2.jpg",
+                            FilePath = @"\Assets\Images\Profile\user2.jpg",
                             AdditionalInformation = "?Name=user2&Version=1",
                         }
                     }
@@ -221,7 +221,7 @@ namespace AuthorizationService
                         new ProfilePhoto
                         {
                             AddedAtUtc = DateTime.UtcNow,
-                            FilePath = @"\Asserts\Images\Profile\user9F.jpg",
+                            FilePath = @"\Assets\Images\Profile\user9F.jpg",
                             AdditionalInformation = "?Name=user9F&Version=1",
                         }
                     }
@@ -256,7 +256,7 @@ namespace AuthorizationService
                         new ProfilePhoto
                         {
                             AddedAtUtc = DateTime.UtcNow,
-                            FilePath = @"\Asserts\Images\Profile\user3.jpg",
+                            FilePath = @"\Assets\Images\Profile\user3.jpg",
                             AdditionalInformation = "?Name=user3&Version=1",
                         }
                     }
@@ -291,7 +291,7 @@ namespace AuthorizationService
                         new ProfilePhoto
                         {
                             AddedAtUtc = DateTime.UtcNow,
-                            FilePath = @"\Asserts\Images\Profile\user4F.jpg",
+                            FilePath = @"\Assets\Images\Profile\user4F.jpg",
                             AdditionalInformation = "?Name=user4F&Version=1",
                         }
                     }
@@ -326,7 +326,7 @@ namespace AuthorizationService
                         new ProfilePhoto
                         {
                             AddedAtUtc = DateTime.UtcNow,
-                            FilePath = @"\Asserts\Images\Profile\user1F.jpg",
+                            FilePath = @"\Assets\Images\Profile\user1F.jpg",
                             AdditionalInformation = "?Name=user1F&Version=1",
                         }
                     }
@@ -361,7 +361,7 @@ namespace AuthorizationService
                         new ProfilePhoto
                         {
                             AddedAtUtc = DateTime.UtcNow,
-                            FilePath = @"\Asserts\Images\Profile\user5.jpg",
+                            FilePath = @"\Assets\Images\Profile\user5.jpg",
                             AdditionalInformation = "?Name=user5&Version=1",
                         }
                     }
@@ -396,7 +396,7 @@ namespace AuthorizationService
                         new ProfilePhoto
                         {
                             AddedAtUtc = DateTime.UtcNow,
-                            FilePath = @"\Asserts\Images\Profile\user6.jpg",
+                            FilePath = @"\Assets\Images\Profile\user6.jpg",
                             AdditionalInformation = "?Name=user6&Version=1",
                         }
                     }
@@ -431,7 +431,7 @@ namespace AuthorizationService
                         new ProfilePhoto
                         {
                             AddedAtUtc = DateTime.UtcNow,
-                            FilePath = @"\Asserts\Images\Profile\user7F.jpg",
+                            FilePath = @"\Assets\Images\Profile\user7F.jpg",
                             AdditionalInformation = "?Name=user7F&Version=1",
                         }
                     }
@@ -465,7 +465,7 @@ namespace AuthorizationService
                         new ProfilePhoto
                         {
                             AddedAtUtc = DateTime.UtcNow,
-                            FilePath = @"\Asserts\Images\Profile\user8.jpg",
+                            FilePath = @"\Assets\Images\Profile\user8.jpg",
                             AdditionalInformation = "?Name=user8&Version=1",
                         }
                     }
