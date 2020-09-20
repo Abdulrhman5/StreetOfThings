@@ -231,7 +231,7 @@ namespace AuthorizationService
                         {
                             IsValid = true,
                             LoggedAt = DateTime.UtcNow,
-                            LoginId = Guid.Parse("b1590daf-7004-48f0-8af5-bc6ba97d5bed"),
+                            LoginId = Guid.Parse("b1590daf-7004-48f0-8af5-bc6ba97d0005"),
                             Token = "This is dummy token, this token is generated during seeding data.",
                         }
                     }
@@ -254,7 +254,7 @@ namespace AuthorizationService
                         {
                             IsValid = true,
                             LoggedAt = DateTime.UtcNow,
-                            LoginId = Guid.Parse("b1590daf-7004-48f0-8af5-bc6ba97d5bed"),
+                            LoginId = Guid.Parse("b1590daf-7004-48f0-8af5-bc6ba97d0006"),
                             Token = "This is dummy token, this token is generated during seeding data.",
                         }
                     }
@@ -277,7 +277,7 @@ namespace AuthorizationService
                         {
                             IsValid = true,
                             LoggedAt = DateTime.UtcNow,
-                            LoginId = Guid.Parse("b1590daf-7004-48f0-8af5-bc6ba97d5bed"),
+                            LoginId = Guid.Parse("b1590daf-7004-48f0-8af5-bc6ba97d0007"),
                             Token = "This is dummy token, this token is generated during seeding data.",
                         }
                     }
@@ -300,7 +300,7 @@ namespace AuthorizationService
                         {
                             IsValid = true,
                             LoggedAt = DateTime.UtcNow,
-                            LoginId = Guid.Parse("b1590daf-7004-48f0-8af5-bc6ba97d5bed"),
+                            LoginId = Guid.Parse("b1590daf-7004-48f0-8af5-bc6ba97d0008"),
                             Token = "This is dummy token, this token is generated during seeding data.",
                         }
                     }
@@ -323,7 +323,7 @@ namespace AuthorizationService
                         {
                             IsValid = true,
                             LoggedAt = DateTime.UtcNow,
-                            LoginId = Guid.Parse("b1590daf-7004-48f0-8af5-bc6ba97d5bed"),
+                            LoginId = Guid.Parse("b1590daf-7004-48f0-8af5-bc6ba97d0009"),
                             Token = "This is dummy token, this token is generated during seeding data.",
                         }
                     }

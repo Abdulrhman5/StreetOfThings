@@ -171,8 +171,7 @@ namespace Catalog.ApplicationLogic.ObjectQueries
 
         public async Task<List<ObjectDto>> GetObjectsByIds(List<int> objectsIds)
         {
-            var filteredObjects = _objectRepo.Table.Where(_queryHelper.IsValidObject)
-                .Where(_queryHelper.ValidForFreeAndLendibg);
+            var filteredObjects = _objectRepo.Table;
 
             var objects = from o in filteredObjects
                           where objectsIds.Any(oid => oid == o.OfferedObjectId)
