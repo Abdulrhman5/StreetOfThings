@@ -11,17 +11,19 @@ services:
         volumes:
             - street-sqldata:/var/opt/mssql
 
+    rabbitmq:
+        ports:
+            - "15672:15672"
+            - "5672:5672"      
+
     mobilegateservice:
         environment:
             - ASPNETCORE_ENVIRONMENT=Development
-            - ASPNETCORE_URLS=http://+:80
             - ReRoutes__0__DownstreamHostAndPorts__0__Port=80
             - ReRoutes__0__DownstreamHostAndPorts__0__Host=authorizationservice
             - SwaggerEndPoints__0__Config__0__Url=http://authorizationservice/swagger/v1/swagger.json
-
         ports:
-          - "7500:80"
-          - "8500:433"
+            - "25000:80"
         volumes:
           - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
           - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
@@ -29,12 +31,39 @@ services:
     authorizationservice:
         environment:
             - ASPNETCORE_ENVIRONMENT=Development
-            - ASPNETCORE_URLS=http://+:80
             - ConnectionStrings__UsersConnection=Server=sqldata;Database=Authorization.User;User Id=sa;Password=Pass@word
-
+            - Hosting__HttpPort=80
+            - Hosting__GrpcPort=81
         ports:
-            - "7000:80"
-            - "8000:433"
+            - "20000:80"
+            - "21000:81"
+        volumes:
+            - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+            - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+             
+    catalogservice:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ConnectionStrings__CatalogConnection=Server=sqldata;Database=Catalog.Objects;User Id=sa;Password=Pass@word
+            - Hosting__HttpPort=80
+            - Hosting__GrpcPort=81
+            - Services__EventBus=rabbitmq
+        ports:
+            - "20001:80"
+            - "21001:81"
+        volumes:
+            - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+            - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+    transactionservice:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ConnectionStrings__UsersConnection=Server=sqldata;Database=Authorization.User;User Id=sa;Password=Pass@word
+            - Hosting__HttpPort=80
+            - Hosting__GrpcPort=81
+        ports:
+            - "20002:80"
+            - "21002:81"
         volumes:
             - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
             - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro

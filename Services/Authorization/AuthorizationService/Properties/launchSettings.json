@@ -28,7 +28,8 @@
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
       "publishAllPorts": true,
-      "useSSL": true
+      "useSSL": true,
+      "applicationUrl": "http://localhost:20000;https://localhost:30000"
     },
     "Azure Dev Spaces": {
       "commandName": "AzureDevSpaces",

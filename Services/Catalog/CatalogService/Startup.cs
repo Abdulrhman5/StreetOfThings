@@ -59,7 +59,7 @@ namespace CatalogService
 
             services.AddIntegrationEventService(new IntegrationEventOptions
             {
-                HostName = "localhost",
+                HostName = Configuration["Services:EventBus"],
                 RetryCount = 5,
                 SubscriptionClientName = "Catalog",
             });

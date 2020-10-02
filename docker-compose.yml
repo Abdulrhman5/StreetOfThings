@@ -5,16 +5,21 @@ services:
     sqldata:
         image: microsoft/mssql-server-linux:latest
 
+    rabbitmq:
+        image: rabbitmq:3-management-alpine
+
+
     mobilegateservice:
-        image: ${DOCKER_REGISTRY-}mobilegateservice
+        image: mobilegateservice
         build:
             context: .
             dockerfile: Gateways/MobileApiGateway/Dockerfile
+            target: development
         depends_on:
             - authorizationservice
 
     authorizationservice:
-        image: ${DOCKER_REGISTRY-}authorizationservice
+        image: authorizationservice
 
         build:
           context: .
@@ -22,3 +27,28 @@ services:
         
         depends_on:
             - sqldata
+
+
+    catalogservice:
+        image: catalogservice
+
+        build:
+          context: .
+          dockerfile: Services/Catalog/CatalogService/Dockerfile
+        
+        depends_on:
+            - sqldata
+            - authorizationservice
+            - rabbitmq
+
+    transactionservice:
+        image: transactionservice
+
+        build:
+          context: .
+          dockerfile: Services/Transaction/Transaction.Service/Dockerfile
+        
+        depends_on:
+            - sqldata
+            - authorizationservice
+            - catalogservice
