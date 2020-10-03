@@ -9,15 +9,6 @@ services:
         image: rabbitmq:3-management-alpine
 
 
-    mobilegateservice:
-        image: mobilegateservice
-        build:
-            context: .
-            dockerfile: Gateways/MobileApiGateway/Dockerfile
-            target: development
-        depends_on:
-            - authorizationservice
-
     authorizationservice:
         image: authorizationservice
 
@@ -52,3 +43,29 @@ services:
             - sqldata
             - authorizationservice
             - catalogservice
+                
+
+    
+    mobilegateservice:
+        image: mobilegateservice
+        build:
+            context: .
+            dockerfile: Gateways/MobileApiGateway/Dockerfile
+            target: development
+        depends_on:
+            - authorizationservice
+            - catalogservice
+            - transactionservice
+
+    
+    admingateservice:
+        image: admingateservice
+        build:
+            context: .
+            dockerfile: Gateways/AdministrationGateway/Dockerfile
+            target: development
+
+        depends_on:
+            - authorizationservice
+            - catalogservice
+            - transactionservice
