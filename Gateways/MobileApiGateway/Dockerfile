@@ -34,7 +34,7 @@ COPY ["BuildingBlocks/EventLog.DataAccessLayer/EventLog.DataAccessLayer.csproj",
 COPY ["Services/CommonLibrary/CommonLibrary.csproj", "Services/CommonLibrary/"]
 COPY ["docker-compose.dcproj", "docker-compose.dcproj"]
 
-RUN dotnet restore "StreetThings.WebApps.sln"
+RUN dotnet restore "StreetThings.WebApps.sln" -v n
 COPY . .
 
 WORKDIR "/src/Gateways/MobileApiGateway"

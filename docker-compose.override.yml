@@ -28,7 +28,7 @@ services:
         volumes:
             - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
             - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
-             
+
     catalogservice:
         environment:
             - ASPNETCORE_ENVIRONMENT=Development
@@ -66,8 +66,8 @@ services:
         ports:
             - "25000:80"
         volumes:
-          - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-          - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+            - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+            - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
 
 
     admingateservice:
@@ -79,8 +79,8 @@ services:
         ports:
             - "25001:80"
         volumes:
-          - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-          - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+            - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+            - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
 
 
 volumes:
