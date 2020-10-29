@@ -63,6 +63,7 @@ services:
             - ReRoutes__0__DownstreamHostAndPorts__0__Port=80
             - ReRoutes__0__DownstreamHostAndPorts__0__Host=authorizationservice
             - SwaggerEndPoints__0__Config__0__Url=http://authorizationservice/swagger/v1/swagger.json
+            - Services__Authorization=http://authorizationservice
         ports:
             - "25000:80"
         volumes:

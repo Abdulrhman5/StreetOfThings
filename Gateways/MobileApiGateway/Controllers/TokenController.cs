@@ -30,7 +30,7 @@ namespace MobileApiGateway.Controllers
             HttpClient client = new HttpClient();
             var clientId = _configuration["IdentityServerConfigs:client_id"];
             var clientSecret = _configuration["IdentityServerConfigs:client_secret"];
-            var accessTokenUrl = _configuration["IdentityServerConfigs:AccessTokenUrl"];
+            var accessTokenUrl = _configuration["Services:Authorization"] +"/connect/token";
             var dic = new Dictionary<string, string>();
             dic.Add("client_id", clientId);
             dic.Add("client_secret", clientSecret);
@@ -53,7 +53,7 @@ namespace MobileApiGateway.Controllers
                 await _responseMessageConverter.ConvertAndCopyResponse(HttpContext, response);
                 return new EmptyResult();
             }
-            catch
+            catch(Exception e)
             {
                 var message = new ErrorMessage
                 {

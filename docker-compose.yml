@@ -51,7 +51,6 @@ services:
         build:
             context: .
             dockerfile: Gateways/MobileApiGateway/Dockerfile
-            target: development
         depends_on:
             - authorizationservice
             - catalogservice
@@ -63,7 +62,6 @@ services:
         build:
             context: .
             dockerfile: Gateways/AdministrationGateway/Dockerfile
-            target: development
 
         depends_on:
             - authorizationservice
