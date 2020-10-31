@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Transaction.DataAccessLayer;
 using Transaction.Models;
 
-namespace Transaction.BusinessLogic.Infrastructure
+namespace Transaction.Service.Infrastructure
 {
     public class ObjectDataManager
     {

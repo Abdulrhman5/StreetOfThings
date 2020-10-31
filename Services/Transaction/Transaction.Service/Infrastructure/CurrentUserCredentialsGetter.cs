@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 
-namespace Transaction.BusinessLogic.Infrastructure
+namespace Transaction.Service.Infrastructure
 {
     public class CurrentUserCredentialsGetter
     {

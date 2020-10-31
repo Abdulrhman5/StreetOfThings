@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Transaction.BusinessLogic.Infrastructure;
 using Transaction.DataAccessLayer;
 using Transaction.Models;
 
-namespace Transaction.BusinessLogic
+namespace Transaction.Service.Infrastructure
 {
     public interface ITransactionTokenManager
     {

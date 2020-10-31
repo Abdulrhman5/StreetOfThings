@@ -4,11 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
-using Transaction.BusinessLogic.Infrastructure;
 using Transaction.DataAccessLayer;
 using Transaction.Models;
 
-namespace Transaction.BusinessLogic.Infrastructure
+namespace Transaction.Service.Infrastructure
 {
 
     public class OwnershipAuthorization<TKey, T> where T : class, IEntity<TKey>

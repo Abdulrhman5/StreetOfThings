@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Transaction.BusinessLogic
+namespace Transaction.Service.Infrastructure
 {
 
     public interface IAlphaNumericStringGenerator

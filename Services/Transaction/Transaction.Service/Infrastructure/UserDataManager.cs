@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Transaction.DataAccessLayer;
 using Transaction.Models;
 
-namespace Transaction.BusinessLogic.Infrastructure
+namespace Transaction.Service.Infrastructure
 {
     class UserDataManager
     {

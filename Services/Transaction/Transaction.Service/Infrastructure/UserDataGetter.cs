@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Transaction.BusinessLogic.Infrastructure
+namespace Transaction.Service.Infrastructure
 {
     public class UserDataGetter 
     {

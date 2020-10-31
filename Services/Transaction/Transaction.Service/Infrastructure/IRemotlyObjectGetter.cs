@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Transaction.Models;
 
-namespace Transaction.BusinessLogic.Infrastructure
+namespace Transaction.Service.Infrastructure
 {
     public interface IRemotlyObjectGetter 
     {
