@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace Transaction.BusinessLogic.RegistrationCommands
+namespace Transaction.Service.ViewModels
 {
-    public class RegistrationTokenResultDto
+    public class RefreshRegistrationTokenResultViewModel
     {
         public string RegistrationToken { get; set; }
 
@@ -12,10 +13,5 @@ namespace Transaction.BusinessLogic.RegistrationCommands
 
         public DateTime UseBeforeUtc { get; set; }
 
-    }
-
-    public class RefreshRegistrationTokenDto
-    {
-        public int ObjectId { get; set; }
     }
 }

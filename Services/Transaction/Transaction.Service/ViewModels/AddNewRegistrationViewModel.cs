@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Transaction.BusinessLogic.RegistrationCommands
+namespace Transaction.Service.ViewModels
 {
-    public class AddNewRegistrationDto
+    public class AddNewRegistrationViewModel
     {
         public int ObjectId { get; set; }
 
