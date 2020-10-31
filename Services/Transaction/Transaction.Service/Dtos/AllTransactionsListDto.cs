@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Transaction.BusinessLogic.RegistrationQueries
+namespace Transaction.Service.Dtos
 {
     public class AllTransactionsListDto
     {
@@ -12,6 +12,6 @@ namespace Transaction.BusinessLogic.RegistrationQueries
 
         public int ReturnedTransactionsCount { get; set; }
 
-        public List<TransactionDto> Transactions { get; set; }
+        public List<RegistrationDto> Transactions { get; set; }
     }
 }

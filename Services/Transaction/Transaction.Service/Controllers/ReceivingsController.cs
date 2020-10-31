@@ -12,7 +12,7 @@ using Transaction.DataAccessLayer;
 using Transaction.Models;
 using Transaction.Service.Events;
 using Transaction.Service.Infrastructure;
-using Transaction.Service.ViewModels;
+using Transaction.Service.Dtos;
 
 namespace Transaction.Service.Controllers
 {

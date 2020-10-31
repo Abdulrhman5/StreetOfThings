@@ -7,7 +7,7 @@ using Transaction.Models;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-namespace Transaction.BusinessLogic.RegistrationQueries
+namespace Transaction.Service.Infrastructure
 {
     public class TransactionStatisticsGetter
     {

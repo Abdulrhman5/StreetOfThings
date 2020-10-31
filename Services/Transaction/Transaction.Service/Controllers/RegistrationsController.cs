@@ -12,7 +12,8 @@ using Transaction.DataAccessLayer;
 using Transaction.Models;
 using Transaction.Service.Events;
 using Transaction.Service.Infrastructure;
-using Transaction.Service.ViewModels;
+using Transaction.Service.Dtos;
+using TransactionType = Transaction.Service.Dtos.TransactionType;
 
 namespace Transaction.Service.Controllers
 {
@@ -362,7 +363,7 @@ namespace Transaction.Service.Controllers
                             RegistredAtUtc = rg.RegisteredAtUtc,
                             ReceivedAtUtc = isReceived ? rg.ObjectReceiving.ReceivedAtUtc : (DateTime?)null,
                             ReturenedAtUtc = isReturned ? rg.ObjectReceiving.ObjectReturning.ReturnedAtUtc : (DateTime?)null,
-                            TranscationType = !rg.Object.ShouldReturn ? ViewModels.TransactionType.Free : rg.Object.HourlyCharge.HasValue ? ViewModels.TransactionType.Renting : ViewModels.TransactionType.Lending,
+                            TranscationType = !rg.Object.ShouldReturn ? TransactionType.Free : rg.Object.HourlyCharge.HasValue ? TransactionType.Renting : TransactionType.Lending,
                             HourlyCharge = rg.Object.HourlyCharge,
                             ShouldReturnAfter = rg.ShouldReturnItAfter,
                             TransactionStatus = rg.Status == ObjectRegistrationStatus.Canceled ?
@@ -401,7 +402,7 @@ namespace Transaction.Service.Controllers
                             RegistredAtUtc = rg.RegisteredAtUtc,
                             ReceivedAtUtc = isReceived ? rg.ObjectReceiving.ReceivedAtUtc : (DateTime?)null,
                             ReturenedAtUtc = isReturned ? rg.ObjectReceiving.ObjectReturning.ReturnedAtUtc : (DateTime?)null,
-                            TranscationType = !rg.Object.ShouldReturn ? ViewModels.TransactionType.Free : rg.Object.HourlyCharge.HasValue ? ViewModels.TransactionType.Renting : ViewModels.TransactionType.Lending,
+                            TranscationType = !rg.Object.ShouldReturn ? TransactionType.Free : rg.Object.HourlyCharge.HasValue ? TransactionType.Renting : TransactionType.Lending,
                             HourlyCharge = rg.Object.HourlyCharge,
                             ShouldReturnAfter = rg.ShouldReturnItAfter,
                             TransactionStatus = rg.Status == ObjectRegistrationStatus.Canceled ? TransactionStatus.Canceled :

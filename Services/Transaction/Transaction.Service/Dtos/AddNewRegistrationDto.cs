@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Transaction.Service.ViewModels
+namespace Transaction.Service.Dtos
 {
     public class AddNewRegistrationDto
     {
