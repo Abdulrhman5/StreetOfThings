@@ -9,7 +9,7 @@ using Transaction.Models;
 
 namespace Transaction.Service.Infrastructure
 {
-    class UserDataManager
+    class UserDataManager : IUserDataManager
     {
         private IRepository<Guid, User> _userRepo;
 

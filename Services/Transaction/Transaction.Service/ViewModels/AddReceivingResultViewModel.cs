@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace Transaction.BusinessLogic.ReceivingCommands
+namespace Transaction.Service.ViewModels
 {
-    public class ObjectReceivingResultDto
+    public class AddReceivingResultViewModel
     {
         public Guid RegistrationId { get; set; }
 

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Transaction.BusinessLogic.Events
+namespace Transaction.Service.Events
 {
     class TransactionReceivedIntegrationEvent : IntegrationEvent
     {

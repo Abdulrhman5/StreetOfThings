@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Transaction.BusinessLogic.Events
+namespace Transaction.Service.Events
 {
     public class NewRegistrationIntegrationEvent : IntegrationEvent
     {
