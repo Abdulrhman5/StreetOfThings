@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Transaction.Service.ViewModels
 {
-    public class AddReceivingResultViewModel
+    public class AddReceivingResultDto
     {
         public Guid RegistrationId { get; set; }
 

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Transaction.BusinessLogic.ReturningCommands
+namespace Transaction.Service.Dtos
 {
-    public class ObjectReturningDto
+    public class AddObjectReturningDto
     {
         public string ReturningToken { get; set; }
     }

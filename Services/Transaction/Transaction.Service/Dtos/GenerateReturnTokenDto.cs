@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Transaction.BusinessLogic.ReturningCommands
+namespace Transaction.Service.Dtos
 {
     public class GenerateReturnTokenDto
     {

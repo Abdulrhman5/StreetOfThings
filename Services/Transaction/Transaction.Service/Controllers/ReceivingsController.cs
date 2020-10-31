@@ -53,7 +53,7 @@ namespace Transaction.Service.Controllers
         [Route("create")]
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Create([FromBody] AddReceivingViewModel addReceivingViewModel)
+        public async Task<IActionResult> Create([FromBody] AddReceivingDto addReceivingViewModel)
         {
             if (addReceivingViewModel == null || addReceivingViewModel.RegistrationToken.IsNullOrEmpty())
             {
@@ -189,7 +189,7 @@ namespace Transaction.Service.Controllers
             _eventBus.Publish(evnt);
 
             // Publish the event
-            return StatusCode(200, new AddReceivingResultViewModel
+            return StatusCode(200, new AddReceivingResultDto
             {
                 ObjectId = _objectRepo.Get(theRegistration.ObjectId).OriginalObjectId,
                 ReceivedAtUtc = receiving.ReceivedAtUtc,

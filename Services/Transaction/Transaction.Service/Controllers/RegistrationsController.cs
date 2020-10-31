@@ -67,7 +67,7 @@ namespace Transaction.Service.Controllers
         [Route("create")]
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Create([FromBody] AddNewRegistrationViewModel newRegistrationDto)
+        public async Task<IActionResult> Create([FromBody] AddNewRegistrationDto newRegistrationDto)
         {
             ErrorMessage ObjectNotAvailable = new ErrorMessage
             {
@@ -197,13 +197,13 @@ namespace Transaction.Service.Controllers
 
             var token = await _tokenManager.GenerateToken(registrationModel.ObjectRegistrationId, TokenType.Receiving);
 
-            var dto = new AddNewRegistrationResultViewModel
+            var dto = new AddNewRegistrationResultDto
             {
                 ObjectId = registrationModel.Object.OriginalObjectId,
                 RegistrationId = registrationModel.ObjectRegistrationId,
                 ShouldBeReturnedAfterReceving = registrationModel.ShouldReturnItAfter,
                 RegistrationExpiresAtUtc = registrationModel.ExpiresAtUtc,
-                RegistrationToken = new RegistrationTokenResultViewModel
+                RegistrationToken = new RegistrationTokenResultDto
                 {
                     RegistrationToken = token.Token,
                     CreatedAtUtc = token.IssuedAtUtc,
@@ -217,7 +217,7 @@ namespace Transaction.Service.Controllers
         [Route("refresh")]
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> RefreshToken([FromBody] RefreshRegistrationTokenViewModel tokenRefresh)
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshRegistrationTokenDto tokenRefresh)
         {
             if (tokenRefresh is null)
             {
@@ -256,7 +256,7 @@ namespace Transaction.Service.Controllers
 
             var token = await _tokenManager.GenerateToken(registrations.FirstOrDefault().ObjectRegistrationId, TokenType.Receiving);
 
-            return Ok(new RegistrationTokenResultViewModel
+            return Ok(new RegistrationTokenResultDto
             {
                 CreatedAtUtc = token.IssuedAtUtc,
                 RegistrationToken = token.Token,
@@ -267,7 +267,7 @@ namespace Transaction.Service.Controllers
         [Route("cancel")]
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> CancelRegistration([FromBody] CancelRegistrationViewModel cancelRegistration)
+        public async Task<IActionResult> CancelRegistration([FromBody] CancelRegistrationDto cancelRegistration)
         {
             if (cancelRegistration == null)
             {
@@ -351,7 +351,7 @@ namespace Transaction.Service.Controllers
                         let isReceived = rg.ObjectReceiving != null
                         let isReturned = rg.ObjectReceiving != null && rg.ObjectReceiving.ObjectReturning != null
                         orderby rg.RegisteredAtUtc descending
-                        select new RegistrationViewModel
+                        select new RegistrationDto
                         {
                             RegistrationId = rg.ObjectRegistrationId,
                             ObjectId = rg.Object.OriginalObjectId,
@@ -390,7 +390,7 @@ namespace Transaction.Service.Controllers
                         let isReceived = rg.ObjectReceiving != null
                         let isReturned = rg.ObjectReceiving != null && rg.ObjectReceiving.ObjectReturning != null
                         orderby rg.RegisteredAtUtc descending
-                        select new RegistrationViewModel
+                        select new RegistrationDto
                         {
                             RegistrationId = rg.ObjectRegistrationId,
                             ObjectId = rg.Object.OriginalObjectId,

@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace Transaction.Service.ViewModels
 {
-    public class CancelRegistrationViewModel
+    public class RefreshRegistrationTokenDto
     {
-        public string RegistrationId { get; set; }
+        public int ObjectId { get; set; }
     }
 }

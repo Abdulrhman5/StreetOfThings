@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Transaction.BusinessLogic.ReturningCommands
+namespace Transaction.Service.Dtos
 {
-    public class ObjectReturningResultDto
+    public class AddObjectReturningResultDto
     {
         public Guid RegistrationId { get; set; }
 

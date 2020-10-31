@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Transaction.Service.ViewModels
 {
-    public class RegistrationViewModel
+    public class RegistrationDto
     {
         public Guid RegistrationId { get; set; }
 

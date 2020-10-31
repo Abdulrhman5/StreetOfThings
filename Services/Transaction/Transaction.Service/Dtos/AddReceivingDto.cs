@@ -5,13 +5,8 @@ using System.Threading.Tasks;
 
 namespace Transaction.Service.ViewModels
 {
-    public class RefreshRegistrationTokenResultViewModel
+    public class AddReceivingDto
     {
         public string RegistrationToken { get; set; }
-
-        public DateTime CreatedAtUtc { get; set; }
-
-        public DateTime UseBeforeUtc { get; set; }
-
     }
 }

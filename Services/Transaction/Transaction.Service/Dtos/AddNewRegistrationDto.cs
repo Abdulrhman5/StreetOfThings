@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 
 namespace Transaction.Service.ViewModels
 {
-    public class RefreshRegistrationTokenViewModel
+    public class AddNewRegistrationDto
     {
         public int ObjectId { get; set; }
+
+        public int? ShouldReturnAfter { get; set; }
     }
 }

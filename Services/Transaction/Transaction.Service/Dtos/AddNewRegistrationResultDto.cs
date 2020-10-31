@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Transaction.Service.ViewModels
 {
-    public class AddNewRegistrationResultViewModel
+    public class AddNewRegistrationResultDto
     {
         public Guid RegistrationId { get; set; }
 
@@ -15,10 +15,10 @@ namespace Transaction.Service.ViewModels
 
         public DateTime RegistrationExpiresAtUtc { get; set; }
 
-        public RegistrationTokenResultViewModel RegistrationToken { get; set; }
+        public RegistrationTokenResultDto RegistrationToken { get; set; }
     }
 
-    public class RegistrationTokenResultViewModel
+    public class RegistrationTokenResultDto
     {
         public string RegistrationToken { get; set; }
 

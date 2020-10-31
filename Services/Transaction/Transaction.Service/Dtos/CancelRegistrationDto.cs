@@ -5,10 +5,8 @@ using System.Threading.Tasks;
 
 namespace Transaction.Service.ViewModels
 {
-    public class AddNewRegistrationViewModel
+    public class CancelRegistrationDto
     {
-        public int ObjectId { get; set; }
-
-        public int? ShouldReturnAfter { get; set; }
+        public string RegistrationId { get; set; }
     }
 }
