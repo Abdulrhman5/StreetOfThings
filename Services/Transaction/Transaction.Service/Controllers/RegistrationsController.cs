@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Transaction.BusinessLogic.RegistrationQueries;
 using Transaction.DataAccessLayer;
 using Transaction.Models;
 using Transaction.Service.Events;
@@ -20,10 +19,6 @@ namespace Transaction.Service.Controllers
     [Route("api/[controller]")]
     public class RegistrationsController : MyControllerBase
     {
-        private ITransactionGetter _transactionsGetter;
-
-
-
 
         private readonly IUserDataManager _userDataManager;
 
@@ -45,6 +40,29 @@ namespace Transaction.Service.Controllers
 
         private OwnershipAuthorization<Guid, ObjectRegistration> _ownershipAuth;
 
+        public RegistrationsController(
+            IUserDataManager userDataManager,
+            IRepository<Guid, ObjectRegistration> registrationsRepo,
+            ObjectDataManager objectDataManager,
+            IRepository<Guid, ObjectReceiving> objectReceiving,
+            IEventBus eventBus,
+            ITransactionTokenManager tokenManager,
+            int maximumHoursForFreeLending,
+            int maximumHoursForReservationExpiration,
+            CurrentUserCredentialsGetter credentialsGetter,
+            OwnershipAuthorization<Guid, ObjectRegistration> ownershipAuth)
+        {
+            _userDataManager = userDataManager;
+            _registrationsRepo = registrationsRepo;
+            _objectDataManager = objectDataManager;
+            _objectReceiving = objectReceiving;
+            _eventBus = eventBus;
+            _tokenManager = tokenManager;
+            this.maximumHoursForFreeLending = maximumHoursForFreeLending;
+            this.maximumHoursForReservationExpiration = maximumHoursForReservationExpiration;
+            _credentialsGetter = credentialsGetter;
+            _ownershipAuth = ownershipAuth;
+        }
 
         [Route("create")]
         [HttpPost]
@@ -321,8 +339,38 @@ namespace Transaction.Service.Controllers
         [Authorize]
         public async Task<IActionResult> GetUsersRegistrationsOnOtherUsersObjects([FromQuery] PagingArguments pagingArguments)
         {
-            var result = await _transactionsGetter.GetTransactionsWhereUserIsRecipient(pagingArguments);
-            return Ok(result);
+            var currentUser = _credentialsGetter.GetCuurentUser();
+            if (currentUser?.UserId is null)
+            {
+                throw new UnauthorizedAccessException();
+            }
+            var userId = currentUser.UserId;
+
+            var trans = from rg in _registrationsRepo.Table
+                        where rg.Object.OwnerUser.UserId == Guid.Parse(userId)
+                        let isReceived = rg.ObjectReceiving != null
+                        let isReturned = rg.ObjectReceiving != null && rg.ObjectReceiving.ObjectReturning != null
+                        orderby rg.RegisteredAtUtc descending
+                        select new RegistrationViewModel
+                        {
+                            RegistrationId = rg.ObjectRegistrationId,
+                            ObjectId = rg.Object.OriginalObjectId,
+                            OwnerId = rg.Object.OwnerUserId.ToString(),
+                            ReceiverId = rg.RecipientLogin.UserId.ToString(),
+                            ReceivingId = rg.ObjectReceiving.ObjectReceivingId,
+                            ReturnId = isReturned ? rg.ObjectReceiving.ObjectReturning.ObjectReturningId : (Guid?)null,
+                            RegistredAtUtc = rg.RegisteredAtUtc,
+                            ReceivedAtUtc = isReceived ? rg.ObjectReceiving.ReceivedAtUtc : (DateTime?)null,
+                            ReturenedAtUtc = isReturned ? rg.ObjectReceiving.ObjectReturning.ReturnedAtUtc : (DateTime?)null,
+                            TranscationType = !rg.Object.ShouldReturn ? ViewModels.TransactionType.Free : rg.Object.HourlyCharge.HasValue ? ViewModels.TransactionType.Renting : ViewModels.TransactionType.Lending,
+                            HourlyCharge = rg.Object.HourlyCharge,
+                            ShouldReturnAfter = rg.ShouldReturnItAfter,
+                            TransactionStatus = rg.Status == ObjectRegistrationStatus.Canceled ?
+                            TransactionStatus.Canceled : isReturned ?
+                            TransactionStatus.Returned : isReceived ?
+                            TransactionStatus.Received : TransactionStatus.RegisteredOnly
+                        };
+            return Ok(await trans.SkipTakeAsync(pagingArguments));
         }
 
         [Route("MeAsOwner")]
@@ -330,8 +378,40 @@ namespace Transaction.Service.Controllers
         [Authorize]
         public async Task<IActionResult> GetUserObjectsTransactions([FromQuery] PagingArguments pagingArguments)
         {
-            var result = await _transactionsGetter.GetTransactionsWhereUserIsOwner(pagingArguments);
-            return Ok(result);
+            var currentUser = _credentialsGetter.GetCuurentUser();
+            if (currentUser?.UserId is null)
+            {
+                throw new UnauthorizedAccessException();
+            }
+            var userId = currentUser.UserId;
+
+            var trans = from rg in _registrationsRepo.Table
+                        where rg.RecipientLogin.UserId == Guid.Parse(userId)
+                        let isReceived = rg.ObjectReceiving != null
+                        let isReturned = rg.ObjectReceiving != null && rg.ObjectReceiving.ObjectReturning != null
+                        orderby rg.RegisteredAtUtc descending
+                        select new RegistrationViewModel
+                        {
+                            RegistrationId = rg.ObjectRegistrationId,
+                            ObjectId = rg.Object.OriginalObjectId,
+                            OwnerId = rg.Object.OwnerUserId.ToString(),
+                            ReceiverId = rg.RecipientLogin.UserId.ToString(),
+                            ReceivingId = rg.ObjectReceiving.ObjectReceivingId,
+                            ReturnId = isReturned ? rg.ObjectReceiving.ObjectReturning.ObjectReturningId : (Guid?)null,
+                            RegistredAtUtc = rg.RegisteredAtUtc,
+                            ReceivedAtUtc = isReceived ? rg.ObjectReceiving.ReceivedAtUtc : (DateTime?)null,
+                            ReturenedAtUtc = isReturned ? rg.ObjectReceiving.ObjectReturning.ReturnedAtUtc : (DateTime?)null,
+                            TranscationType = !rg.Object.ShouldReturn ? ViewModels.TransactionType.Free : rg.Object.HourlyCharge.HasValue ? ViewModels.TransactionType.Renting : ViewModels.TransactionType.Lending,
+                            HourlyCharge = rg.Object.HourlyCharge,
+                            ShouldReturnAfter = rg.ShouldReturnItAfter,
+                            TransactionStatus = rg.Status == ObjectRegistrationStatus.Canceled ? TransactionStatus.Canceled :
+                                isReturned ? TransactionStatus.Returned :
+                                isReceived ? TransactionStatus.Received :
+                                TransactionStatus.RegisteredOnly,
+                        };
+
+
+            return Ok(await trans.SkipTakeAsync(pagingArguments));
         }
     }
 }
