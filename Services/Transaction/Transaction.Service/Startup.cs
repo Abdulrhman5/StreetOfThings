@@ -97,7 +97,7 @@ namespace Transaction.Service
 
         public void ConfigureContainer(IUnityContainer container)
         {
-            
+            container.RegisterType(typeof(IRepository<,>), typeof(GenericRepository<,>));
 
             container.RegisterType<IRemotlyObjectGetter, RemoteObjectGetter>();
             container.RegisterType<CurrentUserCredentialsGetter>();
@@ -107,7 +107,6 @@ namespace Transaction.Service
 
             container.RegisterType<IAlphaNumericStringGenerator, RngAlphaNumericStringGenerator>();
             container.RegisterType<ITransactionTokenManager, TransactionTokenManager>();
-
 
             container.RegisterType(typeof(OwnershipAuthorization<,>));
         }

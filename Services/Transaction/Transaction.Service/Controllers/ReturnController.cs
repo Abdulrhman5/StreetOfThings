@@ -8,7 +8,6 @@ using HostingHelpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Transaction.DataAccessLayer;
 using Transaction.Models;
 using Transaction.Service.Dtos;
 using Transaction.Service.Events;

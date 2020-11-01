@@ -3,8 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
-using Transaction.DataAccessLayer;
 using Transaction.Models;
+using Transaction.Service.Infrastructure;
 
 namespace Transaction.Service
 {

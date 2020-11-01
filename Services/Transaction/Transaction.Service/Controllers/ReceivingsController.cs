@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using Transaction.DataAccessLayer;
 using Transaction.Models;
 using Transaction.Service.Events;
 using Transaction.Service.Infrastructure;

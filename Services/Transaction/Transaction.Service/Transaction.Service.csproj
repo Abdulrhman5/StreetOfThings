@@ -32,6 +32,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBus.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\HostingHelpers\HostingHelpers.csproj" />
-    <ProjectReference Include="..\Transaction.DataAccessLayer\Transaction.DataAccessLayer.csproj" />
+    <ProjectReference Include="..\Transaction.Models\Transaction.Models.csproj" />
   </ItemGroup>
 </Project>
