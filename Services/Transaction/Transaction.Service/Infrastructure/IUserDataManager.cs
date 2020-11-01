@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Transaction.Models;
+using Transaction.Service.Models;
 
 namespace Transaction.Service.Infrastructure
 {

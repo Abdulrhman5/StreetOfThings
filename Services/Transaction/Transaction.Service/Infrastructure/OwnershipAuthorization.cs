@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
-using Transaction.Models;
+using Transaction.Service.Models;
 
 namespace Transaction.Service.Infrastructure
 {

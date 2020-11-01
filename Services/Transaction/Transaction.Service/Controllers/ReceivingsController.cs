@@ -8,10 +8,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using Transaction.Models;
 using Transaction.Service.Events;
 using Transaction.Service.Infrastructure;
 using Transaction.Service.Dtos;
+using Transaction.Service.Models;
 
 namespace Transaction.Service.Controllers
 {

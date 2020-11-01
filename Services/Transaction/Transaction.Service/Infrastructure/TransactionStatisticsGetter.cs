@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Transaction.Models;
+using Transaction.Service.Models;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 

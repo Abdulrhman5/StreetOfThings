@@ -8,10 +8,10 @@ using HostingHelpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Transaction.Models;
 using Transaction.Service.Dtos;
 using Transaction.Service.Events;
 using Transaction.Service.Infrastructure;
+using Transaction.Service.Models;
 
 namespace Transaction.Service.Controllers
 {

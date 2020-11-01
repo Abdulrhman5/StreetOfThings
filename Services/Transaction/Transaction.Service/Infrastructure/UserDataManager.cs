@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using Transaction.Models;
+using Transaction.Service.Models;
 
 namespace Transaction.Service.Infrastructure
 {

@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Transaction.Models;
+using Transaction.Service.Models;
 using Transaction.Service.Events;
 using Transaction.Service.Infrastructure;
 using Transaction.Service.Dtos;

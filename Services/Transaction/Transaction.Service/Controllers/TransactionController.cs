@@ -6,7 +6,7 @@ using CommonLibrary;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Transaction.Models;
+using Transaction.Service.Models;
 using Transaction.Service.Dtos;
 using Transaction.Service.Infrastructure;
 using TransactionType = Transaction.Service.Dtos.TransactionType;
