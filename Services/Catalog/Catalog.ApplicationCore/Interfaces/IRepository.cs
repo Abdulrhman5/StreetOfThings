@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Catalog.ApplicationLogic.Interfaces
+namespace Catalog.ApplicationCore.Interfaces
 {
     public interface IRepository<TKey, TEntity> where TEntity : class, IEntity<TKey>
     {
