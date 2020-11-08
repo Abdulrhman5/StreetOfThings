@@ -7,12 +7,12 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Catalog.ApplicationCore.Services.Comments
+namespace Catalog.ApplicationCore.Services
 {
-    class CommentService
+    class CommentService : ICommentService
     {
 
-        private ILogger<ObjectCommentDeleter> _logger;
+        private ILogger<CommentService> _logger;
 
         private IRepository<Guid, ObjectComment> _commentRepo;
 
@@ -20,7 +20,7 @@ namespace Catalog.ApplicationCore.Services.Comments
 
         private IRepository<int, OfferedObject> _objectRepo;
 
-        public CommentService(ILogger<ObjectCommentDeleter> logger, 
+        public CommentService(ILogger<CommentService> logger, 
             IRepository<Guid, ObjectComment> commentRepo, 
             IUserDataManager userDataManager, 
             IRepository<int, OfferedObject> objectRepo)
@@ -29,48 +29,6 @@ namespace Catalog.ApplicationCore.Services.Comments
             _commentRepo = commentRepo;
             _userDataManager = userDataManager;
             _objectRepo = objectRepo;
-        }
-
-        public async Task<CommentListDto> GetCommentsForObject(int objectId, PagingArguments pagingArguments)
-        {
-            var comments = from comment in _commentRepo.Table
-                           where comment.ObjectId == objectId
-                           orderby comment.AddedAtUtc descending
-                           select new CommentDto
-                           {
-                               UserId = comment.Login.UserId.ToString(),
-                               ObjectId = comment.ObjectId,
-                               Comment = comment.Comment,
-                               CommentedAtUtc = comment.AddedAtUtc,
-                               CommentId = comment.ObjectCommentId
-                           };
-
-            return new CommentListDto
-            {
-                Comments = comments.SkipTake(pagingArguments),
-                CommentsCount = comments.Count()
-            };
-        }
-
-        public async Task<CommentListDto> GetCommentsForObject(int objectId)
-        {
-            var comments = from comment in _commentRepo.Table
-                           where comment.ObjectId == objectId
-                           orderby comment.AddedAtUtc descending
-                           select new CommentDto
-                           {
-                               UserId = comment.Login.UserId.ToString(),
-                               ObjectId = comment.ObjectId,
-                               Comment = comment.Comment,
-                               CommentedAtUtc = comment.AddedAtUtc,
-                               CommentId = comment.ObjectCommentId
-                           };
-
-            return new CommentListDto
-            {
-                Comments = comments.ToList(),
-                CommentsCount = comments.Count()
-            };
         }
 
         public async Task<CommandResult> AuthorizedDeleteComment(DeleteCommentDto deleteCommentDto)
