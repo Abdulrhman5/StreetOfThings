@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Catalog.ApplicationCore\Catalog.ApplicationCore.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBus.csproj" />
   </ItemGroup>
 
   <ItemGroup>

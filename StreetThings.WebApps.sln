@@ -73,7 +73,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authorization.ApplicationLo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.ApplicationCore", "Services\Catalog\Catalog.ApplicationCore\Catalog.ApplicationCore.csproj", "{4EAF5188-4953-4F23-9CF7-47D5DCDF18C5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.Infrasturcture", "Services\Catalog\Catalog.Infrasturcture\Catalog.Infrasturcture.csproj", "{C0C6FF20-8BC6-431C-86A7-8DB07A0DD395}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.Infrastructure", "Services\Catalog\Catalog.Infrastructure\Catalog.Infrastructure.csproj", "{C0C6FF20-8BC6-431C-86A7-8DB07A0DD395}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

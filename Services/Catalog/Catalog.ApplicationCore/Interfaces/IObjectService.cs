@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Catalog.ApplicationCore.Interfaces
 {
-    interface IObjectService
+    public interface IObjectService
     {
         Task<CommandResult<OfferedObject>> AddObject(AddObjectDto objectDto);
         Task<CommandResult> AuthorizedDelete(DeleteObjectDto objectDto);
