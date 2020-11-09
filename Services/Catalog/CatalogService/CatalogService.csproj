@@ -41,8 +41,12 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBus.csproj" />
     <ProjectReference Include="..\..\Authorization\Models\Models.csproj" />
+    <ProjectReference Include="..\Catalog.ApplicationCore\Catalog.ApplicationCore.csproj" />
     <ProjectReference Include="..\Catalog.ApplicationLogic\Catalog.ApplicationLogic.csproj" />
     <ProjectReference Include="..\Catalog.DataAccessLayer\Catalog.DataAccessLayer.csproj" />
+    <ProjectReference Include="..\Catalog.Infrastructure\Catalog.Infrastructure.csproj">
+      <Aliases>CatalogInfrastructure</Aliases>
+    </ProjectReference>
   </ItemGroup>
 
   <ItemGroup>

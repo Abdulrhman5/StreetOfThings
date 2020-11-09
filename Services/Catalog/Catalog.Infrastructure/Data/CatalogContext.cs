@@ -21,6 +21,11 @@ namespace Catalog.Infrastructure.Data
         public DbSet<User> Users { get; set; }
 
         public DbSet<ObjectImpression> ObjectImpressions { get; set; }
+
+        public DbSet<ObjectPhoto> ObjectPhotos { get; set; }
+
+        public DbSet<TagPhoto> TagPhotos { get; set; }
+
         public CatalogContext(DbContextOptions options): base(options)
         {
 
@@ -38,11 +43,13 @@ namespace Catalog.Infrastructure.Data
 
             modelBuilder.Entity<TagPhoto>(eb =>
             {
-                eb.HasKey(tagPhoto => tagPhoto.TagId);
+                eb.HasKey(tagPhoto => tagPhoto.PhotoId);
                 eb.HasOne(tagPhoto => tagPhoto.Tag)
                     .WithOne(tag => tag.Photo)
                     .HasForeignKey<TagPhoto>(tagPhoto => tagPhoto.TagId);
             });
+
+            modelBuilder.Entity<ObjectPhoto>().HasKey(op => op.PhotoId);
         }
     }
 }

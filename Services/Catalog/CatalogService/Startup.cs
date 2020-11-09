@@ -1,4 +1,5 @@
-using AuthorizationService.Grpc;
+extern alias CatalogInfrastructure;
+using CatalogInfrastructure::AuthorizationService.Grpc;
 using Catalog.ApplicationLogic.Events;
 using Catalog.ApplicationLogic.Events.EventHandlers;
 using Catalog.DataAccessLayer;
@@ -40,6 +41,10 @@ namespace CatalogService
             Log.Information("Connection used for catalog " + catalogConnection);
 
             services.AddDbContext<CatalogContext>(opt =>
+            {
+                opt.UseSqlServer(catalogConnection, x => x.UseNetTopologySuite());
+            }); 
+            services.AddDbContext<CatalogInfrastructure.Catalog.Infrastructure.Data.CatalogContext>(opt =>
             {
                 opt.UseSqlServer(catalogConnection, x => x.UseNetTopologySuite());
             });
@@ -85,7 +90,7 @@ namespace CatalogService
             });
 
             AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
-
+            
             // Registration of the DI service
             services.AddGrpcClient<UsersGrpc.UsersGrpcClient>(options => {
                 options.Address = new Uri("http://localhost:21000");
