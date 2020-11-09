@@ -4,6 +4,10 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <WarningsAsErrors>NU1605; CS0649</WarningsAsErrors>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Grpc.Core" Version="2.25.0" />
     <PackageReference Include="Grpc.Tools" Version="2.29.0" PrivateAssets="All" />
@@ -12,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\HostingHelpers\HostingHelpers.csproj" />
     <ProjectReference Include="..\Catalog.ApplicationCore\Catalog.ApplicationCore.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBus.csproj" />
   </ItemGroup>
