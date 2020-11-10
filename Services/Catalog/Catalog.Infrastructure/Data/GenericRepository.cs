@@ -1,5 +1,6 @@
 ﻿using Catalog.ApplicationCore.Entities;
 using Catalog.ApplicationCore.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -74,6 +75,11 @@ namespace Catalog.Infrastructure.Data
         public void AddRange(List<TEntity> entities)
         {
             _context.AddRange(entities);
+        }
+
+        public async Task<List<T>> ToListAsync<T>(IQueryable<T> query)
+        {
+            return await query.ToListAsync();
         }
     }
 }

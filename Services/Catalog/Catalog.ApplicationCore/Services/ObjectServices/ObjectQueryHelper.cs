@@ -1,4 +1,6 @@
-﻿using Catalog.ApplicationCore.Entities;
+﻿using Catalog.ApplicationCore.Dtos;
+using Catalog.ApplicationCore.Entities;
+using Catalog.ApplicationCore.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
 using System;

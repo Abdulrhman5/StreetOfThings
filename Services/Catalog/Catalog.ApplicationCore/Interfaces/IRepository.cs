@@ -27,5 +27,6 @@ namespace Catalog.ApplicationCore.Interfaces
 
         public Task SaveChangesAsync();
 
+        public Task<List<T>> ToListAsync<T>(IQueryable<T> query);
     }
 }

@@ -1,4 +1,6 @@
-﻿using Catalog.ApplicationCore.Services;
+﻿using Catalog.ApplicationCore.Entities;
+using Catalog.ApplicationCore.Interfaces;
+using Catalog.ApplicationCore.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +22,12 @@ namespace Catalog.ApplicationCore.Extensions
         public static List<T> SkipTake<T>(this IQueryable<T> query, PagingArguments arguments)
         {
             return query.Skip(arguments.StartObject).Take(arguments.Size).ToList();
+        }   
+        
+        public static async Task<List<T>> SkipTakeAsync<T,TKey,TEntity>(this IQueryable<T> query, IRepository<TKey,TEntity> repo, PagingArguments arguments) 
+            where TEntity : class, IEntity<TKey>
+        {
+            return await repo.ToListAsync(query.Skip(arguments.StartObject).Take(arguments.Size));
         }
 
     }

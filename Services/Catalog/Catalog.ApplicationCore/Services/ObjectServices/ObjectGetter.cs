@@ -1,4 +1,6 @@
-﻿using Catalog.ApplicationCore.Entities;
+﻿using Catalog.ApplicationCore.Dtos;
+using Catalog.ApplicationCore.Entities;
+using Catalog.ApplicationCore.Extensions;
 using Catalog.ApplicationCore.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -17,7 +19,7 @@ namespace Catalog.ApplicationCore.Services.ObjectServices
 
         private IPhotoUrlConstructor _photoConstructor;
 
-        private IObjectImpressionsManager _impressionManager;
+        private IObjectImpressionsService _impressionManager;
 
         private IObjectQueryHelper _queryHelper;
         private Expression<Func<OfferedObject, ObjectDto>> ObjectDtoSelectExp { get; set; }
@@ -28,7 +30,7 @@ namespace Catalog.ApplicationCore.Services.ObjectServices
         private int IncludeObjectLessThan => int.Parse(_configs["Settings:IncludeObjectLessThan"]);
         public ObjectGetter(IRepository<int, OfferedObject> repository,
             IPhotoUrlConstructor photoUrlConstructor,
-            IObjectImpressionsManager impressionsManager, IObjectQueryHelper queryHelper,
+            IObjectImpressionsService impressionsManager, IObjectQueryHelper queryHelper,
             IConfiguration configs, IUserDataManager userDataManager)
         {
             _objectRepo = repository;
@@ -65,7 +67,7 @@ namespace Catalog.ApplicationCore.Services.ObjectServices
                           orderby o.OfferedObjectId
                           select o;
 
-            var objectsList = await objects.Select(ObjectDtoSelectExp).SkipTakeAsync(arguments);
+            var objectsList = await objects.Select(ObjectDtoSelectExp).SkipTakeAsync(_objectRepo, arguments);
             await _impressionManager.AddImpressions(objectsList);
             return objectsList;
         }
@@ -102,7 +104,7 @@ namespace Catalog.ApplicationCore.Services.ObjectServices
                               DistanceInMeters = distance
                           };
 
-            var objectsList = await objects.SkipTakeAsync(arguments);
+            var objectsList = await objects.SkipTakeAsync(_objectRepo,arguments);
             await _impressionManager.AddImpressions(objectsList.Select(o => o.Id).ToList());
             return objectsList;
         }
