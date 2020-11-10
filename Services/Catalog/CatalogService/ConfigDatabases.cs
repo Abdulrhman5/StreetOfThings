@@ -1,5 +1,7 @@
-﻿using Catalog.DataAccessLayer;
-using Catalog.Models;
+﻿extern alias CatalogInfrastructure;
+
+using Catalog.ApplicationCore.Entities;
+using CatalogInfrastructure::Catalog.Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

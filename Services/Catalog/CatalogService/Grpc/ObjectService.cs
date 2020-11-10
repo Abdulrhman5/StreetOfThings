@@ -1,4 +1,4 @@
-﻿using Catalog.ApplicationLogic.ObjectQueries;
+﻿using Catalog.ApplicationCore.Interfaces;
 using Grpc.Core;
 using System;
 using System.Collections.Generic;
@@ -11,18 +11,18 @@ namespace CatalogService.Grpc
 {
     public class ObjectService : ObjectsGrpcBase
     {
-        private IObjectGetter _objectGetter;
+        private IObjectService _objectService;
 
-        public ObjectService(IObjectGetter objectGetter)
+        public ObjectService(IObjectService objectService)
         {
-            _objectGetter = objectGetter;
+            _objectService = objectService;
 
         }
 
 
         public override async Task<ObjectsModel> GetObjectsData(ObjectsIdsModel request, ServerCallContext context)
         {
-            var objects = await _objectGetter.GetObjectsByIds(request.ObjectsIds.ToList());
+            var objects = await _objectService.GetObjectsByIds(request.ObjectsIds.ToList());
 
             var objectsModel = new ObjectsModel();
             objects.ForEach(o => objectsModel.Objects.Add(new ObjectModel

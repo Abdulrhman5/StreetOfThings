@@ -1,6 +1,5 @@
 extern alias CatalogInfrastructure;
 using CatalogInfrastructure::AuthorizationService.Grpc;
-using Catalog.DataAccessLayer;
 using CatalogService.Grpc;
 using EventBus;
 using Grpc.Core;
@@ -39,10 +38,6 @@ namespace CatalogService
             var catalogConnection = Configuration.GetConnectionString("CatalogConnection");
             Log.Information("Connection used for catalog " + catalogConnection);
 
-            services.AddDbContext<CatalogContext>(opt =>
-            {
-                opt.UseSqlServer(catalogConnection, x => x.UseNetTopologySuite());
-            }); 
             services.AddDbContext<CatalogInfrastructure.Catalog.Infrastructure.Data.CatalogContext>(opt =>
             {
                 opt.UseSqlServer(catalogConnection, x => x.UseNetTopologySuite());
