@@ -1,7 +1,5 @@
 extern alias CatalogInfrastructure;
 using CatalogInfrastructure::AuthorizationService.Grpc;
-using Catalog.ApplicationLogic.Events;
-using Catalog.ApplicationLogic.Events.EventHandlers;
 using Catalog.DataAccessLayer;
 using CatalogService.Grpc;
 using EventBus;
@@ -17,6 +15,7 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 using System;
 using Unity;
+using CatalogInfrastructure::Catalog.Infrastructure.Events.EventHandlers;
 
 namespace CatalogService
 {
