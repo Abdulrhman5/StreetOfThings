@@ -1,5 +1,5 @@
-﻿using Catalog.ApplicationLogic.ObjectCommands;
-using Catalog.ApplicationLogic.ObjectQueries;
+﻿using Catalog.ApplicationCore.Dtos;
+using Catalog.ApplicationCore.Interfaces;
 using HostingHelpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,13 +14,11 @@ namespace CatalogService.Controllers
     [Authorize("Admin")]
     public class ObjectAdministrationController : MyControllerBase
     {
-        private IObjectGetter _objectGetter;
+        private IObjectService _objectService;
 
-        private IObjectDeleter _objectDeleter;
-        public ObjectAdministrationController(IObjectGetter objectGetter, IObjectDeleter objectDeleter)
+        public ObjectAdministrationController(IObjectService objectService)
         {
-            _objectGetter = objectGetter;
-            _objectDeleter = objectDeleter;
+            _objectService = objectService;
         }
 
         [Route("forUser")]
@@ -28,7 +26,7 @@ namespace CatalogService.Controllers
         [Authorize("Admin")]
         public async Task<IActionResult> GetObjectsForUser(string userId)
         {
-            var objects = await _objectGetter.GetObjectsOwnedByUser(userId);
+            var objects = await _objectService.GetObjectsOwnedByUser(userId);
             return StatusCode(200, objects);
         }
 
@@ -37,7 +35,7 @@ namespace CatalogService.Controllers
         [Authorize("Admin")]
         public async Task<IActionResult> GetAllObjects()
         {
-            var objects = await _objectGetter.GetAllObjects();
+            var objects = await _objectService.GetAllObjects();
             return StatusCode(200, objects);
         }
 
@@ -46,7 +44,7 @@ namespace CatalogService.Controllers
         [Authorize("Admin")]
         public async Task<IActionResult> DeleteObject([FromBody] DeleteObjectDto deleteObject)
         {
-            var result = await _objectDeleter.AuthorizedDelete(deleteObject);
+            var result = await _objectService.AuthorizedDelete(deleteObject);
             return StatusCode(result, new
             {
                 Message = "The object has been deleted."

@@ -2,6 +2,7 @@
 using Catalog.ApplicationCore.Entities;
 using Catalog.ApplicationCore.Interfaces;
 using Catalog.ApplicationCore.Services;
+using Catalog.ApplicationCore.Services.ObjectServices;
 using Catalog.Infrastructure.Events;
 using EventBus;
 using System;
@@ -47,6 +48,46 @@ namespace Catalog.Infrastructure.Services
             }
             return result;
 
+        }
+
+        public Task<ObjectsForAdministrationListDto> GetAllObjects()
+        {
+            return _objectService.GetAllObjects();
+        }
+
+        public Task<ObjectDto> GetObjectById(int objectId)
+        {
+            return _objectService.GetObjectById(objectId);
+        }
+
+        public Task<CommandResult<ObjectDetailsDto>> GetObjectDetails(int objectId)
+        {
+            return _objectService.GetObjectDetails(objectId);
+        }
+
+        public Task<List<ObjectDto>> GetObjects(PagingArguments arguments)
+        {
+            return _objectService.GetObjects(arguments);
+        }
+
+        public Task<List<ObjectDtoV1_1>> GetObjects(OrderByType orderBy, PagingArguments pagingArgs)
+        {
+            return _objectService.GetObjects(orderBy, pagingArgs);
+        }
+
+        public Task<List<ObjectDto>> GetObjectsByIds(List<int> objectsIds)
+        {
+            return _objectService.GetObjectsByIds(objectsIds);
+        }
+
+        public Task<ObjectsForUserListDto> GetObjectsOwnedByUser(string originalUserId)
+        {
+            return _objectService.GetObjectsOwnedByUser(originalUserId);
+        }
+
+        public Task<List<ObjectDtoV1_1>> GetObjectsV1_1(PagingArguments arguments)
+        {
+            return _objectService.GetObjectsV1_1(arguments);
         }
 
         private void PublishEvent(int objectId)

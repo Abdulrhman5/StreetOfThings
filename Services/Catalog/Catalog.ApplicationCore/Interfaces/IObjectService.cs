@@ -19,5 +19,7 @@ namespace Catalog.ApplicationCore.Interfaces
         Task<List<ObjectDto>> GetObjectsByIds(List<int> objectsIds);
         Task<ObjectsForUserListDto> GetObjectsOwnedByUser(string originalUserId);
         Task<List<ObjectDtoV1_1>> GetObjects(OrderByType orderBy, PagingArguments pagingArgs);
+        Task<CommandResult<ObjectDetailsDto>> GetObjectDetails(int objectId);
+
     }
 }

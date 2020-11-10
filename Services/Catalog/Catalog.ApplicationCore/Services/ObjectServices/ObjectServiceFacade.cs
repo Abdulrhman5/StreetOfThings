@@ -20,6 +20,7 @@ namespace Catalog.ApplicationCore.Services.ObjectServices
             _objectAdder8Deleter = objectAdder8Deleter;
         }
 
+        public Task<CommandResult<ObjectDetailsDto>> GetObjectDetails(int objectId) => _objectGetter.GetObjectDetails(objectId);
         Task<CommandResult<OfferedObject>> IObjectService.AddObject(AddObjectDto objectDto) => _objectAdder8Deleter.AddObject(objectDto);
         Task<CommandResult> IObjectService.AuthorizedDelete(DeleteObjectDto objectDto) => _objectAdder8Deleter.AuthorizedDelete(objectDto);
         Task<CommandResult> IObjectService.DeleteObject(DeleteObjectDto objectDto) => _objectAdder8Deleter.DeleteObject(objectDto);

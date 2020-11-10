@@ -12,5 +12,6 @@ namespace Catalog.ApplicationCore.Interfaces
     {
         public Task<CommandResult<Tag>> AddTag(AddTagDto tag);
 
+        Task<CommandResult> DeleteTag(DeleteTagDto deleteTagDto);
     }
 }

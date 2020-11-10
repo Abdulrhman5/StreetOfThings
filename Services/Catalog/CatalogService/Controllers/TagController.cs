@@ -1,8 +1,9 @@
-﻿using Catalog.ApplicationLogic.TagCommands;
-using Catalog.ApplicationLogic.TypeQueries;
-using HostingHelpers;
+﻿using Catalog.ApplicationCore.Dtos;
+using Catalog.ApplicationCore.Entities;
+using Catalog.ApplicationCore.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,25 +14,25 @@ namespace CatalogService.Controllers
     [Route("api/Tag")]
     public class TagController : MyControllerBase
     {
-        private TagsGetter _tagGetter;
+        private ITagService _tagService;
+        private IRepository<int, Tag> _tagsRepo;
 
-        private TagAdder _tagAdder;
+        private IPhotoUrlConstructor _urlConstructor;
 
-        private TagDeleter _tagDeleter;
-        public TagController(TagsGetter tagGetter, TagAdder tagAdder, TagDeleter tagDeleter)
-        {
-            _tagGetter = tagGetter;
-            _tagAdder = tagAdder;
-            _tagDeleter = tagDeleter;
-        }
-
-        [Route("list")]
+            [Route("list")]
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> GetTags()
         {
-            var result = await _tagGetter.GetTags();
-            return Ok(result);
+            var tags = from t in _tagsRepo.Table
+                       where t.TagStatus == TagStatus.Ok
+                       select new
+                       {
+                           Id = t.TagId,
+                           Name = t.Name
+                       };
+
+            return Ok( await tags.ToListAsync());
         }  
         
         [Route("add")]
@@ -39,7 +40,7 @@ namespace CatalogService.Controllers
         [Authorize("Admin")]
         public async Task<IActionResult> AddTag(AddTagDto tag)
         {
-            var result = await _tagAdder.AddTag(tag);
+            var result = await _tagService.AddTag(tag);
             return StatusCode(result);
         }
 
@@ -48,8 +49,27 @@ namespace CatalogService.Controllers
         [Authorize("Admin")]
         public async Task<IActionResult> GetAdminTags()
         {
-            var result = await _tagGetter.GetAdminTags();
-            return Ok(result);
+            var tags = await (from t in _tagsRepo.Table
+                              where t.TagStatus == TagStatus.Ok
+                              let objectCount = t.Objects.Count
+                              orderby objectCount
+                              select new 
+                              {
+                                  Id = t.TagId,
+                                  Name = t.Name,
+                                  PhotoUrl = _urlConstructor.Construct(t.Photo),
+                                  UsedCount = objectCount
+                              }).ToListAsync();
+
+            var listDto = new 
+            {
+                LeastUsed = tags.FirstOrDefault(),
+                TopUsed = tags.LastOrDefault(),
+                TagCount = tags.Count,
+                Tags = tags
+            };
+
+            return Ok(listDto);
         }  
         
         [Route("admin/delete")]
@@ -57,7 +77,7 @@ namespace CatalogService.Controllers
         [Authorize("Admin")]
         public async Task<IActionResult> DeleteTag([FromBody] DeleteTagDto deleteTag)
         {
-            var result = await _tagDeleter.DeleteTag(deleteTag);
+            var result = await _tagService.DeleteTag(deleteTag);
             return StatusCode(result, new
             {
                 Message = "The tag has been deleted"
