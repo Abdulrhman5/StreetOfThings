@@ -11,20 +11,20 @@ using Catalog.ApplicationCore.Extensions;
 
 namespace Catalog.ApplicationCore.Services
 {
-    class ObjectService : IObjectService
+    class ObjectAdderDeleter
     {
 
         private IRepository<int, OfferedObject> _objectRepo;
 
-        private ILogger<ObjectService> _logger;
+        private ILogger<ObjectAdderDeleter> _logger;
 
         IUserDataManager _userDataManager;
 
         private IRepository<int, Tag> _tagRepo;
 
-        public ObjectService(IUserDataManager userDataManager,
+        public ObjectAdderDeleter(IUserDataManager userDataManager,
             IRepository<int, OfferedObject> objectsRepo,
-            ILogger<ObjectService> logger,
+            ILogger<ObjectAdderDeleter> logger,
             IRepository<int, Tag> tagRepo)
         {
             _userDataManager = userDataManager;

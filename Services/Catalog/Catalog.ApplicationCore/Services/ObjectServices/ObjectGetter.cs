@@ -27,11 +27,13 @@ namespace Catalog.ApplicationCore.Services.ObjectServices
         private IConfiguration _configs;
 
         private IUserDataManager _userDataManager;
+
+        private IObjectViewsService _viewsManager;
         private int IncludeObjectLessThan => int.Parse(_configs["Settings:IncludeObjectLessThan"]);
         public ObjectGetter(IRepository<int, OfferedObject> repository,
             IPhotoUrlConstructor photoUrlConstructor,
             IObjectImpressionsService impressionsManager, IObjectQueryHelper queryHelper,
-            IConfiguration configs, IUserDataManager userDataManager)
+            IConfiguration configs, IUserDataManager userDataManager, IObjectViewsService viewsManager)
         {
             _objectRepo = repository;
             _photoConstructor = photoUrlConstructor;
@@ -53,6 +55,7 @@ namespace Catalog.ApplicationCore.Services.ObjectServices
             };
             _configs = configs;
             _userDataManager = userDataManager;
+            _viewsManager = viewsManager;
         }
 
         public async Task<List<ObjectDto>> GetObjects(PagingArguments arguments)
@@ -205,5 +208,58 @@ namespace Catalog.ApplicationCore.Services.ObjectServices
                 .SkipTakeAsync(_objectRepo, pagingArgs);
             return objectList;
         }
+
+
+        public async Task<CommandResult<ObjectDetailsDto>> GetObjectDetails(int objectId)
+        {
+            var filteredObjects = _objectRepo.Table.Where(_queryHelper.IsValidObject);
+
+            var userId = _userDataManager.GetCuurentUser()?.UserId;
+
+            var objects = from o in filteredObjects
+                          where objectId == o.OfferedObjectId
+                          orderby o.OfferedObjectId
+                          select new ObjectDetailsDto
+                          {
+                              Id = o.OfferedObjectId,
+                              CountOfImpressions = o.Impressions.Count,
+                              CountOfViews = o.Views.Count,
+                              Description = o.Description,
+                              Name = o.Name,
+                              Rating = null,
+                              OwnerId = o.OwnerLogin.User.UserId.ToString(),
+                              Photos = o.Photos.Select(op => _photoConstructor.Construct(op)).ToList(),
+                              Tags = o.Tags.Select(ot => ot.Tag.Name).ToList(),
+                              Type = o.CurrentTransactionType,
+                              CommentsCount = o.Comments.Count,
+                              LikesCount = o.Likes.Count,
+                              IsLikedByMe = o.Likes.Any(like => like.Login.UserId.ToString() == userId),
+                              Comments = (from comment in o.Comments
+                                          orderby comment.AddedAtUtc
+                                          descending
+                                          select new CommentDto
+                                          {
+                                              UserId = comment.Login.UserId.ToString(),
+                                              ObjectId = comment.ObjectId,
+                                              Comment = comment.Comment,
+                                              CommentedAtUtc = comment.AddedAtUtc,
+                                              CommentId = comment.ObjectCommentId
+                                          }).Take(10).ToList(),
+                          };
+            var @object = await objects.SingleOrDefaultAsync();
+
+            if (@object is null)
+            {
+                return new ErrorMessage
+                {
+                    Message = "The object you requested does not exists.",
+                    ErrorCode = "CATALOG.OBJECT.DETAILS.NOTFOUND",
+                    StatusCode = System.Net.HttpStatusCode.BadRequest
+                }.ToCommand<ObjectDetailsDto>();
+            }
+            _ = _viewsManager.AddView(@object.Id);
+            return new CommandResult<ObjectDetailsDto>(@object);
+        }
+
     }
 }
