@@ -177,5 +177,33 @@ namespace Catalog.ApplicationCore.Services.ObjectServices
                 ReservedObjectsCount = reservedObjectsCount
             };
         }
+
+        public async Task<List<ObjectDtoV1_1>> GetObjects(OrderByType orderBy, PagingArguments pagingArgs)
+        {
+            var (login, user) = await _userDataManager.AddCurrentUserIfNeeded();
+            var userId = user.UserId;
+            var userLocation = login.LoginLocation;
+
+            var selectExp = _queryHelper.ObjectDtoSelectExpV1_1(_photoConstructor, userId.ToString(), userLocation);
+
+            var filteredObjects = _objectRepo.Table.Where(_queryHelper.IsValidObject)
+                .Where(_queryHelper.ValidForFreeAndLendibg)
+                .Where(_queryHelper.DistanceFilter(userLocation, IncludeObjectLessThan));
+            var DbF = Microsoft.EntityFrameworkCore.EF.Functions;
+            var x = (from o in _objectRepo.Table
+                     select new
+                     {
+                         dd = o.Views.Count / (double)(DbF.DateDiffSecond(o.PublishedAt, DateTime.UtcNow) + 1),
+                         c = o.Views.Count,
+                         diff = (DbF.DateDiffSecond(o.PublishedAt, DateTime.UtcNow) + 1),
+                         id = o.OfferedObjectId
+                     })
+                .ToList();
+            var orderResult = _queryHelper.OrderObject(filteredObjects, userLocation, orderBy);
+            var objectList = await orderResult
+                .Select(selectExp)
+                .SkipTakeAsync(_objectRepo, pagingArgs);
+            return objectList;
+        }
     }
 }
