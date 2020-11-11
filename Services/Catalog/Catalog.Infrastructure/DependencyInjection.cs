@@ -13,7 +13,9 @@ namespace Catalog.Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddTransient<IObjectServiceResolver, ObjectServiceResolver>();
-
+            services.AddTransient<IUserDataManager, UserDataManager>();
+            services.AddTransient<IImageSaver, ImageSaverAdapter>();
+            services.AddTransient(typeof(IOwnershipAuthorization<,>), typeof(IOwnershipAuthorization<,>));
             return services;
         }
     }

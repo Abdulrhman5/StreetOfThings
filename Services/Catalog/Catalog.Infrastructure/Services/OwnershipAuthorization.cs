@@ -6,10 +6,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace Catalog.Infrastructure
+namespace Catalog.Infrastructure.Services
 {
 
-    public class OwnershipAuthorization<TKey, T> where T : class, IEntity<TKey>
+    public class OwnershipAuthorization<TKey, T> : IOwnershipAuthorization<TKey, T> where T : class, IEntity<TKey>
     {
         private IRepository<TKey, T> _repo;
 

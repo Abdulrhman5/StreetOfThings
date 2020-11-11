@@ -21,6 +21,7 @@ namespace Catalog.ApplicationCore
             services.AddTransient<IObjectImpressionsService, ObjectImpressionsService>();
             services.AddTransient<IObjectViewsService, ObjectViewsService>();
             services.AddTransient<ITagService, TagService>();
+            services.AddTransient<IObjectPhotoService, ObjectPhotoService>();
             return services;
         }
     }

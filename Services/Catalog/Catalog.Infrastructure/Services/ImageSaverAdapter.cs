@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using IImageSaverAdaptee = HostingHelpers.IImageSaver;
-namespace Catalog.Infrastructure
+namespace Catalog.Infrastructure.Services
 {
     class ImageSaverAdapter : IImageSaver
     {

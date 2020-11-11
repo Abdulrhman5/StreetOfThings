@@ -1,5 +1,4 @@
-﻿using HostingHelpers;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,9 +8,9 @@ using Catalog.ApplicationCore.Entities;
 using Catalog.ApplicationCore.Interfaces;
 using Catalog.ApplicationCore.Services;
 
-namespace Catalog.Infrastructure.Services
+namespace Catalog.ApplicationCore.Services
 {
-    public class ObjectPhotoService
+    public class ObjectPhotoService : IObjectPhotoService
     {
         private IImageSaver _imageSaver;
 
@@ -19,12 +18,12 @@ namespace Catalog.Infrastructure.Services
 
         private IRepository<int, ObjectPhoto> _photoRepo;
 
-        private OwnershipAuthorization<int, OfferedObject> _authorizer;
+        private IOwnershipAuthorization<int, OfferedObject> _authorizer;
 
-        public ObjectPhotoService(IImageSaver imageSaver, 
+        public ObjectPhotoService(IImageSaver imageSaver,
             IRepository<int, OfferedObject> objectsRepo,
-            IRepository<int, ObjectPhoto> photoRepo, 
-            OwnershipAuthorization<int, OfferedObject> authorizer)
+            IRepository<int, ObjectPhoto> photoRepo,
+            IOwnershipAuthorization<int, OfferedObject> authorizer)
         {
             _imageSaver = imageSaver;
             _objectsRepo = objectsRepo;
@@ -58,7 +57,7 @@ namespace Catalog.Infrastructure.Services
                 });
             }
 
-            var savingResult = await _imageSaver.SaveImage(image);
+            var savingResult = await _imageSaver.SaveImageAsync(image);
             if (!savingResult.IsSuccessful)
             {
                 return new CommandResult(new ErrorMessage
