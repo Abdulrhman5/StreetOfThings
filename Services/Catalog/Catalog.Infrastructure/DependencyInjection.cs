@@ -1,4 +1,5 @@
 ﻿using Catalog.ApplicationCore.Interfaces;
+using Catalog.ApplicationLogic.Infrastructure;
 using Catalog.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +17,7 @@ namespace Catalog.Infrastructure
             services.AddTransient<IUserDataManager, UserDataManager>();
             services.AddTransient<IImageSaver, ImageSaverAdapter>();
             services.AddTransient(typeof(IOwnershipAuthorization<,>), typeof(IOwnershipAuthorization<,>));
+            services.AddTransient<IPhotoUrlConstructor, PhotoUrlConstructor>();
             return services;
         }
     }

@@ -8,10 +8,7 @@ namespace Catalog.ApplicationCore.Interfaces
 {
     public interface IPhotoUrlConstructor
     {
-        Expression<Func<ObjectPhoto, string>> ConstructPhotos { get; }
+        string Construct(Photo photo);
 
-        string Construct(ObjectPhoto objectPhoto);
-
-        string Construct(TagPhoto objectPhoto);
     }
 }
