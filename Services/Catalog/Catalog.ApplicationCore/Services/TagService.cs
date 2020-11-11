@@ -8,6 +8,7 @@ using Catalog.ApplicationCore.Entities;
 using Catalog.ApplicationCore.Dtos;
 using Catalog.ApplicationCore.Extensions;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
 
 namespace Catalog.ApplicationCore.Services
 {
@@ -16,10 +17,12 @@ namespace Catalog.ApplicationCore.Services
         private IRepository<int, Tag> _tagsRepo;
 
         private ILogger<TagService> _logger;
-        public TagService(IRepository<int, Tag> tagsRepo, ILogger<TagService> logger)
+        private IImageSaver _imageSaver;
+        public TagService(IRepository<int, Tag> tagsRepo, ILogger<TagService> logger, IImageSaver imageSaver)
         {
             _tagsRepo = tagsRepo;
             _logger = logger;
+            _imageSaver = imageSaver;
         }
 
         public async Task<CommandResult<Tag>> AddTag(AddTagDto tag)
@@ -60,10 +63,32 @@ namespace Catalog.ApplicationCore.Services
             }
 
 
+            var imageSavingResult = await _imageSaver.SaveImageAsync(tag.Photo);
+            if (!imageSavingResult.IsSuccessful)
+            {
+                return new ErrorMessage
+                {
+                    ErrorCode = imageSavingResult.Error.ErrorCode,
+                    Message = imageSavingResult.Error.Message,
+                    StatusCode = imageSavingResult.Error.StatusCode
+                }.ToCommand<Tag>();
+            }
+
+
             var tagModel = new Tag
             {
                 Name = tag.TagName,
                 Description = tag.Discreption,
+                Photo = new TagPhoto
+                {
+                    FilePath = imageSavingResult.Result.Path,
+                    AdditionalInformation = QueryString.Create(new Dictionary<string, string>
+                    {
+                        { "Name", imageSavingResult.Result.Name.ToString() },
+                        { "Version", "1" }
+                    }).ToUriComponent(),
+                    AddedAtUtc = DateTime.UtcNow,
+                }
             };
 
             _tagsRepo.Add(tagModel);
