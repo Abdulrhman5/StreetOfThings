@@ -15,6 +15,8 @@ using Serilog;
 using System;
 using Unity;
 using CatalogInfrastructure::Catalog.Infrastructure.Events.EventHandlers;
+using Catalog.ApplicationCore;
+using CatalogInfrastructure::Catalog.Infrastructure;
 
 namespace CatalogService
 {
@@ -32,6 +34,9 @@ namespace CatalogService
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddApplication();
+            services.AddInfrastructure(Configuration);
+
             services.AddControllersWithViews();
             services.AddControllers().AddNewtonsoftJson();
             services.AddHttpContextAccessor();

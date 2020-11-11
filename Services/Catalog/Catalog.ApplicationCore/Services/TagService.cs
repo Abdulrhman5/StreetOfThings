@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Catalog.ApplicationCore.Services
 {
-    public class TagService
+    public class TagService : ITagService
     {
         private IRepository<int, Tag> _tagsRepo;
 

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Catalog.ApplicationCore.Services
 {
-    class ObjectViewsService
+    class ObjectViewsService : IObjectViewsService
     {
 
         private IUserDataManager _userDataManager;
