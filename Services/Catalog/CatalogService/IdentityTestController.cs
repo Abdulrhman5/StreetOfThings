@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Catalog.ApplicationLogic.Infrastructure;
 using EventBus;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -29,8 +28,6 @@ namespace CatalogService
         [Authorize]
         public async Task<IActionResult> Index()
         {
-            UserDataGetter userGetter = new UserDataGetter(_configs);
-            var userData = await userGetter.GetUserDataByToken(Request.Headers["Authorization"]);
             return new JsonResult(new { Result = "Hello there" });
         }
 

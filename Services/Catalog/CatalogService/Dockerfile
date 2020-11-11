@@ -33,6 +33,7 @@ COPY ["BuildingBlocks/EventBus/EventBus.csproj", "BuildingBlocks/EventBus/"]
 COPY ["BuildingBlocks/EventLog.DataAccessLayer/EventLog.DataAccessLayer.csproj", "BuildingBlocks/EventLog.DataAccessLayer/"]
 COPY ["Services/CommonLibrary/CommonLibrary.csproj", "Services/CommonLibrary/"]
 COPY ["docker-compose.dcproj", "docker-compose.dcproj"]
+COPY ["NuGet.Config","NuGet.Config"]
 
 RUN dotnet restore "StreetThings.WebApps.sln" -v n
 COPY . .

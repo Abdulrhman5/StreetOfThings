@@ -1,7 +1,5 @@
-using AuthorizationService.Grpc;
-using Catalog.ApplicationLogic.Events;
-using Catalog.ApplicationLogic.Events.EventHandlers;
-using Catalog.DataAccessLayer;
+extern alias CatalogInfrastructure;
+using CatalogInfrastructure::AuthorizationService.Grpc;
 using CatalogService.Grpc;
 using EventBus;
 using Grpc.Core;
@@ -16,6 +14,9 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 using System;
 using Unity;
+using CatalogInfrastructure::Catalog.Infrastructure.Events.EventHandlers;
+using Catalog.ApplicationCore;
+using CatalogInfrastructure::Catalog.Infrastructure;
 
 namespace CatalogService
 {
@@ -33,13 +34,16 @@ namespace CatalogService
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddApplication();
+            services.AddInfrastructure(Configuration);
+
             services.AddControllersWithViews();
             services.AddControllers().AddNewtonsoftJson();
             services.AddHttpContextAccessor();
             var catalogConnection = Configuration.GetConnectionString("CatalogConnection");
             Log.Information("Connection used for catalog " + catalogConnection);
 
-            services.AddDbContext<CatalogContext>(opt =>
+            services.AddDbContext<CatalogInfrastructure.Catalog.Infrastructure.Data.CatalogContext>(opt =>
             {
                 opt.UseSqlServer(catalogConnection, x => x.UseNetTopologySuite());
             });
@@ -85,7 +89,7 @@ namespace CatalogService
             });
 
             AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
-
+            
             // Registration of the DI service
             services.AddGrpcClient<UsersGrpc.UsersGrpcClient>(options => {
                 options.Address = new Uri("http://localhost:21000");

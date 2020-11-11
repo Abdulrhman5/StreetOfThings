@@ -1,5 +1,4 @@
-﻿using Catalog.ApplicationLogic;
-using CommonLibrary;
+﻿using CommonLibrary;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +12,7 @@ namespace CatalogService
         public void ConfigUnity(IUnityContainer container)
         {
 
-            new AppLogicUnityConfig().ConfigUnity(container);
+
         }
     }
 }

@@ -68,21 +68,9 @@ namespace Catalog.ApplicationLogic.ObjectQueries
             var objects = from o in filteredObjects
                           let distance = o.OwnerLogin.User.Logins.OrderByDescending(l => l.LoggedAt).FirstOrDefault().LoginLocation.Distance(userLocation)
                           orderby o.OfferedObjectId
-                          select new ObjectDto
-                          {
-                              Id = o.OfferedObjectId,
-                              CountOfImpressions = o.Impressions.Count,
-                              CountOfViews = 0,
-                              Description = o.Description,
-                              Name = o.Name,
-                              Rating = null,
-                              OwnerId = o.OwnerLogin.UserId.ToString(),
-                              Photos = o.Photos.Select(op => _photoConstructor.Construct(op)).ToList(),
-                              Tags = o.Tags.Select(ot => ot.Tag.Name).ToList(),
-                              Type = o.CurrentTransactionType,
-                          };
+                          select o;
 
-            var objectsList = await objects.SkipTakeAsync(arguments);
+            var objectsList = await objects.Select(ObjectDtoSelectExp).SkipTakeAsync(arguments);
             await _impressionManager.AddImpressions(objectsList);
             return objectsList;
         }
@@ -150,21 +138,9 @@ namespace Catalog.ApplicationLogic.ObjectQueries
             var objects = from o in filteredObjects
                           where o.OfferedObjectId == objectId
                           orderby o.OfferedObjectId
-                          select new ObjectDto
-                          {
-                              Id = o.OfferedObjectId,
-                              CountOfImpressions = o.Impressions.Count,
-                              CountOfViews = 0,
-                              Description = o.Description,
-                              Name = o.Name,
-                              Rating = null,
-                              OwnerId = o.OwnerLogin.UserId.ToString(),
-                              Photos = o.Photos.Select(op => _photoConstructor.Construct(op)).ToList(),
-                              Tags = o.Tags.Select(ot => ot.Tag.Name).ToList(),
-                              Type = o.CurrentTransactionType,
-                          };
+                          select o;
 
-            var objectsList = await objects.FirstOrDefaultAsync();
+            var objectsList = await objects.Select(ObjectDtoSelectExp).FirstOrDefaultAsync();
             return objectsList;
         }
 
@@ -176,20 +152,8 @@ namespace Catalog.ApplicationLogic.ObjectQueries
             var objects = from o in filteredObjects
                           where objectsIds.Any(oid => oid == o.OfferedObjectId)
                           orderby o.OfferedObjectId
-                          select new ObjectDto
-                          {
-                              Id = o.OfferedObjectId,
-                              CountOfImpressions = o.Impressions.Count,
-                              CountOfViews = 0,
-                              Description = o.Description,
-                              Name = o.Name,
-                              Rating = null,
-                              OwnerId = o.OwnerLogin.UserId.ToString(),
-                              Photos = o.Photos.Select(op => _photoConstructor.Construct(op)).ToList(),
-                              Tags = o.Tags.Select(ot => ot.Tag.Name).ToList(),
-                              Type = o.CurrentTransactionType,
-                          };
-            return await objects.ToListAsync();
+                          select o;
+            return await objects.Select(ObjectDtoSelectExp).ToListAsync();
         }
 
         public async Task<ObjectsForUserListDto> GetObjectsOwnedByUser(string originalUserId)
@@ -199,26 +163,19 @@ namespace Catalog.ApplicationLogic.ObjectQueries
             var objects = from o in filteredObjects
                           where o.OwnerLogin.UserId.ToString() == originalUserId
                           orderby o.OfferedObjectId
-                          select new ObjectDto
-                          {
-                              Id = o.OfferedObjectId,
-                              CountOfImpressions = o.Impressions.Count,
-                              CountOfViews = 0,
-                              Description = o.Description,
-                              Name = o.Name,
-                              Rating = null,
-                              OwnerId = o.OwnerLogin.UserId.ToString(),
-                              Photos = o.Photos.Select(op => _photoConstructor.Construct(op)).ToList(),
-                              Tags = o.Tags.Select(ot => ot.Tag.Name).ToList(),
-                              Type = o.CurrentTransactionType,
-                          };
-            var freeObjects = _objectRepo.Table.Where(_queryHelper.IsValidObject).Where(_queryHelper.ValidForFreeAndLendibg).Where(o => o.OwnerLogin.UserId.ToString() == originalUserId);
+                          select o;
+
+            var freeObjects = _objectRepo.Table
+                .Where(_queryHelper.IsValidObject)
+                .Where(_queryHelper.ValidForFreeAndLendibg)
+                .Where(o => o.OwnerLogin.UserId.ToString() == originalUserId);
+
             var availableObjectsCount = freeObjects.Count();
             var reservedObjectsCount = objects.Count() - availableObjectsCount;
 
             return new ObjectsForUserListDto()
             {
-                Objects = await objects.ToListAsync(),
+                Objects = await objects.Select(ObjectDtoSelectExp).ToListAsync(),
                 AvailableObjectsCount = availableObjectsCount,
                 ReservedObjectsCount = reservedObjectsCount
             };

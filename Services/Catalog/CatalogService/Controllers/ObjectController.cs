@@ -1,9 +1,10 @@
-﻿using Catalog.ApplicationLogic;
-using Catalog.ApplicationLogic.ObjectCommands;
-using Catalog.ApplicationLogic.ObjectQueries;
-using Catalog.Models;
-using CommonLibrary;
-using HostingHelpers;
+﻿extern alias CatalogInfrastructure;
+
+using Catalog.ApplicationCore.Dtos;
+using Catalog.ApplicationCore.Interfaces;
+using Catalog.ApplicationCore.Services;
+using Catalog.ApplicationCore.Services.ObjectServices;
+using CatalogInfrastructure::Catalog.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,29 +19,13 @@ namespace CatalogService.Controllers
     [Route("api/Object")]
     public class ObjectController : MyControllerBase
     {
-        private IObjectAdder _objectAdder;
+        private IObjectService _objectService;
 
-        private PhotoAdder _photoAdder;
-
-        private IObjectGetter _objectGetter;
-
-        private IObjectDeleter _objectDeleter;
-
-        private IObjectDetailsGetter _objectDetailsGetter;
-
-        private IObjectsOrderedGetter _objectsOrderedGetter;
-        public ObjectController(IObjectAdder objectAdder,
-            PhotoAdder photoAdder,
-            IObjectGetter objectGetter,
-            IObjectDeleter objectDeleter,
-            IObjectDetailsGetter objectDetaissGetter, IObjectsOrderedGetter objectsOrderedGetter)
+        private IObjectPhotoService _objectPhotoService;
+        public ObjectController(IObjectServiceResolver objectServiceResolver, IObjectPhotoService objectPhotoService)
         {
-            _objectAdder = objectAdder;
-            _photoAdder = photoAdder;
-            _objectGetter = objectGetter;
-            _objectDeleter = objectDeleter;
-            _objectDetailsGetter = objectDetaissGetter;
-            _objectsOrderedGetter = objectsOrderedGetter;
+            _objectService = objectServiceResolver.ResolveObjectService();
+            _objectPhotoService = objectPhotoService;
         }
 
         [Route("create")]
@@ -48,7 +33,7 @@ namespace CatalogService.Controllers
         [Authorize]
         public async Task<IActionResult> Create([FromBody] AddObjectDto objectDto)
         {
-            var result = await _objectAdder.AddObject(objectDto);
+            var result = await _objectService.AddObject(objectDto);
             return StatusCode(result, () => new
             {
                 Message = "The object has been added",
@@ -62,7 +47,7 @@ namespace CatalogService.Controllers
         [Authorize]
         public async Task<IActionResult> UploadPhotoToObject([FromForm] IFormFile file, int objId)
         {
-            var result = await _photoAdder.AddPhotoToObject(objId, file);
+            var result = await _objectPhotoService.AddPhotoToObject(objId, file);
             return StatusCode(result, new
             {
                 Message = "A Photo had been uploaded",
@@ -74,7 +59,7 @@ namespace CatalogService.Controllers
         [Authorize]
         public async Task<IActionResult> GetObjects(PagingArguments pagings)
         {
-            var objects = await _objectGetter.GetObjects(pagings);
+            var objects = await _objectService.GetObjects(pagings);
             return StatusCode(200, objects);
         } 
         
@@ -83,7 +68,7 @@ namespace CatalogService.Controllers
         [Authorize]
         public async Task<IActionResult> GetObjectsV1_1(PagingArguments pagings)
         {
-            var objects = await _objectGetter.GetObjectsV1_1(pagings);
+            var objects = await _objectService.GetObjectsV1_1(pagings);
             return StatusCode(200, objects);
         }
 
@@ -92,7 +77,7 @@ namespace CatalogService.Controllers
         [Authorize]
         public async Task<IActionResult> GetObjects(int objectId)
         {
-            var objects = await _objectGetter.GetObjectById(objectId);
+            var objects = await _objectService.GetObjectById(objectId);
             return StatusCode(200, objects);
         }
 
@@ -102,7 +87,7 @@ namespace CatalogService.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteObject([FromBody]DeleteObjectDto objectDto)
         {
-            var result = await _objectDeleter.DeleteObject(objectDto);
+            var result = await _objectService.DeleteObject(objectDto);
             return StatusCode(result, new
             {
                 Message = "The object has been deleted."
@@ -113,7 +98,7 @@ namespace CatalogService.Controllers
         [Authorize]
         public async Task<IActionResult> GetObjectDetails(int objectId)
         {
-            var result = await _objectDetailsGetter.GetObjectDetails(objectId);
+            var result = await _objectService.GetObjectDetails(objectId);
             return StatusCode(result);
         }
 
@@ -137,7 +122,7 @@ namespace CatalogService.Controllers
                 });
             }
 
-            var result = await _objectsOrderedGetter.GetObjects(type, pagingArguments);
+            var result = await _objectService.GetObjects(type, pagingArguments);
             return Ok(result);
         }
     }

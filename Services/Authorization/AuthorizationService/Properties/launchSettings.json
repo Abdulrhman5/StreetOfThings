@@ -29,7 +29,7 @@
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
       "publishAllPorts": true,
       "useSSL": true,
-      "applicationUrl": "http://localhost:20000;https://localhost:30000"
+      "httpPort": 20000,
     },
     "Azure Dev Spaces": {
       "commandName": "AzureDevSpaces",

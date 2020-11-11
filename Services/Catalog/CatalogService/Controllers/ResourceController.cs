@@ -1,5 +1,5 @@
-﻿using CommonLibrary;
-using HostingHelpers;
+﻿using Catalog.ApplicationCore.Extensions;
+using Catalog.ApplicationCore.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;

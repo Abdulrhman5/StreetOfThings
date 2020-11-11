@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Catalog.ApplicationLogic.LikeCommands;
+using Catalog.ApplicationCore.Dtos;
+using Catalog.ApplicationCore.Interfaces;
 using HostingHelpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,13 +14,11 @@ namespace CatalogService.Controllers
     [Route("api/[controller]")]
     public class LikesController : MyControllerBase
     {
-        private ILikeAdder _likeAdder;
+        private IObjectLikeService _likeService;
 
-        private ILikeDeleter _likeDeleter;
-        public LikesController(ILikeAdder likeAdder, ILikeDeleter likeDeleter)
+        public LikesController(IObjectLikeService likeService)
         {
-            _likeAdder = likeAdder;
-            _likeDeleter = likeDeleter;
+            _likeService = likeService;
         }
 
         [Route("Like")]
@@ -27,7 +26,7 @@ namespace CatalogService.Controllers
         [HttpPost]
         public async Task<IActionResult> AddLike([FromBody]AddLikeDto addLikeDto)
         {
-            var result = await _likeAdder.AddLike(addLikeDto);
+            var result = await _likeService.AddLike(addLikeDto);
             return StatusCode(result, new
             {
                 Message = "Like has been added."
@@ -39,7 +38,7 @@ namespace CatalogService.Controllers
         [HttpPost]
         public async Task<IActionResult> RemoveLike([FromBody]AddLikeDto removeLikeDto)
         {
-            var result = await _likeDeleter.Unlike(removeLikeDto);
+            var result = await _likeService.Unlike(removeLikeDto);
             return StatusCode(result, new
             {
                 Message = "Like has been removed."
