@@ -14,7 +14,7 @@ namespace Catalog.ApplicationCore
         {
             services.AddTransient<ObjectAdderDeleter>();
             services.AddTransient<ObjectGetter>();
-            services.AddTransient<IObjectQueryHelper>();
+            services.AddTransient<IObjectQueryHelper,ObjectQueryHelper>();
             services.AddTransient<IObjectService, ObjectServiceFacade>();
 
             services.AddTransient<ICommentService, CommentService>();

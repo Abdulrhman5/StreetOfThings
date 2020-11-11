@@ -19,7 +19,14 @@ namespace CatalogService.Controllers
 
         private IPhotoUrlConstructor _urlConstructor;
 
-            [Route("list")]
+        public TagController(ITagService tagService, IRepository<int, Tag> tagsRepo, IPhotoUrlConstructor urlConstructor)
+        {
+            _tagService = tagService;
+            _tagsRepo = tagsRepo;
+            _urlConstructor = urlConstructor;
+        }
+
+        [Route("list")]
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> GetTags()
@@ -41,7 +48,10 @@ namespace CatalogService.Controllers
         public async Task<IActionResult> AddTag(AddTagDto tag)
         {
             var result = await _tagService.AddTag(tag);
-            return StatusCode(result);
+            return StatusCode(result, new
+            {
+                Message = "A new tag has been added"
+            });
         }
 
         [Route("admin/list")]

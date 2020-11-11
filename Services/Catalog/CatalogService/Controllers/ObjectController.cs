@@ -21,10 +21,11 @@ namespace CatalogService.Controllers
     {
         private IObjectService _objectService;
 
-        private ObjectPhotoService _objectPhotoService;
-        public ObjectController(IObjectService objectService)
+        private IObjectPhotoService _objectPhotoService;
+        public ObjectController(IObjectServiceResolver objectServiceResolver, IObjectPhotoService objectPhotoService)
         {
-            _objectService = objectService;
+            _objectService = objectServiceResolver.ResolveObjectService();
+            _objectPhotoService = objectPhotoService;
         }
 
         [Route("create")]
