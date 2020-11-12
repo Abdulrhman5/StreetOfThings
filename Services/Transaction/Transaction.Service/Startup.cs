@@ -11,8 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Transaction.BusinessLogic;
-using Transaction.DataAccessLayer;
+using Transaction.Service.Infrastructure;
 using Unity;
 
 namespace Transaction.Service
@@ -98,7 +97,18 @@ namespace Transaction.Service
 
         public void ConfigureContainer(IUnityContainer container)
         {
-            new BusinessUnityConfig().ConfigUnity(container);
+            container.RegisterType(typeof(IRepository<,>), typeof(GenericRepository<,>));
+
+            container.RegisterType<IRemotlyObjectGetter, RemoteObjectGetter>();
+            container.RegisterType<CurrentUserCredentialsGetter>();
+            container.RegisterType<UserDataGetter>();
+            container.RegisterType<UserDataManager>();
+            container.RegisterType<ObjectDataManager>();
+
+            container.RegisterType<IAlphaNumericStringGenerator, RngAlphaNumericStringGenerator>();
+            container.RegisterType<ITransactionTokenManager, TransactionTokenManager>();
+
+            container.RegisterType(typeof(OwnershipAuthorization<,>));
         }
     }
 
