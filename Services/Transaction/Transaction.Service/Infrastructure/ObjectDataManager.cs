@@ -8,7 +8,7 @@ using Transaction.Service.Models;
 
 namespace Transaction.Service.Infrastructure
 {
-    public class ObjectDataManager
+    public class ObjectDataManager : IObjectDataManager
     {
 
         private readonly IRepository<int, OfferedObject> _objectsRepo;
@@ -24,13 +24,13 @@ namespace Transaction.Service.Infrastructure
         public async Task<OfferedObject?> GetObjectAsync(int objectId)
         {
             var existingObject = _objectsRepo.Table.Where(o => o.OriginalObjectId == objectId).FirstOrDefault();
-            if(existingObject is object)
+            if (existingObject is object)
             {
                 return existingObject;
             }
 
             var remoteObject = await _objectGetter.GetObject(objectId).ConfigureAwait(false);
-            if(remoteObject is null)
+            if (remoteObject is null)
             {
                 return null;
             }
