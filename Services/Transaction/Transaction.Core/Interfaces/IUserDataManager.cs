@@ -14,7 +14,7 @@ namespace Transaction.Core.Interfaces
 
         Task<User> AddUserIfNeeded(string userId);
 
-        LoginDataDto GetCuurentUser();
+        LoginDataDto GetCurrentUser();
 
     }
 }
