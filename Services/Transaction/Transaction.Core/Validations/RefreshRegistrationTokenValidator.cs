@@ -20,6 +20,7 @@ namespace Transaction.Core.Validations
             _userDataManager = userDataManager;
             _registrationsRepo = registrationsRepo;
 
+            CascadeMode = CascadeMode.Stop;
 
             RuleFor(refreshToken => refreshToken)
                 .NotNull()
