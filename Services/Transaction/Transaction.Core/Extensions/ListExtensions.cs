@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Transaction.Core.Interfaces;
@@ -27,6 +28,11 @@ namespace Transaction.Core.Extensions
             where TEntity : BaseEntity<TKey>
         {
             return await repo.ToListAsync(query.Skip(arguments.StartObject).Take(arguments.Size));
+        }
+
+        public static IQueryable<TEntity> Include<TEntity>(this IQueryable<TEntity> source, string navigationPropertyPath, IQueryableHelper queryHelper) where TEntity : class
+        {
+            return queryHelper.Include(source, navigationPropertyPath);
         }
 
     }
