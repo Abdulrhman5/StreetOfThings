@@ -28,6 +28,11 @@ namespace Transaction.Core.Extensions
             where TEntity : BaseEntity<TKey>
         {
             return await repo.ToListAsync(query.Skip(arguments.StartObject).Take(arguments.Size));
+        } 
+        
+        public static async Task<List<T>> ToListAsync<T>(this IQueryable<T> query, IQueryableHelper queryHelper) 
+        {
+            return await queryHelper.ToListAsync(query);
         }
 
         public static IQueryable<TEntity> Include<TEntity>(this IQueryable<TEntity> source,

@@ -14,6 +14,7 @@ namespace Transaction.Core.Queries
     public enum RegistrationForUserType
     {
         UserAsRecipient,
-        UserAsOwner
+        UserAsOwner,
+        All
     }
 }

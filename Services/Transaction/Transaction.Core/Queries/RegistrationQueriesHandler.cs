@@ -42,6 +42,10 @@ namespace Transaction.Core.Queries
             {
                 typeFilter = rg => rg.RecipientLogin.UserId == Guid.Parse(userId);
             }
+            else if(request.RegistrationType == RegistrationForUserType.All)
+            {
+                typeFilter = rg => rg.RecipientLogin.UserId == Guid.Parse(userId) || rg.Object.OwnerUserId == Guid.Parse(userId);
+            }
 
             var registrations = from rg in _registrationsRepo.Table
                                           .Where(typeFilter)
