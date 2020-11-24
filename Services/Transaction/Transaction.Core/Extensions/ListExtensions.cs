@@ -30,10 +30,19 @@ namespace Transaction.Core.Extensions
             return await repo.ToListAsync(query.Skip(arguments.StartObject).Take(arguments.Size));
         }
 
-        public static IQueryable<TEntity> Include<TEntity>(this IQueryable<TEntity> source, string navigationPropertyPath, IQueryableHelper queryHelper) where TEntity : class
+        public static IQueryable<TEntity> Include<TEntity>(this IQueryable<TEntity> source,
+            string navigationPropertyPath,
+            IQueryableHelper queryHelper) where TEntity : class
         {
             return queryHelper.Include(source, navigationPropertyPath);
         }
 
+        public static IQueryable<TEntity> Include<TEntity, TProperty>(this IQueryable<TEntity> source,
+            Expression<Func<TEntity, TProperty>> navigationPropertyPath,
+            IQueryableHelper queryHelper) 
+            where TEntity : class
+        {
+            return queryHelper.Include(source, navigationPropertyPath);
+        }
     }
 }
