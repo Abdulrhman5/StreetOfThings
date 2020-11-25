@@ -18,6 +18,16 @@ namespace Transaction.Core.Commands
         private ITransactionTokenManager _tokenManager;
         private IRepository<Guid, ObjectRegistration> _registrationsRepo;
         private IUserDataManager _userDataManager;
+
+        public RefreshRegistrationTokenCommandHandler(ITransactionTokenManager tokenManager,
+            IRepository<Guid, ObjectRegistration> registrationsRepo,
+            IUserDataManager userDataManager)
+        {
+            _tokenManager = tokenManager;
+            _registrationsRepo = registrationsRepo;
+            _userDataManager = userDataManager;
+        }
+
         public async Task<CommandResult<RegistrationTokenResultDto>> Handle(RefreshRegistrationTokenCommand request, CancellationToken cancellationToken)
         {
             var user = _userDataManager.GetCurrentUser();

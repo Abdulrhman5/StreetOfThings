@@ -19,6 +19,11 @@ namespace Transaction.Core.Queries
 
         private IRepository<Guid, ObjectReceiving> _receivingsRepo;
 
+        public TransactionStatsQueriesHandler(IRepository<Guid, ObjectRegistration> registrationsRepo, IRepository<Guid, ObjectReceiving> receivingsRepo)
+        {
+            _registrationsRepo = registrationsRepo;
+            _receivingsRepo = receivingsRepo;
+        }
 
         public async Task<TransactionTodayStatsDto> Handle(TransactionStatsOverTodayQuery request, CancellationToken cancellationToken)
         {

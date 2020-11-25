@@ -34,7 +34,8 @@ namespace Transaction.Core.Commands
             IObjectDataManager objectsRepo,
             IUserDataManager userDataManager,
             IConfiguration configuration,
-            IEventBus eventBus)
+            IEventBus eventBus,
+            IRepository<Guid, ObjectReceiving> objectReceiving)
         {
             _registrationsRepo = registrationsRepo;
             _transactionTokenManager = transactionTokenManager;
@@ -44,6 +45,7 @@ namespace Transaction.Core.Commands
             maximumHoursForFreeLending = int.Parse(configuration["Registration:MaximumHoursForFreeLending"]);
             maximumHoursForReservationExpiration = int.Parse(configuration["Registration:MaximumHoursForRegistrationExpiration"]);
             _eventBus = eventBus;
+            _objectReceiving = objectReceiving;
         }
 
         public async Task<CommandResult<CreateRegistrationResultDto>> Handle(CreateRegistrationCommand request, CancellationToken cancellationToken)

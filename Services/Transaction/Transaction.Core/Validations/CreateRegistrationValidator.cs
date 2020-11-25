@@ -15,7 +15,6 @@ namespace Transaction.Core.Validations
             RuleFor(reg => reg)
                 .NotNull()
                 .WithMessage("TRANSACTION.OBJECT.RESERVE.NULL");
-
         }
     }
 }

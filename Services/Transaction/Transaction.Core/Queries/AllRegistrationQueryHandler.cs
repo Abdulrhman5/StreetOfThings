@@ -17,6 +17,12 @@ namespace Transaction.Core.Queries
         private IRepository<Guid, ObjectRegistration> _registrationsRepo;
         private IQueryableHelper _queryHelper;
 
+        public AllRegistrationQueryHandler(IRepository<Guid, ObjectRegistration> registrationsRepo, IQueryableHelper queryHelper)
+        {
+            _registrationsRepo = registrationsRepo;
+            _queryHelper = queryHelper;
+        }
+
         public async Task<AllTransactionsListDto> Handle(AllRegistrationQuery request, CancellationToken cancellationToken)
         {
             var trans = from rg in _registrationsRepo.Table

@@ -16,7 +16,6 @@ namespace Transaction.Core.Commands
 {
     public class GenerateReturnTokenCommandHandler : IRequestHandler<GenerateReturnTokenCommand, GenerateReturnTokenResultDto>
     {
-
         private IRepository<Guid, ObjectRegistration> _registrationsRepo;
         private ITransactionTokenManager _tokenManager;
         private IOwnershipAuthorization<Guid, ObjectRegistration> _authorizer;
