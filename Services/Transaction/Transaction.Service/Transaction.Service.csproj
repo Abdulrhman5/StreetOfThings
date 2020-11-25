@@ -32,5 +32,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBus.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\HostingHelpers\HostingHelpers.csproj" />
+    <ProjectReference Include="..\Transaction.Infrastructure\Transaction.Infrastructure.csproj" />
   </ItemGroup>
 </Project>

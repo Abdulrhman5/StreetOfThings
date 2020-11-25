@@ -6,7 +6,7 @@ using Transaction.Domain.Entities;
 
 namespace Transaction.Infrastructure.Data
 {
-    class TransactionContext : DbContext
+    public class TransactionContext : DbContext
     {
         public DbSet<User> Users { get; set; }
 

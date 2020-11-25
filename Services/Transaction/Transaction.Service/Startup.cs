@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Transaction.Infrastructure;
 using Transaction.Service.Infrastructure;
 using Unity;
 
@@ -29,11 +30,12 @@ namespace Transaction.Service
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddInfrastructure(Configuration);
             services.AddControllersWithViews();
             services.AddControllers().AddNewtonsoftJson();
 
             var transactionConnection = Configuration.GetConnectionString("TransactionConnection");
-            services.AddDbContext<TransactionContext>(options => options.UseSqlServer(transactionConnection));
+            services.AddDbContext<Transaction.Infrastructure.Data.TransactionContext>(options => options.UseSqlServer(transactionConnection));
             services.AddHttpContextAccessor();
 
             services.AddAuthentication("Bearer")
