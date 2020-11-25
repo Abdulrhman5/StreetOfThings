@@ -6,7 +6,7 @@ using Transaction.Core.Dtos;
 
 namespace Transaction.Core.Commands
 {
-    public class GenerateReturnTokenCommand : IRequest<GenerateReturnTokenResultDto>
+    public class GenerateReturnTokenCommand : IRequest<CommandResult<GenerateReturnTokenResultDto>>
     {
         public string RegistrationId { get; set; }
     }
