@@ -26,7 +26,5 @@ namespace Transaction.Core.Interfaces
         public void SaveChanges();
 
         public Task SaveChangesAsync();
-
-        public Task<List<T>> ToListAsync<T>(IQueryable<T> query);
     }
 }

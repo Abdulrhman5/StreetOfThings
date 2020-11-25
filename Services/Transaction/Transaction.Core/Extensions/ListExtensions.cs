@@ -24,10 +24,9 @@ namespace Transaction.Core.Extensions
             return query.Skip(arguments.StartObject).Take(arguments.Size).ToList();
         }   
         
-        public static async Task<List<T>> SkipTakeAsync<T,TKey,TEntity>(this IQueryable<T> query, IRepository<TKey,TEntity> repo, PagingArguments arguments) 
-            where TEntity : BaseEntity<TKey>
+        public static async Task<List<T>> SkipTakeAsync<T>(this IQueryable<T> query, IQueryableHelper queryHelper, PagingArguments arguments) 
         {
-            return await repo.ToListAsync(query.Skip(arguments.StartObject).Take(arguments.Size));
+            return await queryHelper.ToListAsync(query.Skip(arguments.StartObject).Take(arguments.Size));
         } 
         
         public static async Task<List<T>> ToListAsync<T>(this IQueryable<T> query, IQueryableHelper queryHelper) 

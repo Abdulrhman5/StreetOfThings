@@ -16,12 +16,14 @@ namespace Transaction.Core.Queries
     {
         private IRepository<Guid, ObjectRegistration> _registrationsRepo;
         private IUserDataManager _userDataManager;
+        private IQueryableHelper _queryHelper;
 
-        public RegistrationQueriesHandler(IRepository<Guid, ObjectRegistration> registrationsRepo, 
-            IUserDataManager userDataManager)
+        public RegistrationQueriesHandler(IRepository<Guid, ObjectRegistration> registrationsRepo,
+            IUserDataManager userDataManager, IQueryableHelper queryHelper)
         {
             _registrationsRepo = registrationsRepo;
             _userDataManager = userDataManager;
+            _queryHelper = queryHelper;
         }
 
         public async Task<List<RegistrationDto>> Handle(RegisterationForUserQuery request, CancellationToken cancellationToken)
@@ -72,7 +74,7 @@ namespace Transaction.Core.Queries
                                         TransactionStatus.RegisteredOnly,
                                 };
 
-            return await registrations.SkipTakeAsync(_registrationsRepo, request);
+            return await registrations.SkipTakeAsync(_queryHelper, request);
         }
     }
 }
