@@ -10,7 +10,6 @@ using Transaction.Domain.Entities;
 using System.Linq;
 using Transaction.Core.IntegrationEvents;
 using EventBus;
-using Transaction.Core.Exceptions;
 using Transaction.Core.Extensions;
 
 namespace Transaction.Core.Commands

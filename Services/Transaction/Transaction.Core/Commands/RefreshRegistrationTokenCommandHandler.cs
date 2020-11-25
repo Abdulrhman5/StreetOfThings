@@ -8,7 +8,6 @@ using Transaction.Core.Interfaces;
 using Transaction.Domain.Entities;
 using Transaction.Service.Dtos;
 using System.Linq;
-using Transaction.Core.Exceptions;
 using Transaction.Core.Extensions;
 
 namespace Transaction.Core.Commands

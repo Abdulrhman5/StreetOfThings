@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Transaction.Core.Dtos;
-using Transaction.Core.Exceptions;
 using Transaction.Core.Interfaces;
 using Transaction.Domain.Entities;
 using System.Linq;

@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Transaction.Core.Exceptions;
 
 namespace Transaction.Core.Commands
 {

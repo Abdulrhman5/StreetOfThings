@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Transaction.Core.Events;
-using Transaction.Core.Exceptions;
 using Transaction.Core.Extensions;
 using Transaction.Core.Interfaces;
 using Transaction.Domain.Entities;
