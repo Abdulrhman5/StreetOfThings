@@ -2,11 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Transaction.Core.Exceptions;
 using Transaction.Service.Dtos;
 
 namespace Transaction.Core.Commands
 {
-    class RefreshRegistrationTokenCommand : IRequest<RegistrationTokenResultDto>
+    class RefreshRegistrationTokenCommand : IRequest<CommandResult<RegistrationTokenResultDto>>
     {
         public int ObjectId { get; set; }
     }

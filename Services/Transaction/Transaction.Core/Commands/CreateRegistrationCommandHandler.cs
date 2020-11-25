@@ -7,13 +7,16 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Transaction.Core.Events;
+using Transaction.Core.Exceptions;
+using Transaction.Core.Extensions;
 using Transaction.Core.Interfaces;
 using Transaction.Domain.Entities;
 using Transaction.Service.Dtos;
+using System.Linq;
 
 namespace Transaction.Core.Commands
 {
-    public class CreateRegistrationCommandHandler : IRequestHandler<CreateRegistrationCommand, CreateRegistrationResultDto>
+    public class CreateRegistrationCommandHandler : IRequestHandler<CreateRegistrationCommand, CommandResult<CreateRegistrationResultDto>>
     {
         private IRepository<Guid, ObjectRegistration> _registrationsRepo;
         private ITransactionTokenManager _transactionTokenManager;
@@ -24,7 +27,7 @@ namespace Transaction.Core.Commands
         private int maximumHoursForFreeLending;
 
         private int maximumHoursForReservationExpiration;
-
+        private IRepository<Guid,ObjectReceiving> _objectReceiving;
 
         public CreateRegistrationCommandHandler(IRepository<Guid, ObjectRegistration> registrationsRepo,
             ITransactionTokenManager transactionTokenManager,
@@ -43,13 +46,78 @@ namespace Transaction.Core.Commands
             _eventBus = eventBus;
         }
 
-        public async Task<CreateRegistrationResultDto> Handle(CreateRegistrationCommand request, CancellationToken cancellationToken)
+        public async Task<CommandResult<CreateRegistrationResultDto>> Handle(CreateRegistrationCommand request, CancellationToken cancellationToken)
         {
+            ErrorMessage ObjectNotAvailable = new ErrorMessage
+            {
+                ErrorCode = "TRANSACTION.OBJECT.RESERVE.NOT.AVAILABLE",
+                Message = "This object is not available",
+                StatusCode = System.Net.HttpStatusCode.BadRequest
+            };
+
+            var user = await _userDataManager.AddCurrentUserIfNeeded();
+            if (user.Login == null)
+            {
+                return new ErrorMessage()
+                {
+                    ErrorCode = "TRANSACTION.OBJECT.RESERVE.NOT.AUTHORIZED",
+                    Message = "You are not authorized to do this operation",
+                    StatusCode = System.Net.HttpStatusCode.Unauthorized
+                }.ToCommand<CreateRegistrationResultDto>();
+            }
+
             var @object = await _objectsRepo.GetObjectAsync(request.ObjectId);
+            if (@object is null)
+            {
+                return new ErrorMessage()
+                {
+                    ErrorCode = "TRANSACTION.OBJECT.RESERVE.NOT.EXISTS",
+                    Message = "The object specified does not exists",
+                    StatusCode = System.Net.HttpStatusCode.BadRequest
+                }.ToCommand<CreateRegistrationResultDto>();
+            }
+
+            // Should Not Return and is not taken right now
+            if (!@object.ShouldReturn)
+            {
+                var receivings = from receiving in _objectReceiving.Table
+                                 where receiving.ObjectRegistration.ObjectId == @object.OfferedObjectId
+                                 select receiving;
+
+                // If The object has receiving and all of them has returnings 
+                if (receivings.Any(r => r.ObjectReturning == null))
+                {
+                    return ObjectNotAvailable.ToCommand<CreateRegistrationResultDto>();
+                }
+            }
+
+            // See Previous registrations
+
+            var existingRegistrations = from registration in _registrationsRepo.Table
+                                        where registration.RecipientLogin.UserId == user.User.UserId && registration.ObjectId == @object.OfferedObjectId
+                                        select registration;
+
+            // If The user taken and has this object OR If the user has another registeration pending receiving
+            if (existingRegistrations.Any(reg => reg.ObjectReceiving == null || reg.ObjectReceiving.ObjectReturning == null))
+            {
+                return ObjectNotAvailable.ToCommand<CreateRegistrationResultDto>();
+            }
+
 
             TimeSpan? shouldReturnItAfter;
             if (@object.ShouldReturn)
             {
+                // If the object should return but the user has not specified the time he should return the object
+                if (!request.ShouldReturnAfter.HasValue)
+                {
+                    return new ErrorMessage
+                    {
+                        ErrorCode = "TRANSACTION.OBJECT.RESERVE.SHOULDRETURN.NULL",
+                        Message = "Please specify when you will return this object",
+                        StatusCode = System.Net.HttpStatusCode.BadRequest
+                    }.ToCommand<CreateRegistrationResultDto>();
+                }
+
                 if (@object.HourlyCharge.HasValue)
                 {
                     shouldReturnItAfter = new TimeSpan(request.ShouldReturnAfter.Value, 0, 0);
@@ -67,7 +135,8 @@ namespace Transaction.Core.Commands
                 shouldReturnItAfter = null;
             }
 
-            var (login, user) = await _userDataManager.AddCurrentUserIfNeeded();
+
+
             var registrationModel = new ObjectRegistration
             {
                 ObjectRegistrationId = Guid.NewGuid(),
@@ -75,7 +144,7 @@ namespace Transaction.Core.Commands
                 ExpiresAtUtc = DateTime.UtcNow.AddHours(maximumHoursForReservationExpiration),
                 ObjectId = @object.OfferedObjectId,
                 Status = ObjectRegistrationStatus.OK,
-                RecipientLoginId = login.LoginId,
+                RecipientLoginId = user.Login.LoginId,
                 ShouldReturnItAfter = shouldReturnItAfter,
             };
 
@@ -88,7 +157,7 @@ namespace Transaction.Core.Commands
                 Id = Guid.NewGuid(),
                 OccuredAt = registrationModel.RegisteredAtUtc,
                 ObjectId = @object.OriginalObjectId,
-                RecipiantId = user.UserId.ToString(),
+                RecipiantId = user.User.UserId.ToString(),
                 ShouldReturn = @object.ShouldReturn,
                 RegisteredAt = registrationModel.RegisteredAtUtc,
                 RegistrationId = registrationModel.ObjectRegistrationId
@@ -114,7 +183,7 @@ namespace Transaction.Core.Commands
                 }
             };
 
-            return dto;
+            return new CommandResult<CreateRegistrationResultDto>(dto);
         }
     }
 }

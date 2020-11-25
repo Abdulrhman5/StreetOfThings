@@ -9,8 +9,8 @@ namespace Transaction.Core.Interfaces
 {
     public interface IUserDataManager
     {
-        Task<(Login, User)> AddCurrentUserIfNeeded();
-        Task<(Login, User)> AddUserIfNotExisted(Guid tokenId, string originUserId, string accessToken);
+        Task<(Login Login, User User)> AddCurrentUserIfNeeded();
+        Task<(Login Login, User User)> AddUserIfNotExisted(Guid tokenId, string originUserId, string accessToken);
 
         Task<User> AddUserIfNeeded(string userId);
 
