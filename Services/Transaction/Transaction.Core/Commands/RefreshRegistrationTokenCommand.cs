@@ -6,7 +6,7 @@ using Transaction.Service.Dtos;
 
 namespace Transaction.Core.Commands
 {
-    class RefreshRegistrationTokenCommand : IRequest<CommandResult<RegistrationTokenResultDto>>
+    public class RefreshRegistrationTokenCommand : IRequest<CommandResult<RegistrationTokenResultDto>>
     {
         public int ObjectId { get; set; }
     }

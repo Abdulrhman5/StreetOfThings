@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Transaction.Core.Commands
 {
-    class CancelRegistrationCommand : IRequest<CommandResult>
+    public class CancelRegistrationCommand : IRequest<CommandResult>
     {
         public string RegistrationId { get; set; }
     }
