@@ -14,7 +14,12 @@ namespace Transaction.Core.Validations
             CascadeMode = CascadeMode.Stop;
             RuleFor(reg => reg)
                 .NotNull()
-                .WithMessage("TRANSACTION.OBJECT.RESERVE.NULL");
+                .WithErrorMessage(new ErrorMessage()
+                {
+                    ErrorCode = "TRANSACTION.OBJECT.RESERVE.NULL",
+                    Message = "Please send a valid information",
+                    StatusCode = System.Net.HttpStatusCode.BadRequest
+                });
         }
     }
 }

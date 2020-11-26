@@ -14,12 +14,22 @@ namespace Transaction.Core.Validations
             CascadeMode = CascadeMode.Stop;
             RuleFor(receiving => receiving)
                 .NotNull()
-                .WithMessage("TRANSACTION.RECEIVING.ADD.NULL");
+                .WithErrorMessage(new ErrorMessage
+                {
+                    ErrorCode = "TRANSACTION.RECEIVING.ADD.NULL",
+                    Message = "Please send valid data",
+                    StatusCode = System.Net.HttpStatusCode.BadRequest,
+                });
 
             RuleFor(receiving => receiving.RegistrationToken)
                 .NotNull()
                 .NotEmpty()
-                .WithMessage("TRANSACTION.RECEIVING.ADD.NULL");
+                .WithErrorMessage(new ErrorMessage
+                {
+                    ErrorCode = "TRANSACTION.RECEIVING.ADD.NULL",
+                    Message = "Please send valid data",
+                    StatusCode = System.Net.HttpStatusCode.BadRequest,
+                });
         }
     }
 }

@@ -56,7 +56,7 @@ namespace Transaction.Service.Controllers
             {
                 return StatusCode(new ErrorMessage
                 {
-                    ErrorCode = "TRANSACTION.TOKEN.GENERATE.INVALID.ID",
+                    ErrorCode = "TRANSACTION.TOKEN.GENERATE.RETURN.NULL",
                     Message = "Please provide valid data",
                     StatusCode = System.Net.HttpStatusCode.BadRequest
                 });

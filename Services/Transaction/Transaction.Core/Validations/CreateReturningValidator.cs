@@ -11,8 +11,23 @@ namespace Transaction.Core.Validations
         public CreateReturningValidator()
         {
             CascadeMode = CascadeMode.Stop;
-            RuleFor(returning => returning).NotNull().WithMessage("TRANSACTION.RETURNING.ADD.NULL");
-            RuleFor(returning => returning).NotNull().NotEmpty().WithMessage("TRANSACTION.RETURNING.ADD.NULL");
+            RuleFor(returning => returning)
+                .NotNull()
+                .WithErrorMessage(new ErrorMessage
+                {
+                    ErrorCode = "TRANSACTION.RETURNING.ADD.NULL",
+                    Message = "Please send valid data",
+                    StatusCode = System.Net.HttpStatusCode.BadRequest,
+                });
+            RuleFor(returning => returning)
+                .NotNull()
+                .NotEmpty()
+                .WithErrorMessage(new ErrorMessage
+                {
+                    ErrorCode = "TRANSACTION.RETURNING.ADD.NULL",
+                    Message = "Please send valid data",
+                    StatusCode = System.Net.HttpStatusCode.BadRequest,
+                });
         }
     }
 }

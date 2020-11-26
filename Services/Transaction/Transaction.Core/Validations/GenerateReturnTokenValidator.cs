@@ -13,16 +13,31 @@ namespace Transaction.Core.Validations
         {
             RuleFor(tokenRequest => tokenRequest)
                 .NotNull()
-                .WithMessage("TRANSACTION.TOKEN.GENERATE.RETURN.NULL");
+                .WithErrorMessage(new ErrorMessage
+                {
+                    ErrorCode = "TRANSACTION.TOKEN.GENERATE.RETURN.NULL",
+                    Message = "Please provide valid data",
+                    StatusCode = System.Net.HttpStatusCode.BadRequest
+                });
 
             RuleFor(tokenRequest => tokenRequest.RegistrationId)
                 .NotNull()
                 .NotEmpty()
-                .WithMessage("TRANSACTION.TOKEN.GENERATE.RETURN.NULL");
+                .WithErrorMessage(new ErrorMessage
+                {
+                    ErrorCode = "TRANSACTION.TOKEN.GENERATE.RETURN.NULL",
+                    Message = "Please provide valid data",
+                    StatusCode = System.Net.HttpStatusCode.BadRequest
+                });
 
             RuleFor(tokenRequest => tokenRequest.RegistrationId)
                 .Must(registrationId => Guid.TryParse(registrationId, out var result))
-                .WithMessage("TRANSACTION.TOKEN.GENERATE.INVALID.ID");
+                .WithErrorMessage(new ErrorMessage
+                {
+                    ErrorCode = "TRANSACTION.TOKEN.GENERATE.RETURN.NULL",
+                    Message = "Please provide valid data",
+                    StatusCode = System.Net.HttpStatusCode.BadRequest
+                });
         }
     }
 }

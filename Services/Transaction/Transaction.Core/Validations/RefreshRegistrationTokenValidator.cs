@@ -17,7 +17,12 @@ namespace Transaction.Core.Validations
 
             RuleFor(refreshToken => refreshToken)
                 .NotNull()
-                .WithMessage("TRANSACTION.REGISTRATION.REFRESH.NULL");
+                .WithErrorMessage(new ErrorMessage
+                {
+                    ErrorCode = "TRANSACTION.REGISTRATION.REFRESH.NULL",
+                    Message = "Please send valid data",
+                    StatusCode = System.Net.HttpStatusCode.BadRequest
+                });
 
         }
     }

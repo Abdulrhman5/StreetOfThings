@@ -17,11 +17,21 @@ namespace Transaction.Core.Validations
             CascadeMode = CascadeMode.Stop;
             RuleFor(cancelRegistration => cancelRegistration)
                 .NotNull()
-                .WithMessage("TRANSACTION.REGISTRATION.CANCEL.NULL");
+                .WithErrorMessage(new ErrorMessage
+                {
+                    ErrorCode = "TRANSACTION.REGISTRATION.CANCEL.NULL",
+                    Message = "Please send valid data",
+                    StatusCode = System.Net.HttpStatusCode.BadRequest
+                });
 
             RuleFor(cancelRegistration => cancelRegistration.RegistrationId)
                 .Must(registrationId => Guid.TryParse(registrationId, out var result))
-                .WithMessage("TRANSACTION.REGISTRATION.INVALID.DATA");
+                .WithErrorMessage(new ErrorMessage
+                {
+                    ErrorCode = "TRANSACTION.REGISTRATION.INVALID.DATA",
+                    Message = "Please send valid data",
+                    StatusCode = System.Net.HttpStatusCode.BadRequest
+                });
         }
     }
 }
