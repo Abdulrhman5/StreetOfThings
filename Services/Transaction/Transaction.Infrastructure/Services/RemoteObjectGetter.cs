@@ -12,7 +12,7 @@ using Transaction.Domain.Entities;
 
 namespace Transaction.Infrastructure.Services
 {
-    class RemoteObjectGetter : IObjectDataManager
+    class RemoteObjectGetter : IRemotlyObjectGetter
     {
         private IRestClient _restClient;
 
@@ -28,7 +28,7 @@ namespace Transaction.Infrastructure.Services
             _userDataManager = userDataManager;
         }
 
-        public async Task<OfferedObject> GetObjectAsync(int objectId)
+        public async Task<OfferedObject> GetObject(int objectId)
         {
             var request = new RestRequest("api/object/byId/"+objectId,Method.GET);
             request.AddParameter("Authorization", _userDataManager.GetCurrentUser().AccessToken, ParameterType.HttpHeader);
