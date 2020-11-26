@@ -1,7 +1,4 @@
-﻿using CommonLibrary;
-using EventBus;
-using HostingHelpers;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -16,6 +13,7 @@ using TransactionType = Transaction.Service.Dtos.TransactionType;
 using MediatR;
 using Transaction.Core.Commands;
 using Transaction.Core.Queries;
+using Transaction.Core;
 
 namespace Transaction.Service.Controllers
 {
@@ -56,7 +54,10 @@ namespace Transaction.Service.Controllers
         public async Task<IActionResult> CancelRegistration([FromBody] CancelRegistrationCommand cancelRegistrationCommand)
         {
             var result = await _mediator.Send(cancelRegistrationCommand);
-            return StatusCode(result);
+            return StatusCode(result, new
+            {
+                Message = "A registration has been canceled"
+            });
         }
 
         [Route("MeAsRecipient")]
