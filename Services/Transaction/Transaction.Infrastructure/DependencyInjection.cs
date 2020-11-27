@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Transaction.Core.Interfaces;
 using Transaction.Infrastructure.Data;
+using Transaction.Infrastructure.GrpcClients;
 using Transaction.Infrastructure.Services;
 
 namespace Transaction.Infrastructure
@@ -20,6 +21,7 @@ namespace Transaction.Infrastructure
 			services.AddTransient<IUserDataManager, UserDataManager>();
 			services.AddTransient<IRemotlyObjectGetter, RemoteObjectGetter>();
 			services.AddTransient<IObjectDataManager, ObjectDataManager>();
+			services.AddTransient<UsersGrpcClient>();
 
 			return services;
 		}

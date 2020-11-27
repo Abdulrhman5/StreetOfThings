@@ -10,7 +10,8 @@ using Transaction.Domain.Entities;
 namespace Transaction.Core
 {
 
-    public class OwnershipAuthorization<TKey, T> where T : BaseEntity<TKey>
+    public class OwnershipAuthorization<TKey, T> : IOwnershipAuthorization<TKey, T>
+        where T : BaseEntity<TKey> 
     {
         private IRepository<TKey, T> _repo;
 
