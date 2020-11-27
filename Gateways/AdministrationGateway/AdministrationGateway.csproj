@@ -37,6 +37,6 @@
     <Protobuf Include="..\..\Services\Authorization\AuthorizationService\Proto\user_service.proto" GrpcServices="Client" />
   </ItemGroup>
   <ItemGroup>
-    <Protobuf Include="..\..\Services\Catalog\CatalogService\Proto\object_service.proto" GrpcServices="Client" />
+    <Protobuf Include="..\..\Services\Catalog\Catalog.Web\Proto\object_service.proto" GrpcServices="Client" />
   </ItemGroup>
 </Project>
