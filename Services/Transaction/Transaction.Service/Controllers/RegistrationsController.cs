@@ -1,15 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Transaction.Service.Models;
-using Transaction.Service.Events;
-using Transaction.Service.Infrastructure;
 using Transaction.Service.Dtos;
-using TransactionType = Transaction.Service.Dtos.TransactionType;
 using MediatR;
 using Transaction.Core.Commands;
 using Transaction.Core.Queries;
@@ -20,7 +12,6 @@ namespace Transaction.Service.Controllers
     [Route("api/[controller]")]
     public class RegistrationsController : MyControllerBase
     {
-
         private IMediator _mediator;
 
         public RegistrationsController(IMediator mediator)

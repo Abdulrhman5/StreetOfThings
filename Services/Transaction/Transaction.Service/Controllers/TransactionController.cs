@@ -1,67 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using CommonLibrary;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Transaction.Service.Models;
-using Transaction.Service.Dtos;
-using Transaction.Service.Infrastructure;
-using TransactionType = Transaction.Service.Dtos.TransactionType;
+using MediatR;
+using Transaction.Core.Queries;
 
 namespace Transaction.Service.Controllers
 {
     [Route("api/[controller]")]
     public class TransactionController : Controller
     {
+        private IMediator _mediator;
 
-        private IRepository<Guid, ObjectRegistration> _registrationsRepo;
-
-        private CurrentUserCredentialsGetter _currentUserGetter;
-
-        private TransactionStatisticsGetter _statsGetter;
-        public TransactionController(TransactionStatisticsGetter statsGetter)
+        public TransactionController(IMediator mediator)
         {
-            _statsGetter = statsGetter;
+            _mediator = mediator;
         }
-
 
         [Route("foruser")]
         [Authorize(Policy = "Admin")]
         [HttpGet]
-        public async Task<IActionResult> TransactionsForUser(string userId)
+        public async Task<IActionResult> TransactionsForUser(PagingArguments pagingArguments)
         {
-            if (userId.IsNullOrEmpty())
+            var registrationsQuery = new RegisterationForUserQuery
             {
-                return Ok(new List<RegistrationDto>());
-            }
+                RegistrationType = RegistrationForUserType.All,
+                CurrentPage = pagingArguments.CurrentPage,
+                Size = pagingArguments.Size,
+                StartObject = pagingArguments.StartObject,
+                Total = pagingArguments.Total
+            };
 
-            var trans = from rg in _registrationsRepo.Table
-                        where rg.RecipientLogin.UserId == Guid.Parse(userId) || rg.Object.OwnerUserId == Guid.Parse(userId)
-                        let isReceived = rg.ObjectReceiving != null
-                        let isReturned = rg.ObjectReceiving != null && rg.ObjectReceiving.ObjectReturning != null
-                        select new RegistrationDto
-                        {
-                            RegistrationId = rg.ObjectRegistrationId,
-                            ObjectId = rg.Object.OriginalObjectId,
-                            OwnerId = rg.Object.OwnerUserId.ToString(),
-                            ReceiverId = rg.RecipientLogin.UserId.ToString(),
-                            ReceivingId = rg.ObjectReceiving.ObjectReceivingId,
-                            ReturnId = isReturned ? rg.ObjectReceiving.ObjectReturning.ObjectReturningId : (Guid?)null,
-                            RegistredAtUtc = rg.RegisteredAtUtc,
-                            ReceivedAtUtc = isReceived ? rg.ObjectReceiving.ReceivedAtUtc : (DateTime?)null,
-                            ReturenedAtUtc = isReturned ? rg.ObjectReceiving.ObjectReturning.ReturnedAtUtc : (DateTime?)null,
-                            TranscationType = !rg.Object.ShouldReturn ? TransactionType.Free : rg.Object.HourlyCharge.HasValue ? TransactionType.Renting : TransactionType.Lending,
-                            HourlyCharge = rg.Object.HourlyCharge,
-                            ShouldReturnAfter = rg.ShouldReturnItAfter,
-                            TransactionStatus = rg.Status == ObjectRegistrationStatus.Canceled ?
-                            TransactionStatus.Canceled : isReturned ?
-                            TransactionStatus.Returned : isReceived ?
-                            TransactionStatus.Received : TransactionStatus.RegisteredOnly
-                        };
-            return Ok(await trans.ToListAsync());
+            var result = await _mediator.Send(registrationsQuery);
+            return Ok(result);
         }
 
         [Route("allTranses")]
@@ -69,80 +40,11 @@ namespace Transaction.Service.Controllers
         [HttpGet]
         public async Task<IActionResult> AllTransactions()
         {
-            var trans = from rg in _registrationsRepo.Table
-                        let isReceived = rg.ObjectReceiving != null
-                        let isReturned = rg.ObjectReceiving != null && rg.ObjectReceiving.ObjectReturning != null
-                        select new RegistrationDto
-                        {
-                            RegistrationId = rg.ObjectRegistrationId,
-                            ObjectId = rg.Object.OriginalObjectId,
-                            OwnerId = rg.Object.OwnerUserId.ToString(),
-                            ReceiverId = rg.RecipientLogin.UserId.ToString(),
-                            ReceivingId = rg.ObjectReceiving.ObjectReceivingId,
-                            ReturnId = isReturned ? rg.ObjectReceiving.ObjectReturning.ObjectReturningId : (Guid?)null,
-                            RegistredAtUtc = rg.RegisteredAtUtc,
-                            ReceivedAtUtc = isReceived ? rg.ObjectReceiving.ReceivedAtUtc : (DateTime?)null,
-                            ReturenedAtUtc = isReturned ? rg.ObjectReceiving.ObjectReturning.ReturnedAtUtc : (DateTime?)null,
-                            TranscationType = !rg.Object.ShouldReturn ? TransactionType.Free : rg.Object.HourlyCharge.HasValue ? TransactionType.Renting : TransactionType.Lending,
-                            HourlyCharge = rg.Object.HourlyCharge,
-                            ShouldReturnAfter = rg.ShouldReturnItAfter,
-                            TransactionStatus = rg.Status == ObjectRegistrationStatus.Canceled ?
-                            TransactionStatus.Canceled : isReturned ?
-                            TransactionStatus.Returned : isReceived ?
-                            TransactionStatus.Received : TransactionStatus.RegisteredOnly,
-                            ReturnStatus = GetReturnStatus(rg)
-                        };
+            var allRegistrationQuery = new AllRegistrationQuery();
 
-            var transactions = await trans.ToListAsync();
+            var result = await _mediator.Send(allRegistrationQuery);
+            return Ok(result);
 
-            return Ok(new AllTransactionsListDto
-            {
-                Transactions = transactions,
-                ReturnedTransactionsCount = transactions.Count(t => t.ReturnId is object),
-                DeliveredTransactionsCount = transactions.Count(t => t.ReturnId is null && t.ReceivingId is object),
-                ReservedTransactionsCount = transactions.Count(t => t.ReturnId is null && t.ReceivingId is null)
-            });
-        }
-
-        private static ReturnStatus GetReturnStatus(ObjectRegistration registration)
-        {
-            if (registration.Status == ObjectRegistrationStatus.Canceled)
-            {
-                return ReturnStatus.NotTakenYet;
-            }
-
-            if (registration.ObjectReceiving is null)
-            {
-                return ReturnStatus.NotTakenYet;
-            }
-
-            if (registration.ObjectReceiving.ObjectReturning is object)
-            {
-                return ReturnStatus.Returned;
-            }
-
-            // it is free object
-            if (!registration.ShouldReturnItAfter.HasValue)
-            {
-                return ReturnStatus.NotDueYet;
-            }
-
-            if (registration.ObjectReceiving.ReceivedAtUtc.Add(registration.ShouldReturnItAfter.Value) <= DateTime.UtcNow)
-            {
-                return ReturnStatus.NotDueYet;
-            }
-
-            if (registration.ObjectReceiving.ReceivedAtUtc.Add(registration.ShouldReturnItAfter.Value) > DateTime.UtcNow.AddHours(24))
-            {
-                return ReturnStatus.PossibleTheft;
-            }
-
-            if (registration.ObjectReceiving.ReceivedAtUtc.Add(registration.ShouldReturnItAfter.Value) > DateTime.UtcNow)
-            {
-                return ReturnStatus.Delayed;
-            }
-
-            return ReturnStatus.Returned;
         }
 
         [Route("stats/today")]
@@ -150,8 +52,9 @@ namespace Transaction.Service.Controllers
         [HttpGet]
         public async Task<IActionResult> StatsToday()
         {
-            var stats = await _statsGetter.GetTransactionsCountOverToday();
-            return Ok(stats);
+            var statsQuery = new TransactionStatsOverTodayQuery();
+            var result = await _mediator.Send(statsQuery);
+            return Ok(result);
         }
 
         [Route("stats/lastMonth")]
@@ -159,8 +62,9 @@ namespace Transaction.Service.Controllers
         [HttpGet]
         public async Task<IActionResult> StatsOverMonth()
         {
-            var stats = await _statsGetter.GetTransactionsCountOverMonth();
-            return Ok(stats);
+            var statsQuery = new TransactionStatsOverMonthQuery();
+            var result = await _mediator.Send(statsQuery);
+            return Ok(result);
         }
 
         [Route("stats/lastYear")]
@@ -168,8 +72,9 @@ namespace Transaction.Service.Controllers
         [HttpGet]
         public async Task<IActionResult> StatsYear()
         {
-            var stats = await _statsGetter.GetTransactionsCountOverYear();
-            return Ok(stats);
+            var statsQuery = new TransactionStatsOverYearQuery();
+            var result = await _mediator.Send(statsQuery);
+            return Ok(result);
         }
     }
 }

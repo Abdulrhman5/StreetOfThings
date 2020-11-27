@@ -6,7 +6,7 @@ using Transaction.Core.Dtos;
 
 namespace Transaction.Core.Queries
 {
-    public class AllRegistrationQuery : PagingArguments, IRequest<AllTransactionsListDto>
+    public class AllRegistrationQuery : IRequest<AllTransactionsListDto>
     {
 
     }

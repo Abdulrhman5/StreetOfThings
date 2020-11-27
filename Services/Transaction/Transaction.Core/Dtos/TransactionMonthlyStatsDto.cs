@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Transaction.Core.Dtos
 {
-    class TransactionMonthlyStatsDto
+    public class TransactionMonthlyStatsDto
     {
         public int Count { get; set; }
 

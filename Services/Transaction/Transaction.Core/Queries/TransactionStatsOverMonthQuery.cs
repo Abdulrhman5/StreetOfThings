@@ -6,7 +6,7 @@ using Transaction.Core.Dtos;
 
 namespace Transaction.Core.Queries
 {
-    class TransactionStatsOverMonthQuery : IRequest<List<TransactionMonthlyStatsDto>>
+    public class TransactionStatsOverMonthQuery : IRequest<List<TransactionMonthlyStatsDto>>
     {
     }
 }
