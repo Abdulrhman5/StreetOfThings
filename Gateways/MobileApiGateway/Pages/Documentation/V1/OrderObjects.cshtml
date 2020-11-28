@@ -1,0 +1,202 @@
+﻿@page
+@model MobileApiGateway.Pages.Documentation.V1.OrderObjectsModel
+@{
+    ViewData["Title"] = "Order Objects";
+}
+
+<h1>Order Objects</h1>
+
+<div class="container">
+    <h1>
+        Can be accessed at GET <b>http://HostName:Port/api/catalog/object/ordered</b>
+    </h1>
+    <hr />
+    <div class="container">
+        <div class="container">
+            <h3>
+                Url Parameters
+            </h3>
+            <table class="table">
+                <tr>
+                    <th>
+                        Key
+                    </th>
+                    <th>
+                        Type
+                    </th>
+                    <th>
+                        Value
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        startObject
+                    </td>
+                    <td>
+                        int
+                    </td>
+                    <td>
+                        0
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        size
+                    </td>
+                    <td>
+                        int
+                    </td>
+                    <td>
+                        10
+                    </td>
+                </tr>      
+                <tr>
+                    <td>
+                        orderType
+                    </td>
+                    <td>
+                        string
+                    </td>
+                    <td>
+                        <ul>
+                            <li>Default</li> 
+                            <li>Nearest</li>
+                            <li>MostLiked</li>
+                            <li>Newest</li>
+                            <li>TopRated</li>
+                            <li>MostBorrowed</li>
+                            <li>Trending</li>
+                        </ul>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+        <br />
+        <div class="container">
+            <h3>
+                Header Parameters
+            </h3>
+            <table class="table">
+                <tr>
+
+                    <th>
+                        Key
+                    </th>
+                    <th>
+                        Value
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        Authorization
+                    </td>
+                    <td>
+                        bearer eyJhbGciOiJSU.zI1NiIsImtpZCI6Il.RimF1ZCI6WyJDYXRhbG9n
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <br />
+
+        <div class="container">
+            <h2>
+                The Response Scenarios
+                <br />
+            </h2>
+            <br />
+            <div class="container">
+                <h3>
+                    Scenario 1: All good.
+                </h3>
+                <br />
+                <br />
+                <div class="container">
+                    <h3>
+                        Headers parameters
+                    </h3>
+                    The most important headers are:
+                    <table class="table">
+                        <tr>
+
+                            <th>
+                                Key
+                            </th>
+                            <th>
+                                Value
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                StatusCode
+                            </td>
+                            <td>
+                                200
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <br />
+                <div class="container">
+                    <h3>
+                        Body
+                    </h3>
+                    <pre>
+[
+    {
+        "commentsCount": 0,
+        "likesCount": 0,
+        "distanceInMeters": 0.0,
+        "isLikedByMe": false,
+        "id": 1,
+        "name": "This is the object name",
+        "description": "Also this is the object description",
+        "countOfViews": 0,
+        "countOfImpressions": 18,
+        "rating": null,
+        "photos": [],
+        "tags": [
+            "This is a tag name"
+        ],
+        "type": "Free",
+        "owner": {
+            "id": "9b4210dc-49b9-4031-9a7a-dcc769a0cac8",
+            "username": "ThirdUser@Street.com",
+            "name": null,
+            "email": "ThirdUser@Street.com",
+            "pictureUrl": "http://localhost:20000/favicon.ico"
+        }
+    },
+    {
+        "commentsCount": 0,
+        "likesCount": 0,
+        "distanceInMeters": 219.27872815803104,
+        "isLikedByMe": false,
+        "id": 2,
+        "name": "This is also an object name",
+        "description": "Also this is the object description",
+        "countOfViews": 2,
+        "countOfImpressions": 13,
+        "rating": null,
+        "photos": [],
+        "tags": [
+            "This is a tag name"
+        ],
+        "type": "Free",
+        "owner": {
+            "id": "dd6cafb3-b154-475e-a309-610f3d2d91bf",
+            "username": "SecondUser@Street.com",
+            "name": null,
+            "email": "SecondUser@Street.com",
+            "pictureUrl": "http://localhost:20000/favicon.ico"
+        }
+    }
+]					 </pre>
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

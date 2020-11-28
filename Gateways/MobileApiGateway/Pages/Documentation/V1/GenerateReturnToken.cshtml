@@ -1,0 +1,224 @@
+﻿@page
+@model MobileApiGateway.Pages.Documentation.V1.GenerateReturnTokenModel
+@{
+    ViewData["Title"] = "Generate return token";
+}
+
+<h1>Generate return token</h1>
+
+<div class="container">
+    <h1>
+        Can be accessed at POST <b>http://localhost:25000/api/transaction/return/generate/token</b>
+    </h1>
+    <hr />
+    <div class="container">
+        <div class="container">
+            <h3>
+                Url Parameters
+            </h3>
+            <table class="table">
+                <tr>
+                    <th>
+                        Key
+                    </th>
+                    <th>
+                        Type
+                    </th>
+                    <th>
+                        Value
+                    </th>
+                </tr>
+            </table>
+            NONE.
+        </div>
+        <br />
+        <div class="container">
+            <h3>
+                Header Parameters
+            </h3>
+            <table class="table">
+                <tr>
+
+                    <th>
+                        Key
+                    </th>
+                    <th>
+                        Value
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        Authorization
+                    </td>
+                    <td>
+                        Bearer "Token to recipient user"
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <br />
+
+        <div class="container">
+            <h3>
+                Body as JSON Object
+            </h3>
+            <pre>
+{
+    "RegistrationId":"bd4b32b4-93b5-41ea-b514-802b0a6251a2"
+}</pre>
+            <br />
+            <br />
+        </div>
+
+        <div class="container">
+            <h2>
+                The Response Scenarios
+                <br />
+            </h2>
+            <br />
+            <div class="container">
+                <h3>
+                    Scenario 1: All good.
+                </h3>
+                <br />
+                <br />
+                <div class="container">
+                    <h3>
+                        Headers parameters
+                    </h3>
+                    The most important headers are:
+                    <table class="table">
+                        <tr>
+
+                            <th>
+                                Key
+                            </th>
+                            <th>
+                                Value
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                StatusCode
+                            </td>
+                            <td>
+                                200
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <br />
+                <div class="container">
+                    <h3>
+                        Body
+                    </h3>
+
+
+                    <pre>
+{
+    "returnToken": "DjhTJLomo5JNomXp2vDFecxW-SzqwGKnPiEd1WGLPDT11fs3eA27NUCQyTquWSoGRT3TmKUoWgIehdEPggQH-tRFKnZRNAdHQoeA",
+    "createdAtUtc": "2020-09-17T14:41:45.5907491Z",
+    "useBeforeUtc": "2020-09-23T14:41:45.590908Z"
+}
+					 </pre>
+                    <br />
+                </div>
+            </div>
+            <div>
+                <hr />
+                <h3>
+                    Scenario 2: The object is not received yet.
+                </h3>
+                <br />
+                <div class="container">
+                    <h3>
+                        Headers parameters
+                    </h3>
+                    The most important headers are:
+                    <table class="table">
+                        <tr>
+
+                            <th>
+                                Key
+                            </th>
+                            <th>
+                                Value
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                StatusCode
+                            </td>
+                            <td>
+                                400
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <br />
+                <div class="container">
+                    <h3>
+                        Body
+                    </h3>
+                    <pre>
+{
+    "errorCode": "TRANSACTION.TOKEN.GENERATE.RETURN.NOT.RECEIVED",
+    "message": "The object has not been received yet",
+    "statusCode": 400
+}</pre>
+
+                    <br />
+                </div>
+            </div>
+            <div>
+                <hr />
+                <h3>
+                    Scenario 3: The object is already returned yet.
+                </h3>
+                <br />
+                <div class="container">
+                    <h3>
+                        Headers parameters
+                    </h3>
+                    The most important headers are:
+                    <table class="table">
+                        <tr>
+
+                            <th>
+                                Key
+                            </th>
+                            <th>
+                                Value
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                StatusCode
+                            </td>
+                            <td>
+                                400
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <br />
+                <div class="container">
+                    <h3>
+                        Body
+                    </h3>
+                    <pre>
+{
+    "errorCode": "TRANSACTION.TOKEN.GENERATE.RETURN.ALREADY.RETURNED",
+    "message": "The object has been returned",
+    "statusCode": 400
+}</pre>
+
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

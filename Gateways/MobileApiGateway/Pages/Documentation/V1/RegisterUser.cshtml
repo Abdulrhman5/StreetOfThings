@@ -1,0 +1,361 @@
+﻿@page ""
+@model MobileApiGateway.Pages.Documentation.V1.RegisterUserModel
+@{
+	ViewData["Title"] = "Register User";
+}
+
+<div class="container">
+	<h1>
+		Can be accessed at POST <b>http://HostName:Port/api/identity/account/register</b>
+	</h1>
+	<hr />
+	<div class="container">
+		<div class="container">
+			<h3>
+				Url Parameters
+			</h3>
+			<table class="table">
+				<tr>
+					<th>
+						Key
+					</th>
+					<th>
+						Type
+					</th>
+					<th>
+						Value
+					</th>
+				</tr>
+			</table>
+			NONE.
+		</div>
+		<br />
+		<div class="container">
+			<h3>
+				Header Parameters
+			</h3>
+			<table class="table">
+				<tr>
+
+					<th>
+						Key
+					</th>
+					<th>
+						Value
+					</th>
+				</tr>
+			</table>
+			NONE.
+		</div>
+		<br />
+
+		<div class="container">
+			<h3>
+				Body as JSON Object
+			</h3>
+			<pre>
+{
+	"email":"Abdulrhman.Alrifai@outlook.com",   : String
+	"Password":"1234512345",                    : String
+	"PasswordConfirmation":"1234512345",        : String
+	"Username":"Abduluhman",                    : String
+	"PhoneNumber":"+963 930-129-552",           : String
+	"Gender":"Male"                             : String (Male, Female)
+}
+</pre>
+			<br />
+			<br />
+		</div>
+
+		<div class="container">
+			<h2>
+				The Response Scenarios
+				<br />
+			</h2>
+			<br />
+			<div class="container">
+				<h3>
+					Scenario 1: All good.
+				</h3>
+				<br />
+				<br />
+				<div class="container">
+					<h3>
+						Headers parameters
+					</h3>
+					The most important headers are:
+					<table class="table">
+						<tr>
+
+							<th>
+								Key
+							</th>
+							<th>
+								Value
+							</th>
+						</tr>
+						<tr>
+							<td>
+								StatusCode
+							</td>
+							<td>
+								200
+							</td>
+						</tr>
+					</table>
+				</div>
+
+				<br />
+				<div class="container">
+					<h3>
+						Body
+					</h3>
+
+
+					<pre>
+{
+	"message": "A user has been created successfuly"
+}
+					 </pre>
+					<br />
+				</div>
+			</div>
+			<div>
+				<hr />
+				<h3>
+					Scenario 2: The email is already exists.
+				</h3>
+				<br />
+				<div class="container">
+					<h3>
+						Headers parameters
+					</h3>
+					The most important headers are:
+					<table class="table">
+						<tr>
+
+							<th>
+								Key
+							</th>
+							<th>
+								Value
+							</th>
+						</tr>
+						<tr>
+							<td>
+								StatusCode
+							</td>
+							<td>
+								400
+							</td>
+						</tr>
+					</table>
+				</div>
+
+				<br />
+				<div class="container">
+					<h3>
+						Body
+					</h3>
+					<pre>
+{
+	"errorCode": "DuplicateUserName",
+	"message": "User name 'Abdulrhman.Alrifa1i@outlook.com' is already taken.",
+}
+</pre>
+
+					<br />
+				</div>
+			</div>
+
+			<div>
+				<hr />
+				<h3>
+					Scenario 3: The email is invalid string.
+				</h3>
+				<br />
+				<div class="container">
+					<h3>
+						Headers parameters
+					</h3>
+					The most important headers are:
+					<table class="table">
+						<tr>
+
+							<th>
+								Key
+							</th>
+							<th>
+								Value
+							</th>
+						</tr>
+						<tr>
+							<td>
+								StatusCode
+							</td>
+							<td>
+								400
+							</td>
+						</tr>
+					</table>
+				</div>
+
+				<br />
+				<div class="container">
+					<h3>
+						Body
+					</h3>
+					<pre>
+{
+	"errorCode": "USER.REGILTER.EMAIL.INVALID",
+	"message": "The Email feild does not represent an email",
+}</pre>
+
+					<br />
+				</div>
+			</div>
+
+			<div>
+				<hr />
+				<h3>
+					Scenario 4: The username is to long or to short.
+				</h3>
+				<br />
+				<div class="container">
+					<h3>
+						Headers parameters
+					</h3>
+					The most important headers are:
+					<table class="table">
+						<tr>
+
+							<th>
+								Key
+							</th>
+							<th>
+								Value
+							</th>
+						</tr>
+						<tr>
+							<td>
+								StatusCode
+							</td>
+							<td>
+								400
+							</td>
+						</tr>
+					</table>
+				</div>
+
+				<br />
+				<div class="container">
+					<h3>
+						Body
+					</h3>
+					<pre>
+{
+	"errorCode": "USER.REGISTER.USERNAME.INVALID",
+	"message": "The user name must be longer than 5 and less than 200",
+}</pre>
+
+					<br />
+				</div>
+			</div>
+
+
+			<div>
+				<hr />
+				<h3>
+					Scenario 5: The gender property has invalid value (not Male or Female).
+				</h3>
+				<br />
+				<div class="container">
+					<h3>
+						Headers parameters
+					</h3>
+					The most important headers are:
+					<table class="table">
+						<tr>
+
+							<th>
+								Key
+							</th>
+							<th>
+								Value
+							</th>
+						</tr>
+						<tr>
+							<td>
+								StatusCode
+							</td>
+							<td>
+								400
+							</td>
+						</tr>
+					</table>
+				</div>
+
+				<br />
+				<div class="container">
+					<h3>
+						Body
+					</h3>
+					<pre>
+{
+	"errorCode": "USER.REGISTER.GENDER.INVALID",
+	"message": "Please fill the gender with valid data",
+}</pre>
+
+					<br />
+				</div>
+			</div>
+
+			<div>
+				<hr />
+				<h3>
+					Scenario 6: Password and confirmation does not match.
+				</h3>
+				<br />
+				<div class="container">
+					<h3>
+						Headers parameters
+					</h3>
+					The most important headers are:
+					<table class="table">
+						<tr>
+
+							<th>
+								Key
+							</th>
+							<th>
+								Value
+							</th>
+						</tr>
+						<tr>
+							<td>
+								StatusCode
+							</td>
+							<td>
+								400
+							</td>
+						</tr>
+					</table>
+				</div>
+
+				<br />
+				<div class="container">
+					<h3>
+						Body
+					</h3>
+					<pre>
+{
+	"errorCode": "USER.REGISTER.PASSWORD_CONFIRMATION.INVALID",
+	"message": "The password and confirmation are not the same",
+}</pre>
+
+					<br />
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

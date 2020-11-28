@@ -1,0 +1,296 @@
+﻿@page
+@model MobileApiGateway.Pages.Documentation.V1.GetTransactionUserAsRecipientModel
+@{
+    ViewData["Title"] = "Transactions";
+}
+
+
+
+<h1>Get the transactions where the user is Recipient</h1>
+
+
+
+<div class="container">
+    <h1>
+        Can be accessed at GET <b>http://localhost:25000/api/Transaction/Registrations/MeAsRecipient</b>
+    </h1>
+    <hr />
+    <div class="container">
+        <div class="container">
+            <h3>
+                Url Parameters
+            </h3>
+            <table class="table">
+                <tr>
+                    <th>
+                        Key
+                    </th>
+                    <th>
+                        Type
+                    </th>
+                    <th>
+                        Value
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        startObject
+                    </td>
+                    <td>
+                        int
+                    </td>
+                    <td>
+                        0
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        size
+                    </td>
+                    <td>
+                        int
+                    </td>
+                    <td>
+                        10
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+        <br />
+        <div class="container">
+            <h3>
+                Header Parameters
+            </h3>
+            <table class="table">
+                <tr>
+
+                    <th>
+                        Key
+                    </th>
+                    <th>
+                        Value
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        Authorization
+                    </td>
+                    <td>
+                        bearer eyJhbGciOiJSU.zI1NiIsImtpZCI6Il.RimF1ZCI6WyJDYXRhbG9n
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <br />
+
+        <div class="container">
+            <h2>
+                The Response Scenarios
+                <br />
+            </h2>
+            <br />
+            <div class="container">
+                <h3>
+                    Scenario 1: All good.
+                </h3>
+                <br />
+                <br />
+                <div class="container">
+                    <h3>
+                        Headers parameters
+                    </h3>
+                    The most important headers are:
+                    <table class="table">
+                        <tr>
+
+                            <th>
+                                Key
+                            </th>
+                            <th>
+                                Value
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                StatusCode
+                            </td>
+                            <td>
+                                200
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <br />
+                <div class="container">
+                    <h3>
+                        Body
+                    </h3>
+
+
+                    <pre>
+[
+    {
+        "registrationId": "b56334c0-257e-4224-8f76-0228977022b8",
+        "receivingId": null,
+        "returnId": null,
+        "transcationType": "Free",
+        "registredAtUtc": "2020-12-14T20:19:07",
+        "receivedAtUtc": null,
+        "returenedAtUtc": null,
+        "shouldReturnAfter": null,
+        "hourlyCharge": null,
+        "transactionStatus": "RegisteredOnly",
+        "owner": {
+            "id": "3c564da8-1885-4b28-b770-e660b2535e5b",
+            "username": "Abdulrhman.m.Alrifai@gmail.com",
+            "name": "Abduluhman",
+            "email": "Abdulrhman.m.Alrifai@gmail.com",
+            "pictureUrl": "http://localhost:20000/Resources/Photo/Profile/e25e7913-dbee-42fe-9d36-1ccc29272bee"
+        },
+        "receiver": {
+            "id": "3c564da8-1885-4b28-b770-e660b2535e5b",
+            "username": "Abdulrhman.m.Alrifai@gmail.com",
+            "name": "Abduluhman",
+            "email": "Abdulrhman.m.Alrifai@gmail.com",
+            "pictureUrl": "http://localhost:20000/Resources/Photo/Profile/e25e7913-dbee-42fe-9d36-1ccc29272bee"
+        },
+        "object": {
+            "id": 2,
+            "name": "asdf",
+            "description": "asdfasdfasf"
+        }
+    },
+    {
+        "registrationId": "af34eb83-c86e-4695-a4f1-15e7ca4d01a3",
+        "receivingId": null,
+        "returnId": null,
+        "transcationType": "Free",
+        "registredAtUtc": "2020-12-14T22:01:09",
+        "receivedAtUtc": null,
+        "returenedAtUtc": null,
+        "shouldReturnAfter": null,
+        "hourlyCharge": null,
+        "transactionStatus": "RegisteredOnly",
+        "owner": {
+            "id": "3c564da8-1885-4b28-b770-e660b2535e5b",
+            "username": "Abdulrhman.m.Alrifai@gmail.com",
+            "name": "Abduluhman",
+            "email": "Abdulrhman.m.Alrifai@gmail.com",
+            "pictureUrl": "http://localhost:20000/Resources/Photo/Profile/e25e7913-dbee-42fe-9d36-1ccc29272bee"
+        },
+        "receiver": {
+            "id": "3c564da8-1885-4b28-b770-e660b2535e5b",
+            "username": "Abdulrhman.m.Alrifai@gmail.com",
+            "name": "Abduluhman",
+            "email": "Abdulrhman.m.Alrifai@gmail.com",
+            "pictureUrl": "http://localhost:20000/Resources/Photo/Profile/e25e7913-dbee-42fe-9d36-1ccc29272bee"
+        },
+        "object": {
+            "id": 4,
+            "name": "asdf",
+            "description": "asdfasdfasf"
+        }
+    },
+    {
+        "registrationId": "b713e5aa-a837-45bd-8b0f-292a132eb976",
+        "receivingId": null,
+        "returnId": null,
+        "transcationType": "Lending",
+        "registredAtUtc": "2020-07-24T18:04:51.2216501",
+        "receivedAtUtc": null,
+        "returenedAtUtc": null,
+        "shouldReturnAfter": "04:00:00",
+        "hourlyCharge": null,
+        "transactionStatus": "RegisteredOnly",
+        "owner": {
+            "id": "3c564da8-1885-4b28-b770-e660b2535e5b",
+            "username": "Abdulrhman.m.Alrifai@gmail.com",
+            "name": "Abduluhman",
+            "email": "Abdulrhman.m.Alrifai@gmail.com",
+            "pictureUrl": "http://localhost:20000/Resources/Photo/Profile/e25e7913-dbee-42fe-9d36-1ccc29272bee"
+        },
+        "receiver": {
+            "id": "3c564da8-1885-4b28-b770-e660b2535e5b",
+            "username": "Abdulrhman.m.Alrifai@gmail.com",
+            "name": "Abduluhman",
+            "email": "Abdulrhman.m.Alrifai@gmail.com",
+            "pictureUrl": "http://localhost:20000/Resources/Photo/Profile/e25e7913-dbee-42fe-9d36-1ccc29272bee"
+        },
+        "object": {
+            "id": 10,
+            "name": "Mixer",
+            "description": "Working just fine"
+        }
+    },
+    {
+        "registrationId": "33c7fcf0-1de4-49ff-911c-63f6863a53d1",
+        "receivingId": null,
+        "returnId": null,
+        "transcationType": "Lending",
+        "registredAtUtc": "2020-12-15T18:59:12",
+        "receivedAtUtc": null,
+        "returenedAtUtc": null,
+        "shouldReturnAfter": "04:00:00",
+        "hourlyCharge": null,
+        "transactionStatus": "RegisteredOnly",
+        "owner": {
+            "id": "3c564da8-1885-4b28-b770-e660b2535e5b",
+            "username": "Abdulrhman.m.Alrifai@gmail.com",
+            "name": "Abduluhman",
+            "email": "Abdulrhman.m.Alrifai@gmail.com",
+            "pictureUrl": "http://localhost:20000/Resources/Photo/Profile/e25e7913-dbee-42fe-9d36-1ccc29272bee"
+        },
+        "receiver": {
+            "id": "3c564da8-1885-4b28-b770-e660b2535e5b",
+            "username": "Abdulrhman.m.Alrifai@gmail.com",
+            "name": "Abduluhman",
+            "email": "Abdulrhman.m.Alrifai@gmail.com",
+            "pictureUrl": "http://localhost:20000/Resources/Photo/Profile/e25e7913-dbee-42fe-9d36-1ccc29272bee"
+        },
+        "object": {
+            "id": 5,
+            "name": "Mixer",
+            "description": "Working just fine"
+        }
+    },
+    {
+        "registrationId": "b7d1f6fd-52c5-4820-a673-a4c7c022a4c5",
+        "receivingId": null,
+        "returnId": null,
+        "transcationType": "Lending",
+        "registredAtUtc": "2020-12-14T22:02:01",
+        "receivedAtUtc": null,
+        "returenedAtUtc": null,
+        "shouldReturnAfter": "05:00:00",
+        "hourlyCharge": null,
+        "transactionStatus": "Canceled",
+        "owner": {
+            "id": "3c564da8-1885-4b28-b770-e660b2535e5b",
+            "username": "Abdulrhman.m.Alrifai@gmail.com",
+            "name": "Abduluhman",
+            "email": "Abdulrhman.m.Alrifai@gmail.com",
+            "pictureUrl": "http://localhost:20000/Resources/Photo/Profile/e25e7913-dbee-42fe-9d36-1ccc29272bee"
+        },
+        "receiver": {
+            "id": "3c564da8-1885-4b28-b770-e660b2535e5b",
+            "username": "Abdulrhman.m.Alrifai@gmail.com",
+            "name": "Abduluhman",
+            "email": "Abdulrhman.m.Alrifai@gmail.com",
+            "pictureUrl": "http://localhost:20000/Resources/Photo/Profile/e25e7913-dbee-42fe-9d36-1ccc29272bee"
+        },
+        "object": {
+            "id": 3,
+            "name": "asdf",
+            "description": "asdfasdfasf"
+        }
+    }
+]					 </pre>
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

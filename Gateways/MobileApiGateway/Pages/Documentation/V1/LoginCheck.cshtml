@@ -1,0 +1,262 @@
+﻿@page ""
+@model MobileApiGateway.Pages.Documentation.V1.LoginCheckModel
+@{
+	ViewData["Title"] = "Check Login credentials";
+}
+
+<div class="container">
+	<h1>
+		Can be accessed at POST <b>http://HostName:Port/api/identity/account/check</b>
+	</h1>
+	<hr />
+	<div class="container">
+		<div class="container">
+			<h3>
+				Url Parameters
+			</h3>
+			<table class="table">
+				<tr>
+					<th>
+						Key
+					</th>
+					<th>
+						Type
+					</th>
+					<th>
+						Value
+					</th>
+				</tr>
+			</table>
+			NONE.
+		</div>
+		<br />
+		<div class="container">
+			<h3>
+				Header Parameters
+			</h3>
+			<table class="table">
+				<tr>
+
+					<th>
+						Key
+					</th>
+					<th>
+						Value
+					</th>
+				</tr>
+			</table>
+			NONE.
+		</div>
+		<br />
+
+		<div class="container">
+			<h3>
+				Body as JSON Object
+			</h3>
+			<pre>
+{
+	"Username":"abdulrhman.m.alrifai@gmail.com",
+	"Password":"1234512345@WSs"
+}
+</pre>
+			<br />
+			<br />
+		</div>
+
+		<div class="container">
+			<h2>
+				The Response Scenarios
+				<br />
+			</h2>
+			<br />
+			<div class="container">
+				<h3>
+					Scenario 1: All good.
+				</h3>
+				<br />
+				<br />
+				<div class="container">
+					<h3>
+						Headers parameters
+					</h3>
+					The most important headers are:
+					<table class="table">
+						<tr>
+
+							<th>
+								Key
+							</th>
+							<th>
+								Value
+							</th>
+						</tr>
+						<tr>
+							<td>
+								StatusCode
+							</td>
+							<td>
+								200
+							</td>
+						</tr>
+					</table>
+				</div>
+
+				<br />
+				<div class="container">
+					<h3>
+						Body
+					</h3>
+
+
+					<pre>
+{
+	"message": "The Login credentials are correct"
+}
+					 </pre>
+					<br />
+				</div>
+			</div>
+			<div>
+				<hr />
+				<h3>
+					Scenario 2: The account is locked out due to too many incorrect tries.
+				</h3>
+				<br />
+				<div class="container">
+					<h3>
+						Headers parameters
+					</h3>
+					The most important headers are:
+					<table class="table">
+						<tr>
+
+							<th>
+								Key
+							</th>
+							<th>
+								Value
+							</th>
+						</tr>
+						<tr>
+							<td>
+								StatusCode
+							</td>
+							<td>
+								400
+							</td>
+						</tr>
+					</table>
+				</div>
+
+				<br />
+				<div class="container">
+					<h3>
+						Body
+					</h3>
+					<pre>
+{
+	"errorCode": "USER.CHECK.LOGIN.LOCKEDOUT",
+	"message": "The account is locked out due to too many incorrect tries",
+}
+</pre>
+
+					<br />
+				</div>
+			</div>
+
+			<div>
+				<hr />
+				<h3>
+					Scenario 3: This account is not allowed to be logged in.
+				</h3>
+				<br />
+				<div class="container">
+					<h3>
+						Headers parameters
+					</h3>
+					The most important headers are:
+					<table class="table">
+						<tr>
+
+							<th>
+								Key
+							</th>
+							<th>
+								Value
+							</th>
+						</tr>
+						<tr>
+							<td>
+								StatusCode
+							</td>
+							<td>
+								400
+							</td>
+						</tr>
+					</table>
+				</div>
+
+				<br />
+				<div class="container">
+					<h3>
+						Body
+					</h3>
+					<pre>
+{
+	"errorCode": "USER.CHECK.LOGIN.NOTALLOWED",
+	"message": "This account is not allowed to be logged in",
+}</pre>
+
+					<br />
+				</div>
+			</div>
+
+			<div>
+				<hr />
+				<h3>
+					Scenario 4: The username or password is incorrect.
+				</h3>
+				<br />
+				<div class="container">
+					<h3>
+						Headers parameters
+					</h3>
+					The most important headers are:
+					<table class="table">
+						<tr>
+
+							<th>
+								Key
+							</th>
+							<th>
+								Value
+							</th>
+						</tr>
+						<tr>
+							<td>
+								StatusCode
+							</td>
+							<td>
+								400
+							</td>
+						</tr>
+					</table>
+				</div>
+
+				<br />
+				<div class="container">
+					<h3>
+						Body
+					</h3>
+					<pre>
+{
+	"errorCode": "USER.CHECK.LOGIN.INVALID.CREDENTIALS",
+	"message": "You provided wrong credentials",
+}</pre>
+
+					<br />
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

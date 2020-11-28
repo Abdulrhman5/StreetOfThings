@@ -1,0 +1,165 @@
+﻿@page
+@model MobileApiGateway.Pages.Documentation.V1.CancelRegistrationModel
+@{
+    ViewData["Title"] = "Cancel Registration";
+}
+
+<h1>Cancel Registration</h1>
+<div class="container">
+    <h1>
+        Can be accessed at POST <b>http://HostName:Port/api/transaction/registrations/cancel</b>
+    </h1>
+    <hr />
+    <div class="container">
+        <div class="container">
+            <h3>
+                Url Parameters
+            </h3>
+            <table class="table">
+                <tr>
+                    <th>
+                        Key
+                    </th>
+                    <th>
+                        Type
+                    </th>
+                    <th>
+                        Value
+                    </th>
+                </tr>
+            </table>
+            NONE.
+        </div>
+        <br />
+        <div class="container">
+            <h3>
+                Header Parameters
+            </h3>
+            <table class="table">
+                <tr>
+
+                    <th>
+                        Key
+                    </th>
+                    <th>
+                        Value
+                    </th>
+                </tr>
+            </table>
+            NONE.
+        </div>
+        <br />
+
+        <div class="container">
+            <h3>
+                Body as JSON Object
+            </h3>
+            <pre>
+{
+    "RegistrationId":"b7d1f6fd-52c5-4820-a673-a4c7c022a4c5"
+}</pre>
+            <br />
+            <br />
+        </div>
+
+        <div class="container">
+            <h2>
+                The Response Scenarios
+                <br />
+            </h2>
+            <br />
+            <div class="container">
+                <h3>
+                    Scenario 1: All good.
+                </h3>
+                <br />
+                <br />
+                <div class="container">
+                    <h3>
+                        Headers parameters
+                    </h3>
+                    The most important headers are:
+                    <table class="table">
+                        <tr>
+
+                            <th>
+                                Key
+                            </th>
+                            <th>
+                                Value
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                StatusCode
+                            </td>
+                            <td>
+                                200
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <br />
+                <div class="container">
+                    <h3>
+                        Body
+                    </h3>
+
+
+                    <pre>
+{
+    "message": "A registration has been canceled"
+}					 </pre>
+                    <br />
+                </div>
+            </div>
+            <div>
+                <hr />
+                <h3>
+                    Scenario 2: You can't cancel this registration.
+                </h3>
+                <br />
+                <div class="container">
+                    <h3>
+                        Headers parameters
+                    </h3>
+                    The most important headers are:
+                    <table class="table">
+                        <tr>
+                            <th>
+                                Key
+                            </th>
+                            <th>
+                                Value
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                StatusCode
+                            </td>
+                            <td>
+                                401
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <br />
+                <div class="container">
+                    <h3>
+                        Body
+                    </h3>
+                    <pre>
+{
+    "errorCode": "TRANSACTION.REGISTRATION.CANCEL.UNAVAILABLE",
+    "message": "You can not cancel this registration",
+    "statusCode": 401
+}</pre>
+
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

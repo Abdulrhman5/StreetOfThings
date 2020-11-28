@@ -1,0 +1,220 @@
+﻿@page
+@model MobileApiGateway.Pages.Documentation.V1.ObjectDetailsModel
+@{
+    ViewData["Title"] = "Object Details";
+}
+
+<h1>Object Details</h1>
+
+
+<div class="container">
+    <h1>
+        Can be accessed at GET <b>http://localhost:25000/api/catalog/object/details</b>
+    </h1>
+    <hr />
+    <div class="container">
+        <div class="container">
+            <h3>
+                Url Parameters
+            </h3>
+            <table class="table">
+                <tr>
+                    <th>
+                        Key
+                    </th>
+                    <th>
+                        Type
+                    </th>
+                    <th>
+                        Value
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        objectId
+                    </td>
+                    <td>
+                        int
+                    </td>
+                    <td>
+                        the object id.
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+        <br />
+        <div class="container">
+            <h3>
+                Header Parameters
+            </h3>
+            <table class="table">
+                <tr>
+
+                    <th>
+                        Key
+                    </th>
+                    <th>
+                        Value
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        Authorization
+                    </td>
+                    <td>
+                        bearer eyJhbGciOiJSU.zI1NiIsImtpZCI6Il.RimF1ZCI6WyJDYXRhbG9n
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <br />
+
+        <div class="container">
+            <h2>
+                The Response Scenarios
+                <br />
+            </h2>
+            <br />
+            <div class="container">
+                <h3>
+                    Scenario 1: All good.
+                </h3>
+                <br />
+                <br />
+                <div class="container">
+                    <h3>
+                        Headers parameters
+                    </h3>
+                    The most important headers are:
+                    <table class="table">
+                        <tr>
+
+                            <th>
+                                Key
+                            </th>
+                            <th>
+                                Value
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                StatusCode
+                            </td>
+                            <td>
+                                200
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <br />
+                <div class="container">
+                    <h3>
+                        Body
+                    </h3>
+
+                    <h1>Super extremely very important NOTE:</h1>
+                    The Location in the following json, for the time being will always have value BUT That will change in the near feature and the location most of the time will be null
+                    The only case that the Location will have a value is when the user is registered for this object
+                    <br />This change will be patched in this version.
+                    <pre>
+{
+    "id": 1,
+    "name": "asdf",
+    "description": "asdfasdfasf",
+    "countOfViews": 23,
+    "countOfImpressions": 38,
+    "rating": null,
+    "owner": {
+        "id": "3c564da8-1885-4b28-b770-e660b2535e5b",
+        "username": "Abdulrhman.m.Alrifai@gmail.com",
+        "name": "Abduluhman",
+        "email": "Abdulrhman.m.Alrifai@gmail.com",
+        "pictureUrl": "http://localhost:20000/Resources/Photo/Profile/e25e7913-dbee-42fe-9d36-1ccc29272bee"
+    },
+    "photos": [
+        "http://localhost:20001/Resources/Photo/Object/607b3063-2b47-4c74-ad19-b7c52364d847"
+    ],
+    "tags": [
+        "Here",
+        "There"
+    ],
+    "type": "Lending",
+    "commentsCount": 1,
+    "likesCount": 1,
+    "isLikedByMe": true,
+    "comments": [
+        {
+            "commentId": "21ec294c-4732-4dfa-9cbd-371e0f34766c",
+            "objectId": 1,
+            "comment": "Hello world",
+            "commenter": {
+                "id": "3c564da8-1885-4b28-b770-e660b2535e5b",
+                "username": "Abdulrhman.m.Alrifai@gmail.com",
+                "name": "Abduluhman",
+                "email": "Abdulrhman.m.Alrifai@gmail.com",
+                "pictureUrl": "http://localhost:20000/Resources/Photo/Profile/e25e7913-dbee-42fe-9d36-1ccc29272bee"
+            },
+            "commentedAtUtc": "2020-06-19T10:38:44.7473966"
+        }
+    ],
+    "ownerLocation": {
+        "longitude": 100,
+        "latitude": 80
+    }
+}					 </pre>
+                    <br />
+                </div>
+            </div>
+            <div class="container">
+                <h3>
+                    Scenario 2: The object Id is faulty
+                </h3>
+                <br />
+                <br />
+                <div class="container">
+                    <h3>
+                        Headers parameters
+                    </h3>
+                    The most important headers are:
+                    <table class="table">
+                        <tr>
+
+                            <th>
+                                Key
+                            </th>
+                            <th>
+                                Value
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                StatusCode
+                            </td>
+                            <td>
+                                400
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <br />
+                <div class="container">
+                    <h3>
+                        Body
+                    </h3>
+
+                    <pre>
+{
+    "errorCode": "CATALOG.OBJECT.DETAILS.NOTFOUND",
+    "message": "The object you requested does not exists.",
+    "statusCode": 400
+}					 </pre>
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

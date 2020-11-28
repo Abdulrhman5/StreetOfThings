@@ -1,0 +1,174 @@
+﻿@page ""
+@model MobileApiGateway.Pages.Documentation.V1.ConfirmAccountModel
+@{
+    ViewData["Title"] = "Confirm email";
+}
+
+<div class="container">
+    <h1>
+        Can be accessed at POST <b>http://HostName:Port/api/identity/account/confirm</b>
+    </h1>
+    <hr />
+    <div class="container">
+        <div class="container">
+            <h3>
+                Url Parameters
+            </h3>
+            <table class="table">
+                <tr>
+                    <th>
+                        Key
+                    </th>
+                    <th>
+                        Type
+                    </th>
+                    <th>
+                        Value
+                    </th>
+                </tr>
+            </table>
+            NONE.
+        </div>
+        <br />
+        <div class="container">
+            <h3>
+                Header Parameters
+            </h3>
+            <table class="table">
+                <tr>
+
+                    <th>
+                        Key
+                    </th>
+                    <th>
+                        Value
+                    </th>
+                </tr>
+            </table>
+            NONE.
+        </div>
+        <br />
+
+        <div class="container">
+            <h3>
+                Body as JSON Object
+            </h3>
+            <pre>
+{
+	"email": "abdulrhman.m.alrifai@gmail.com",
+	"confirmationCode": "2LRNYE"
+}</pre>
+            <h5>Notes:</h5>
+            <ul>
+                <li>The code above would be sent to the email when registering</li>
+                <li>The code will expire after 15 minute from issuing</li>
+            </ul>
+            <br />
+            <br />
+        </div>
+
+        <div class="container">
+            <h2>
+                The Response Scenarios
+                <br />
+            </h2>
+            <br />
+            <div class="container">
+                <h3>
+                    Scenario 1: All good.
+                </h3>
+                <br />
+                <br />
+                <div class="container">
+                    <h3>
+                        Headers parameters
+                    </h3>
+                    The most important headers are:
+                    <table class="table">
+                        <tr>
+
+                            <th>
+                                Key
+                            </th>
+                            <th>
+                                Value
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                StatusCode
+                            </td>
+                            <td>
+                                200
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <br />
+                <div class="container">
+                    <h3>
+                        Body
+                    </h3>
+
+
+                    <pre>
+{
+	"message": "The email has been confirmed"
+}
+					 </pre>
+                    <br />
+                </div>
+            </div>
+            <div>
+                <hr />
+                <h3>
+                    Scenario 2: The confirmation code is faulty,<br />
+                    Or There is no account associated with this email, <br />
+                    Or The confirmation code expired, <br />
+                    Or The email provided is faulty.
+                </h3>
+                <br />
+                <div class="container">
+                    <h3>
+                        Headers parameters
+                    </h3>
+                    The most important headers are:
+                    <table class="table">
+                        <tr>
+
+                            <th>
+                                Key
+                            </th>
+                            <th>
+                                Value
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                StatusCode
+                            </td>
+                            <td>
+                                400
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <br />
+                <div class="container">
+                    <h3>
+                        Body
+                    </h3>
+                    <pre>
+{
+	"errorCode": "USER.CONFIRMATION.EMAIL.FAULTY",
+	"message": "Incorrect confirmation code",
+}
+</pre>
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
