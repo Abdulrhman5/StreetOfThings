@@ -40,6 +40,7 @@ namespace MobileApiGateway
             services.AddSwaggerForOcelot(Configuration);
             services.AddHttpContextAccessor();
             services.AddAutoMapper(typeof(Startup));
+            services.AddRazorPages();
 
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
@@ -91,6 +92,7 @@ namespace MobileApiGateway
             }
 
             app.UseRouting();
+            app.UseStaticFiles();
 
             app.UseAuthentication();
             app.UseAuthorization();
@@ -100,7 +102,7 @@ namespace MobileApiGateway
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
-
+                endpoints.MapRazorPages();
                 
             });
 
