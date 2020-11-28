@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using AuthorizationService.Grpc;
 using EventBus;
+using Grpc.Core;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -11,7 +13,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Transaction.Service.Infrastructure;
+using Transaction.Core;
+using Transaction.Infrastructure;
+using Transaction.Service.Filters;
 using Unity;
 
 namespace Transaction.Service
@@ -29,11 +33,13 @@ namespace Transaction.Service
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddCore();
+            services.AddInfrastructure(Configuration);
+            services.AddControllersWithViews(options => options.Filters.Add(new ApiExceptionFilterAttribute()));
             services.AddControllers().AddNewtonsoftJson();
 
             var transactionConnection = Configuration.GetConnectionString("TransactionConnection");
-            services.AddDbContext<TransactionContext>(options => options.UseSqlServer(transactionConnection));
+            services.AddDbContext<Transaction.Infrastructure.Data.TransactionContext>(options => options.UseSqlServer(transactionConnection));
             services.AddHttpContextAccessor();
 
             services.AddAuthentication("Bearer")
@@ -59,6 +65,15 @@ namespace Transaction.Service
                 HostName = "localhost",
                 RetryCount = 5,
                 SubscriptionClientName = "Transaction",
+            });
+
+            // Enable support for unencrypted HTTP2  
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+
+            // Registration of the DI service
+            services.AddGrpcClient<UsersGrpc.UsersGrpcClient>(options => {
+                options.Address = new Uri("http://localhost:21000");
+                options.ChannelOptionsActions.Add(channelOptions => channelOptions.Credentials = ChannelCredentials.Insecure);
             });
         }
 
@@ -86,8 +101,6 @@ namespace Transaction.Service
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
-                endpoints.MapRazorPages();
-
             });
 
             app.ApplicationServices.AddIntegrationEvent<DummyEvent, DummyHandler>();
@@ -97,18 +110,7 @@ namespace Transaction.Service
 
         public void ConfigureContainer(IUnityContainer container)
         {
-            container.RegisterType(typeof(IRepository<,>), typeof(GenericRepository<,>));
 
-            container.RegisterType<IRemotlyObjectGetter, RemoteObjectGetter>();
-            container.RegisterType<CurrentUserCredentialsGetter>();
-            container.RegisterType<UserDataGetter>();
-            container.RegisterType<UserDataManager>();
-            container.RegisterType<ObjectDataManager>();
-
-            container.RegisterType<IAlphaNumericStringGenerator, RngAlphaNumericStringGenerator>();
-            container.RegisterType<ITransactionTokenManager, TransactionTokenManager>();
-
-            container.RegisterType(typeof(OwnershipAuthorization<,>));
         }
     }
 
