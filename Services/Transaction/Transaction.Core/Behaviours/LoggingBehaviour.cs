@@ -24,7 +24,7 @@ namespace Transaction.Core.Behaviours
             var requestName = typeof(TRequest).Name;
             var userId = _userDataManager.GetCurrentUser()?.UserId ?? string.Empty;
 
-            _logger.LogInformation("CleanArchitecture Request: {Name} {@UserId} {@Request}",
+            _logger.LogInformation("Transaction.Service Request: {Name} {@UserId} {@Request}",
                 requestName, userId, request);
         }
 

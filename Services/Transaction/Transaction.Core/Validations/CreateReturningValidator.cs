@@ -19,7 +19,7 @@ namespace Transaction.Core.Validations
                     Message = "Please send valid data",
                     StatusCode = System.Net.HttpStatusCode.BadRequest,
                 });
-            RuleFor(returning => returning)
+            RuleFor(returning => returning.ReturningToken)
                 .NotNull()
                 .NotEmpty()
                 .WithErrorMessage(new ErrorMessage

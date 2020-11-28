@@ -40,7 +40,7 @@ namespace Transaction.Core.Behaviours
                 var userId = _userDataManager.GetCurrentUser()?.UserId ?? string.Empty;
 
 
-                _logger.LogWarning("CleanArchitecture Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds) {@UserId} {@Request}",
+                _logger.LogWarning("Transaction.Service Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds) {@UserId} {@Request}",
                     requestName, elapsedMilliseconds, userId, request);
             }
 

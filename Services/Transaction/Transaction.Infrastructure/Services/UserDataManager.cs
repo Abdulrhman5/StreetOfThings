@@ -86,7 +86,7 @@ namespace Transaction.Infrastructure.Services
 
         public virtual async Task<(Login, User)> AddCurrentUserIfNeeded()
         {
-            var credentials = GetCuurentUser();
+            var credentials = GetCurrentUser();
             if (credentials is null)
             {
                 return (null, null);
@@ -122,7 +122,7 @@ namespace Transaction.Infrastructure.Services
             return userToBeAdded;
         }
 
-        public LoginDataDto GetCuurentUser()
+        public LoginDataDto GetCurrentUser()
         {
             return new LoginDataDto
             {
@@ -132,9 +132,5 @@ namespace Transaction.Infrastructure.Services
             };
         }
 
-        public LoginDataDto GetCurrentUser()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

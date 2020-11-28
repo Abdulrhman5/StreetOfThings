@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Transaction.Core;
 using Transaction.Infrastructure;
+using Transaction.Service.Filters;
 using Unity;
 
 namespace Transaction.Service
@@ -34,7 +35,7 @@ namespace Transaction.Service
         {
             services.AddCore();
             services.AddInfrastructure(Configuration);
-            services.AddControllersWithViews();
+            services.AddControllersWithViews(options => options.Filters.Add(new ApiExceptionFilterAttribute()));
             services.AddControllers().AddNewtonsoftJson();
 
             var transactionConnection = Configuration.GetConnectionString("TransactionConnection");
@@ -65,6 +66,9 @@ namespace Transaction.Service
                 RetryCount = 5,
                 SubscriptionClientName = "Transaction",
             });
+
+            // Enable support for unencrypted HTTP2  
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
 
             // Registration of the DI service
             services.AddGrpcClient<UsersGrpc.UsersGrpcClient>(options => {
