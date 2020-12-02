@@ -1,7 +1,7 @@
 # StreetOfThings
 
 ## Introduction
-StreetOfThings is an application have functionality similar to [Street bank](https://www.streetbank.com/), although the app provide interesting functionality, the main focus when building this app was not delivering value to users, the main focus was building portfolios and improve architecting skills.
+StreetOfThings is an application that has functionality similar to [Street bank](https://www.streetbank.com/), although the app provides interesting functionality, the main focus when building this app was not delivering value to users, the main focus was building portfolios and improve architecting skills.
 
 This repository is only the `back-end` for StreetOfThings.
 
@@ -15,18 +15,18 @@ This repository is only the `back-end` for StreetOfThings.
 * [Entity framework core](https://docs.microsoft.com/en-us/ef/core/): lightweight, extensible, open source and cross-platform version of the popular Entity Framework data access technology. 
 * [FluentValidation](https://github.com/FluentValidation/FluentValidation)
 * [Serilog](https://github.com/serilog/serilog): diagnostic logging library for .NET applications.
-* [Swagger](https://swagger.io/): Simplify API developmen
+* [Swagger](https://swagger.io/): Simplify API development
 * [Ocelot](https://github.com/ThreeMammals/Ocelot): Ocelot is a .NET API Gateway.
 
 
 ## Microservice
-Microservice| Architecture | Description| Cool 
----|---|---|---
-Authorization | N-Layer Architecture | Identity management service, powered by OAuth2 and OpendID connect | dfa
-Catalog | [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) | Manages the user offerings | df
-Transaction | [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html), [CQRS](https://martinfowler.com/bliki/CQRS.html#:~:text=CQRS%20stands%20for%20Command%20Query,you%20use%20to%20read%20information) | Keep track of transactions between users | dfd 
-Mobile gateway| |Provide aggrigation services & gateway for the mobile application. |
-Admin gateway | | Provide aggrigation services & gateway for the anguler dashboard. |
+Microservice| Architecture | Description
+---|---|---
+Authorization | N-Layer Architecture | Identity management service, powered by OAuth2 and OpendID connect 
+Catalog | [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) | Manages the user offerings 
+Transaction | [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html), [CQRS](https://martinfowler.com/bliki/CQRS.html#:~:text=CQRS%20stands%20for%20Command%20Query,you%20use%20to%20read%20information) | Keep track of transactions between users
+Mobile gateway| |Provide aggregation and a gateway for the mobile application. 
+Admin gateway | | Provide aggregation and a gateway for the angular dashboard. 
 
 ![services image ](StreetOfThingsOverview.png)
 
