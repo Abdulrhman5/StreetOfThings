@@ -1,5 +1,5 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
+#See https://github.com/Abdulrhman5/nupkgInDocker to restore nuget package faster.
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS base
 WORKDIR /app
 
@@ -16,16 +16,17 @@ COPY ["Services/Authorization/Infrastructure/Infrastructure.csproj", "Services/A
 COPY ["Services/Authorization/tests/AuthorizationTestClient/AuthorizationTestClient.csproj", "Services/Authorization/tests/AuthorizationTestClient/"]
 COPY ["Services/Authorization/tests/Infrastructure.Test/Infrastructure.Test.csproj", "Services/Authorization/tests/Infrastructure.Test/"]
 COPY ["Services/Authorization/tests/Authorization.ApplicationLogic.Test/Authorization.ApplicationLogic.Test.csproj", "Services/Authorization/tests/Authorization.ApplicationLogic.Test/"]
-COPY ["Services/Catalog/CatalogService/CatalogService.csproj", "Services/Catalog/CatalogService/"]
+COPY ["Services/Catalog/Catalog.Web/Catalog.Web.csproj", "Services/Catalog/Catalog.Web/"]
+COPY ["Services/Catalog/Catalog.Infrastructure/Catalog.Infrastructure.csproj", "Services/Catalog/Catalog.Infrastructure/"]
+COPY ["Services/Catalog/Catalog.ApplicationCore/Catalog.ApplicationCore.csproj", "Services/Catalog/Catalog.ApplicationCore/"]
 COPY ["Services/Catalog/Catalog.Models/Catalog.Models.csproj", "Services/Catalog/Catalog.Models/"]
 COPY ["Services/Catalog/Catalog.ApplicationLogic/Catalog.ApplicationLogic.csproj", "Services/Catalog/Catalog.ApplicationLogic/"]
 COPY ["Services/Catalog/Catalog.DataAccessLayer/Catalog.DataAccessLayer.csproj", "Services/Catalog/Catalog.DataAccessLayer/"]
 COPY ["Services/Catalog/tests/Catalog.ApplicationLogic.Tests/Catalog.ApplicationLogic.Tests.csproj", "Services/Catalog/tests/Catalog.ApplicationLogic.Tests/"]
 COPY ["Services/Transaction/Transaction.Service/Transaction.Service.csproj", "Services/Transaction/Transaction.Service/"]
-COPY ["Services/Transaction/Transaction.BusinessLogic/Transaction.BusinessLogic.csproj", "Services/Transaction/Transaction.BusinessLogic/"]
-COPY ["Services/Transaction/Transaction.DataAccessLayer/Transaction.DataAccessLayer.csproj", "Services/Transaction/Transaction.DataAccessLayer/"]
-COPY ["Services/Transaction/Transaction.Models/Transaction.Models.csproj", "Services/Transaction/Transaction.Models/"]
-COPY ["Services/Transaction/tests/Transaction.BusinessLogic.Test/Transaction.BusinessLogic.Test.csproj", "Services/Transaction/tests/Transaction.BusinessLogic.Test/"]
+COPY ["Services/Transaction/Transaction.Infrastructure/Transaction.Infrastructure.csproj", "Services/Transaction/Transaction.Infrastructure/"]
+COPY ["Services/Transaction/Transaction.Core/Transaction.Core.csproj", "Services/Transaction/Transaction.Core/"]
+COPY ["Services/Transaction/Transaction.Domain/Transaction.Domain.csproj", "Services/Transaction/Transaction.Domain/"]
 COPY ["Gateways/MobileApiGateway/MobileApiGateway.csproj", "Gateways/MobileApiGateway/"]
 COPY ["Gateways/AdministrationGateway/AdministrationGateway.csproj", "Gateways/AdministrationGateway/"]
 COPY ["BuildingBlocks/HostingHelpers/HostingHelpers.csproj", "BuildingBlocks/HostingHelpers/"]

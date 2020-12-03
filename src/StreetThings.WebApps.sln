@@ -71,7 +71,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Transaction.Domain", "Servi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Transaction.Core", "Services\Transaction\Transaction.Core\Transaction.Core.csproj", "{0A017B41-B4B9-40AA-A6E2-AE7153E97827}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transaction.Infrastructure", "Services\Transaction\Transaction.Infrastructure\Transaction.Infrastructure.csproj", "{17EC5058-EA0F-4ED2-92B5-EBE67D4056B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Transaction.Infrastructure", "Services\Transaction\Transaction.Infrastructure\Transaction.Infrastructure.csproj", "{17EC5058-EA0F-4ED2-92B5-EBE67D4056B6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6152AF36-A635-4E43-998B-00C04E551FE3}"
+	ProjectSection(SolutionItems) = preProject
+		NuGet.Config = NuGet.Config
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
