@@ -25,7 +25,7 @@ services:
 
         build:
           context: .
-          dockerfile: Services/Catalog/CatalogService/Dockerfile
+          dockerfile: Services/Catalog/Catalog.Web/Dockerfile
         
         depends_on:
             - sqldata
